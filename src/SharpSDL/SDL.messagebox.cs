@@ -46,9 +46,7 @@ internal static partial class SDL
     [InlineArray((int)SDL_MessageBoxColorType.SDL_MESSAGEBOX_COLOR_MAX)]
     public struct SDL_MessageBoxColorScheme
     {
-#pragma warning disable IDE0051 // Remove unused private members
-        private SDL_MessageBoxColor _element0;
-#pragma warning restore IDE0051 // Remove unused private members
+        internal SDL_MessageBoxColor _element0;
     }
 
     [StructLayout(LayoutKind.Sequential)]

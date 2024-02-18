@@ -195,9 +195,7 @@ internal static partial class SDL
     [InlineArray(256)]
     public struct GammaRampChannel
     {
-#pragma warning disable IDE0051 // Remove unused private members
-        private ushort _element0;
-#pragma warning restore IDE0051 // Remove unused private members
+        internal ushort _element0;
     }
 
     [LibraryImport(DllName)]

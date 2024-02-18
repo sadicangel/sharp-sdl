@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace SharpSDL;
 internal static partial class SDL
 {
-    private const string DllName = "SDL2";
+    public const string DllName = "SDL2";
 
     public const uint SDL_INIT_TIMER = 0x00000001;
     public const uint SDL_INIT_AUDIO = 0x00000010;

@@ -505,9 +505,7 @@ internal static partial class SDL
     [InlineArray(256)]
     public struct GammaRamp
     {
-#pragma warning disable IDE0051 // Remove unused private members
-        private ushort _element0;
-#pragma warning restore IDE0051 // Remove unused private members
+        internal ushort _element0;
     }
 
     [LibraryImport(DllName)]
@@ -524,7 +522,7 @@ internal static partial class SDL
 
     [LibraryImport(DllName)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial byte* SDL_GetPixelFormatName(uint format);
+    public static unsafe partial byte* SDL_GetPixelFormatName(uint format);
 
     /* format refers to an SDL_PixelFormat* */
     [LibraryImport(DllName)]
