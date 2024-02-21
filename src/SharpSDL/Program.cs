@@ -1,4 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using SharpSDL;
 using SharpSDL.Interop;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -6,6 +7,10 @@ using Version = SharpSDL.Interop.Version;
 
 unsafe
 {
+    Breakout.Run();
+
+    return;
+
     if (SDL.Init(InitFlags.VIDEO) < 0)
         Throw();
 
