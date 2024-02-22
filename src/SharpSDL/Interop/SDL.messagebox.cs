@@ -3,26 +3,24 @@ using System.Runtime.InteropServices;
 
 namespace SharpSDL.Interop;
 
-[Flags]
-public enum MessageBoxFlags : uint
+internal enum SDL_MessageBoxFlags
 {
-    ERROR = 0x00000010,
-    WARNING = 0x00000020,
-    INFORMATION = 0x00000040,
-    BUTTONS_LEFT_TO_RIGHT = 0x00000080,
-    BUTTONS_RIGHT_TO_LEFT = 0x00000100,
+    SDL_MESSAGEBOX_ERROR = 0x00000010,
+    SDL_MESSAGEBOX_WARNING = 0x00000020,
+    SDL_MESSAGEBOX_INFORMATION = 0x00000040,
+    SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT = 0x00000080,
+    SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT = 0x00000100,
 }
 
-[Flags]
-public enum MessageBoxButtonFlags : uint
+internal enum SDL_MessageBoxButtonFlags
 {
-    RETURNKEY_DEFAULT = 0x00000001,
-    ESCAPEKEY_DEFAULT = 0x00000002,
+    SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT = 0x00000001,
+    SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT = 0x00000002,
 }
 
-public unsafe partial struct MessageBoxButtonData
+internal unsafe partial struct SDL_MessageBoxButtonData
 {
-    public MessageBoxButtonFlags flags;
+    public uint flags;
 
     public int buttonid;
 
@@ -30,7 +28,7 @@ public unsafe partial struct MessageBoxButtonData
     public byte* text;
 }
 
-public partial struct MessageBoxColor
+internal partial struct SDL_MessageBoxColor
 {
     public byte r;
 
@@ -39,33 +37,34 @@ public partial struct MessageBoxColor
     public byte b;
 }
 
-public enum MessageBoxColorType
+internal enum SDL_MessageBoxColorType
 {
-    BACKGROUND,
-    TEXT,
-    BUTTON_BORDER,
-    BUTTON_BACKGROUND,
-    BUTTON_SELECTED,
-    MAX,
+    SDL_MESSAGEBOX_COLOR_BACKGROUND,
+    SDL_MESSAGEBOX_COLOR_TEXT,
+    SDL_MESSAGEBOX_COLOR_BUTTON_BORDER,
+    SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND,
+    SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED,
+    SDL_MESSAGEBOX_COLOR_MAX,
 }
 
-public partial struct MessageBoxColorScheme
+internal partial struct SDL_MessageBoxColorScheme
 {
-    [NativeTypeName("MessageBoxColor[5]")]
+    [NativeTypeName("SDL_MessageBoxColor[5]")]
     public _colors_e__FixedBuffer colors;
 
     [InlineArray(5)]
-    public partial struct _colors_e__FixedBuffer
+    internal partial struct _colors_e__FixedBuffer
     {
-        public MessageBoxColor e0;
+        public SDL_MessageBoxColor e0;
     }
 }
 
-public unsafe partial struct MessageBoxData
+internal unsafe partial struct SDL_MessageBoxData
 {
-    public MessageBoxFlags flags;
+    public uint flags;
 
-    public Window* window;
+    [NativeTypeName("SDL_Window*")]
+    public nint window;
 
     [NativeTypeName("const char *")]
     public byte* title;
@@ -75,18 +74,20 @@ public unsafe partial struct MessageBoxData
 
     public int numbuttons;
 
-    [NativeTypeName("const MessageBoxButtonData *")]
-    public MessageBoxButtonData* buttons;
+    [NativeTypeName("const SDL_MessageBoxButtonData *")]
+    public SDL_MessageBoxButtonData* buttons;
 
-    [NativeTypeName("const MessageBoxColorScheme *")]
-    public MessageBoxColorScheme* colorScheme;
+    [NativeTypeName("const SDL_MessageBoxColorScheme *")]
+    public SDL_MessageBoxColorScheme* colorScheme;
 }
 
-public static unsafe partial class SDL
+internal static unsafe partial class SDL
 {
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_ShowMessageBox", ExactSpelling = true)]
-    public static extern int ShowMessageBox([NativeTypeName("const MessageBoxData *")] MessageBoxData* messageboxdata, int* buttonid);
+    [LibraryImport("SDL2", EntryPoint = "SDL_ShowMessageBox")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int ShowMessageBox([NativeTypeName("const SDL_MessageBoxData *")] SDL_MessageBoxData* messageboxdata, int* buttonid);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_ShowSimpleMessageBox", ExactSpelling = true)]
-    public static extern int ShowSimpleMessageBox(MessageBoxFlags flags, [NativeTypeName("const char *")] byte* title, [NativeTypeName("const char *")] byte* message, Window* window);
+    [LibraryImport("SDL2", EntryPoint = "SDL_ShowSimpleMessageBox")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int ShowSimpleMessageBox(uint flags, [NativeTypeName("const char *")] byte* title, [NativeTypeName("const char *")] byte* message, [NativeTypeName("SDL_Window*")] nint window);
 }

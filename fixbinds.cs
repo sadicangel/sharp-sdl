@@ -1,51 +1,50 @@
 using System.Collections.Generic;
 using System.IO;
 using System;
+using System.Linq;
 public static class FixBinds
 {
-    public static void Process(string[] files)
+    public static void Fix(string dst)
     {
-        var map = new Dictionary<string, string>()
+        var files = Directory.GetFiles(dst, "SDL*.cs");
+
+        var main = files.SingleOrDefault(f => f.EndsWith("main.cs"));
+        if (main is not null)
         {
-            ["HWND__*"] = "nint",
-            ["HDC__*"] = "nint",
-            ["HINSTANCE__*"] = "nint",
-        };
+            var inLines = File.ReadAllLines(main);
+            var outLines = new List<string>();
+            outLines.AddRange(inLines[..17]);
+            outLines.AddRange(inLines[20..]);
+            File.WriteAllLines(main, outLines);
+        }
 
-        foreach (var file in files)
+        var pixels = files.SingleOrDefault(f => f.EndsWith("pixels.cs"));
+        if (pixels is not null)
         {
-            foreach (var line in File.ReadLines(file))
-            {
-                var span = line.AsSpan().Trim();
-                if (span.Contains("struct SDL_", StringComparison.Ordinal) || span.Contains("enum SDL_", StringComparison.Ordinal))
-                {
-                    var start = span.IndexOf("SDL_");
-                    var end = span[(start + 1)..].IndexOfAny(" \r\n");
-                    span = span[start..];
-                    if (end >= 0) span = span[..end];
+            var text = File.ReadAllText(pixels);
+            text = text.Replace("public enum SDL_PixelFormatEnum", "public enum SDL_PixelFormatEnum : uint");
+            File.WriteAllText(pixels, text);
+        }
 
-                    var key = span.ToString();
-                    var value = key switch
-                    {
-                        "SDL_bool" => "CBool",
-                        "SDL_WindowShapeMode" => "WindowShape",
-                        "SDL_errorcode" => "ErrorCode",
-                        "SDL_eventaction" => "EventAction",
-                        "SDL_version" => "Version",
-                        _ => span[4..].ToString()
-                    };
-
-                    map[key] = value;
-                    Console.WriteLine($"{key} => {value}");
-                }
-            }
+        var platform = files.SingleOrDefault(f => f.EndsWith("platform.cs"));
+        if (platform is not null)
+        {
+            var inLines = File.ReadAllLines(platform);
+            var outLines = new List<string>();
+            outLines.AddRange(inLines[..9]);
+            outLines.AddRange(inLines[24..]);
+            File.WriteAllLines(platform, outLines);
         }
 
         foreach (var file in files)
         {
             var text = File.ReadAllText(file);
-            foreach (var (key, value) in map)
-                text = text.Replace(key, value);
+            text = text
+                .Replace("public static partial ", "internal static partial ")
+                .Replace("public static unsafe partial ", "internal static unsafe partial ")
+                .Replace("public enum ", "internal enum ")
+                .Replace("public partial ", "internal partial ")
+                .Replace("public unsafe partial ", "internal unsafe partial ");
             File.WriteAllText(file, text);
         }
     }

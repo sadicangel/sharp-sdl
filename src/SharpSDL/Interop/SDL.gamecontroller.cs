@@ -2,46 +2,42 @@ using System.Runtime.InteropServices;
 
 namespace SharpSDL.Interop;
 
-public partial struct _SDL_GameController
+internal enum SDL_GameControllerType
 {
+    SDL_CONTROLLER_TYPE_UNKNOWN = 0,
+    SDL_CONTROLLER_TYPE_XBOX360,
+    SDL_CONTROLLER_TYPE_XBOXONE,
+    SDL_CONTROLLER_TYPE_PS3,
+    SDL_CONTROLLER_TYPE_PS4,
+    SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO,
+    SDL_CONTROLLER_TYPE_VIRTUAL,
+    SDL_CONTROLLER_TYPE_PS5,
+    SDL_CONTROLLER_TYPE_AMAZON_LUNA,
+    SDL_CONTROLLER_TYPE_GOOGLE_STADIA,
+    SDL_CONTROLLER_TYPE_NVIDIA_SHIELD,
+    SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_JOYCON_LEFT,
+    SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_JOYCON_RIGHT,
+    SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_JOYCON_PAIR,
+    SDL_CONTROLLER_TYPE_MAX,
 }
 
-public enum GameControllerType
+internal enum SDL_GameControllerBindType
 {
-    UNKNOWN = 0,
-    XBOX360,
-    XBOXONE,
-    PS3,
-    PS4,
-    NINTENDO_SWITCH_PRO,
-    VIRTUAL,
-    PS5,
-    AMAZON_LUNA,
-    GOOGLE_STADIA,
-    NVIDIA_SHIELD,
-    NINTENDO_SWITCH_JOYCON_LEFT,
-    NINTENDO_SWITCH_JOYCON_RIGHT,
-    NINTENDO_SWITCH_JOYCON_PAIR,
-    MAX,
+    SDL_CONTROLLER_BINDTYPE_NONE = 0,
+    SDL_CONTROLLER_BINDTYPE_BUTTON,
+    SDL_CONTROLLER_BINDTYPE_AXIS,
+    SDL_CONTROLLER_BINDTYPE_HAT,
 }
 
-public enum GameControllerBindType
+internal partial struct SDL_GameControllerButtonBind
 {
-    NONE = 0,
-    BUTTON,
-    AXIS,
-    HAT,
-}
-
-public partial struct GameControllerButtonBind
-{
-    public GameControllerBindType bindType;
+    public SDL_GameControllerBindType bindType;
 
     [NativeTypeName("__AnonymousRecord_SDL_gamecontroller_L94_C5")]
     public _value_e__Union value;
 
     [StructLayout(LayoutKind.Explicit)]
-    public partial struct _value_e__Union
+    internal partial struct _value_e__Union
     {
         [FieldOffset(0)]
         public int button;
@@ -53,7 +49,7 @@ public partial struct GameControllerButtonBind
         [NativeTypeName("__AnonymousRecord_SDL_gamecontroller_L98_C9")]
         public _hat_e__Struct hat;
 
-        public partial struct _hat_e__Struct
+        internal partial struct _hat_e__Struct
         {
             public int hat;
 
@@ -62,235 +58,302 @@ public partial struct GameControllerButtonBind
     }
 }
 
-public enum GameControllerAxis
+internal enum SDL_GameControllerAxis
 {
-    INVALID = -1,
-    LEFTX,
-    LEFTY,
-    RIGHTX,
-    RIGHTY,
-    TRIGGERLEFT,
-    TRIGGERRIGHT,
-    MAX,
+    SDL_CONTROLLER_AXIS_INVALID = -1,
+    SDL_CONTROLLER_AXIS_LEFTX,
+    SDL_CONTROLLER_AXIS_LEFTY,
+    SDL_CONTROLLER_AXIS_RIGHTX,
+    SDL_CONTROLLER_AXIS_RIGHTY,
+    SDL_CONTROLLER_AXIS_TRIGGERLEFT,
+    SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
+    SDL_CONTROLLER_AXIS_MAX,
 }
 
-public enum GameControllerButton
+internal enum SDL_GameControllerButton
 {
-    INVALID = -1,
-    A,
-    B,
-    X,
-    Y,
-    BACK,
-    GUIDE,
-    START,
-    LEFTSTICK,
-    RIGHTSTICK,
-    LEFTSHOULDER,
-    RIGHTSHOULDER,
-    DPAD_UP,
-    DPAD_DOWN,
-    DPAD_LEFT,
-    DPAD_RIGHT,
-    MISC1,
-    PADDLE1,
-    PADDLE2,
-    PADDLE3,
-    PADDLE4,
-    TOUCHPAD,
-    MAX,
+    SDL_CONTROLLER_BUTTON_INVALID = -1,
+    SDL_CONTROLLER_BUTTON_A,
+    SDL_CONTROLLER_BUTTON_B,
+    SDL_CONTROLLER_BUTTON_X,
+    SDL_CONTROLLER_BUTTON_Y,
+    SDL_CONTROLLER_BUTTON_BACK,
+    SDL_CONTROLLER_BUTTON_GUIDE,
+    SDL_CONTROLLER_BUTTON_START,
+    SDL_CONTROLLER_BUTTON_LEFTSTICK,
+    SDL_CONTROLLER_BUTTON_RIGHTSTICK,
+    SDL_CONTROLLER_BUTTON_LEFTSHOULDER,
+    SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,
+    SDL_CONTROLLER_BUTTON_DPAD_UP,
+    SDL_CONTROLLER_BUTTON_DPAD_DOWN,
+    SDL_CONTROLLER_BUTTON_DPAD_LEFT,
+    SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
+    SDL_CONTROLLER_BUTTON_MISC1,
+    SDL_CONTROLLER_BUTTON_PADDLE1,
+    SDL_CONTROLLER_BUTTON_PADDLE2,
+    SDL_CONTROLLER_BUTTON_PADDLE3,
+    SDL_CONTROLLER_BUTTON_PADDLE4,
+    SDL_CONTROLLER_BUTTON_TOUCHPAD,
+    SDL_CONTROLLER_BUTTON_MAX,
 }
 
-public static unsafe partial class SDL
+internal static unsafe partial class SDL
 {
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerAddMappingsFromRW", ExactSpelling = true)]
-    public static extern int GameControllerAddMappingsFromRW(RWops* rw, int freerw);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerAddMappingsFromRW")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int GameControllerAddMappingsFromRW(SDL_RWops* rw, int freerw);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerAddMapping", ExactSpelling = true)]
-    public static extern int GameControllerAddMapping([NativeTypeName("const char *")] byte* mappingString);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerAddMapping")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int GameControllerAddMapping([NativeTypeName("const char *")] byte* mappingString);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerNumMappings", ExactSpelling = true)]
-    public static extern int GameControllerNumMappings();
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerNumMappings")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int GameControllerNumMappings();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerMappingForIndex", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerMappingForIndex")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("char *")]
-    public static extern byte* GameControllerMappingForIndex(int mapping_index);
+    public static partial byte* GameControllerMappingForIndex(int mapping_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerMappingForGUID", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerMappingForGUID")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("char *")]
-    public static extern byte* GameControllerMappingForGUID([NativeTypeName("SDL_JoystickGUID")] GUID guid);
+    public static partial byte* GameControllerMappingForGUID([NativeTypeName("SDL_JoystickGUID")] SDL_GUID guid);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerMapping", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerMapping")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("char *")]
-    public static extern byte* GameControllerMapping([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller);
+    public static partial byte* GameControllerMapping([NativeTypeName("SDL_GameController *")] nint gamecontroller);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_IsGameController", ExactSpelling = true)]
-    public static extern CBool IsGameController(int joystick_index);
+    [LibraryImport("SDL2", EntryPoint = "SDL_IsGameController")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool IsGameController(int joystick_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerNameForIndex", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerNameForIndex")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
-    public static extern byte* GameControllerNameForIndex(int joystick_index);
+    public static partial byte* GameControllerNameForIndex(int joystick_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerPathForIndex", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerPathForIndex")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
-    public static extern byte* GameControllerPathForIndex(int joystick_index);
+    public static partial byte* GameControllerPathForIndex(int joystick_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "GameControllerTypeForIndex", ExactSpelling = true)]
-    public static extern GameControllerType GameControllerTypeForIndex(int joystick_index);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerTypeForIndex")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial SDL_GameControllerType GameControllerTypeForIndex(int joystick_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerMappingForDeviceIndex", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerMappingForDeviceIndex")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("char *")]
-    public static extern byte* GameControllerMappingForDeviceIndex(int joystick_index);
+    public static partial byte* GameControllerMappingForDeviceIndex(int joystick_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerOpen", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerOpen")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("SDL_GameController *")]
-    public static extern _SDL_GameController* GameControllerOpen(int joystick_index);
+    public static partial nint GameControllerOpen(int joystick_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerFromInstanceID", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerFromInstanceID")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("SDL_GameController *")]
-    public static extern _SDL_GameController* GameControllerFromInstanceID([NativeTypeName("SDL_JoystickID")] int joyid);
+    public static partial nint GameControllerFromInstanceID([NativeTypeName("SDL_JoystickID")] int joyid);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerFromPlayerIndex", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerFromPlayerIndex")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("SDL_GameController *")]
-    public static extern _SDL_GameController* GameControllerFromPlayerIndex(int player_index);
+    public static partial nint GameControllerFromPlayerIndex(int player_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerName", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerName")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
-    public static extern byte* GameControllerName([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller);
+    public static partial byte* GameControllerName([NativeTypeName("SDL_GameController *")] nint gamecontroller);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerPath", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerPath")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
-    public static extern byte* GameControllerPath([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller);
+    public static partial byte* GameControllerPath([NativeTypeName("SDL_GameController *")] nint gamecontroller);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetType", ExactSpelling = true)]
-    public static extern GameControllerType GameControllerGetType([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetType")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial SDL_GameControllerType GameControllerGetType([NativeTypeName("SDL_GameController *")] nint gamecontroller);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetPlayerIndex", ExactSpelling = true)]
-    public static extern int GameControllerGetPlayerIndex([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetPlayerIndex")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int GameControllerGetPlayerIndex([NativeTypeName("SDL_GameController *")] nint gamecontroller);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerSetPlayerIndex", ExactSpelling = true)]
-    public static extern void GameControllerSetPlayerIndex([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller, int player_index);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerSetPlayerIndex")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void GameControllerSetPlayerIndex([NativeTypeName("SDL_GameController *")] nint gamecontroller, int player_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetVendor", ExactSpelling = true)]
-    public static extern ushort GameControllerGetVendor([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetVendor")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial ushort GameControllerGetVendor([NativeTypeName("SDL_GameController *")] nint gamecontroller);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetProduct", ExactSpelling = true)]
-    public static extern ushort GameControllerGetProduct([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetProduct")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial ushort GameControllerGetProduct([NativeTypeName("SDL_GameController *")] nint gamecontroller);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetProductVersion", ExactSpelling = true)]
-    public static extern ushort GameControllerGetProductVersion([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetProductVersion")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial ushort GameControllerGetProductVersion([NativeTypeName("SDL_GameController *")] nint gamecontroller);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetFirmwareVersion", ExactSpelling = true)]
-    public static extern ushort GameControllerGetFirmwareVersion([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetFirmwareVersion")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial ushort GameControllerGetFirmwareVersion([NativeTypeName("SDL_GameController *")] nint gamecontroller);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetSerial", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetSerial")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
-    public static extern byte* GameControllerGetSerial([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller);
+    public static partial byte* GameControllerGetSerial([NativeTypeName("SDL_GameController *")] nint gamecontroller);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetSteamHandle", ExactSpelling = true)]
-    public static extern ulong GameControllerGetSteamHandle([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetSteamHandle")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial ulong GameControllerGetSteamHandle([NativeTypeName("SDL_GameController *")] nint gamecontroller);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetAttached", ExactSpelling = true)]
-    public static extern CBool GameControllerGetAttached([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetAttached")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool GameControllerGetAttached([NativeTypeName("SDL_GameController *")] nint gamecontroller);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetJoystick", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetJoystick")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("SDL_Joystick *")]
-    public static extern _SDL_Joystick* GameControllerGetJoystick([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller);
+    public static partial nint GameControllerGetJoystick([NativeTypeName("SDL_GameController *")] nint gamecontroller);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerEventState", ExactSpelling = true)]
-    public static extern int GameControllerEventState(int state);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerEventState")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int GameControllerEventState(int state);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerUpdate", ExactSpelling = true)]
-    public static extern void GameControllerUpdate();
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerUpdate")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void GameControllerUpdate();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetAxisFromString", ExactSpelling = true)]
-    public static extern GameControllerAxis GameControllerGetAxisFromString([NativeTypeName("const char *")] byte* str);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetAxisFromString")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial SDL_GameControllerAxis GameControllerGetAxisFromString([NativeTypeName("const char *")] byte* str);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetStringForAxis", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetStringForAxis")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
-    public static extern byte* GameControllerGetStringForAxis(GameControllerAxis axis);
+    public static partial byte* GameControllerGetStringForAxis(SDL_GameControllerAxis axis);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetBindForAxis", ExactSpelling = true)]
-    public static extern GameControllerButtonBind GameControllerGetBindForAxis([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller, GameControllerAxis axis);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetBindForAxis")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial SDL_GameControllerButtonBind GameControllerGetBindForAxis([NativeTypeName("SDL_GameController *")] nint gamecontroller, SDL_GameControllerAxis axis);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerHasAxis", ExactSpelling = true)]
-    public static extern CBool GameControllerHasAxis([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller, GameControllerAxis axis);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerHasAxis")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool GameControllerHasAxis([NativeTypeName("SDL_GameController *")] nint gamecontroller, SDL_GameControllerAxis axis);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetAxis", ExactSpelling = true)]
-    public static extern short GameControllerGetAxis([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller, GameControllerAxis axis);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetAxis")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial short GameControllerGetAxis([NativeTypeName("SDL_GameController *")] nint gamecontroller, SDL_GameControllerAxis axis);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetButtonFromString", ExactSpelling = true)]
-    public static extern GameControllerButton GameControllerGetButtonFromString([NativeTypeName("const char *")] byte* str);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetButtonFromString")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial SDL_GameControllerButton GameControllerGetButtonFromString([NativeTypeName("const char *")] byte* str);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetStringForButton", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetStringForButton")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
-    public static extern byte* GameControllerGetStringForButton(GameControllerButton button);
+    public static partial byte* GameControllerGetStringForButton(SDL_GameControllerButton button);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetBindForButton", ExactSpelling = true)]
-    public static extern GameControllerButtonBind GameControllerGetBindForButton([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller, GameControllerButton button);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetBindForButton")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial SDL_GameControllerButtonBind GameControllerGetBindForButton([NativeTypeName("SDL_GameController *")] nint gamecontroller, SDL_GameControllerButton button);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerHasButton", ExactSpelling = true)]
-    public static extern CBool GameControllerHasButton([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller, GameControllerButton button);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerHasButton")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool GameControllerHasButton([NativeTypeName("SDL_GameController *")] nint gamecontroller, SDL_GameControllerButton button);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetButton", ExactSpelling = true)]
-    public static extern byte GameControllerGetButton([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller, GameControllerButton button);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetButton")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial byte GameControllerGetButton([NativeTypeName("SDL_GameController *")] nint gamecontroller, SDL_GameControllerButton button);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetNumTouchpads", ExactSpelling = true)]
-    public static extern int GameControllerGetNumTouchpads([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetNumTouchpads")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int GameControllerGetNumTouchpads([NativeTypeName("SDL_GameController *")] nint gamecontroller);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetNumTouchpadFingers", ExactSpelling = true)]
-    public static extern int GameControllerGetNumTouchpadFingers([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller, int touchpad);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetNumTouchpadFingers")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int GameControllerGetNumTouchpadFingers([NativeTypeName("SDL_GameController *")] nint gamecontroller, int touchpad);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetTouchpadFinger", ExactSpelling = true)]
-    public static extern int GameControllerGetTouchpadFinger([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller, int touchpad, int finger, [NativeTypeName(" *")] byte* state, float* x, float* y, float* pressure);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetTouchpadFinger")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int GameControllerGetTouchpadFinger([NativeTypeName("SDL_GameController *")] nint gamecontroller, int touchpad, int finger, [NativeTypeName(" *")] byte* state, float* x, float* y, float* pressure);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerHasSensor", ExactSpelling = true)]
-    public static extern CBool GameControllerHasSensor([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller, SensorType type);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerHasSensor")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool GameControllerHasSensor([NativeTypeName("SDL_GameController *")] nint gamecontroller, SDL_SensorType type);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerSetSensorEnabled", ExactSpelling = true)]
-    public static extern int GameControllerSetSensorEnabled([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller, SensorType type, CBool enabled);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerSetSensorEnabled")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int GameControllerSetSensorEnabled([NativeTypeName("SDL_GameController *")] nint gamecontroller, SDL_SensorType type, [NativeTypeName("SDL_bool")] CBool enabled);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerIsSensorEnabled", ExactSpelling = true)]
-    public static extern CBool GameControllerIsSensorEnabled([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller, SensorType type);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerIsSensorEnabled")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool GameControllerIsSensorEnabled([NativeTypeName("SDL_GameController *")] nint gamecontroller, SDL_SensorType type);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetSensorDataRate", ExactSpelling = true)]
-    public static extern float GameControllerGetSensorDataRate([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller, SensorType type);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetSensorDataRate")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial float GameControllerGetSensorDataRate([NativeTypeName("SDL_GameController *")] nint gamecontroller, SDL_SensorType type);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetSensorData", ExactSpelling = true)]
-    public static extern int GameControllerGetSensorData([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller, SensorType type, float* data, int num_values);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetSensorData")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int GameControllerGetSensorData([NativeTypeName("SDL_GameController *")] nint gamecontroller, SDL_SensorType type, float* data, int num_values);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetSensorDataWithTimestamp", ExactSpelling = true)]
-    public static extern int GameControllerGetSensorDataWithTimestamp([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller, SensorType type, [NativeTypeName(" *")] ulong* timestamp, float* data, int num_values);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetSensorDataWithTimestamp")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int GameControllerGetSensorDataWithTimestamp([NativeTypeName("SDL_GameController *")] nint gamecontroller, SDL_SensorType type, [NativeTypeName(" *")] ulong* timestamp, float* data, int num_values);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerRumble", ExactSpelling = true)]
-    public static extern int GameControllerRumble([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller, ushort low_frequency_rumble, ushort high_frequency_rumble, uint duration_ms);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerRumble")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int GameControllerRumble([NativeTypeName("SDL_GameController *")] nint gamecontroller, ushort low_frequency_rumble, ushort high_frequency_rumble, uint duration_ms);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerRumbleTriggers", ExactSpelling = true)]
-    public static extern int GameControllerRumbleTriggers([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller, ushort left_rumble, ushort right_rumble, uint duration_ms);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerRumbleTriggers")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int GameControllerRumbleTriggers([NativeTypeName("SDL_GameController *")] nint gamecontroller, ushort left_rumble, ushort right_rumble, uint duration_ms);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerHasLED", ExactSpelling = true)]
-    public static extern CBool GameControllerHasLED([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerHasLED")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool GameControllerHasLED([NativeTypeName("SDL_GameController *")] nint gamecontroller);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerHasRumble", ExactSpelling = true)]
-    public static extern CBool GameControllerHasRumble([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerHasRumble")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool GameControllerHasRumble([NativeTypeName("SDL_GameController *")] nint gamecontroller);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerHasRumbleTriggers", ExactSpelling = true)]
-    public static extern CBool GameControllerHasRumbleTriggers([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerHasRumbleTriggers")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool GameControllerHasRumbleTriggers([NativeTypeName("SDL_GameController *")] nint gamecontroller);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerSetLED", ExactSpelling = true)]
-    public static extern int GameControllerSetLED([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller, byte red, byte green, byte blue);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerSetLED")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int GameControllerSetLED([NativeTypeName("SDL_GameController *")] nint gamecontroller, byte red, byte green, byte blue);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerSendEffect", ExactSpelling = true)]
-    public static extern int GameControllerSendEffect([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller, [NativeTypeName("const void *")] void* data, int size);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerSendEffect")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int GameControllerSendEffect([NativeTypeName("SDL_GameController *")] nint gamecontroller, [NativeTypeName("const void *")] void* data, int size);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerClose", ExactSpelling = true)]
-    public static extern void GameControllerClose([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerClose")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void GameControllerClose([NativeTypeName("SDL_GameController *")] nint gamecontroller);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetAppleSFSymbolsNameForButton", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetAppleSFSymbolsNameForButton")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
-    public static extern byte* GameControllerGetAppleSFSymbolsNameForButton([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller, GameControllerButton button);
+    public static partial byte* GameControllerGetAppleSFSymbolsNameForButton([NativeTypeName("SDL_GameController *")] nint gamecontroller, SDL_GameControllerButton button);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GameControllerGetAppleSFSymbolsNameForAxis", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GameControllerGetAppleSFSymbolsNameForAxis")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
-    public static extern byte* GameControllerGetAppleSFSymbolsNameForAxis([NativeTypeName("SDL_GameController *")] _SDL_GameController* gamecontroller, GameControllerAxis axis);
+    public static partial byte* GameControllerGetAppleSFSymbolsNameForAxis([NativeTypeName("SDL_GameController *")] nint gamecontroller, SDL_GameControllerAxis axis);
 }

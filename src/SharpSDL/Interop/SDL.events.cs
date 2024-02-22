@@ -3,108 +3,81 @@ using System.Runtime.InteropServices;
 
 namespace SharpSDL.Interop;
 
-public enum EventType : uint
+internal enum SDL_EventType
 {
-    FIRSTEVENT = 0,
-    QUIT = 0x100,
-    APP_TERMINATING,
-    APP_LOWMEMORY,
-    APP_WILLENTERBACKGROUND,
-    APP_DIDENTERBACKGROUND,
-    APP_WILLENTERFOREGROUND,
-    APP_DIDENTERFOREGROUND,
-    LOCALECHANGED,
-    DISPLAYEVENT = 0x150,
-    WINDOWEVENT = 0x200,
-    SYSWMEVENT,
-    KEYDOWN = 0x300,
-    KEYUP,
-    TEXTEDITING,
-    TEXTINPUT,
-    KEYMAPCHANGED,
-    TEXTEDITING_EXT,
-    MOUSEMOTION = 0x400,
-    MOUSEBUTTONDOWN,
-    MOUSEBUTTONUP,
-    MOUSEWHEEL,
-    JOYAXISMOTION = 0x600,
-    JOYBALLMOTION,
-    JOYHATMOTION,
-    JOYBUTTONDOWN,
-    JOYBUTTONUP,
-    JOYDEVICEADDED,
-    JOYDEVICEREMOVED,
-    JOYBATTERYUPDATED,
-    CONTROLLERAXISMOTION = 0x650,
-    CONTROLLERBUTTONDOWN,
-    CONTROLLERBUTTONUP,
-    CONTROLLERDEVICEADDED,
-    CONTROLLERDEVICEREMOVED,
-    CONTROLLERDEVICEREMAPPED,
-    CONTROLLERTOUCHPADDOWN,
-    CONTROLLERTOUCHPADMOTION,
-    CONTROLLERTOUCHPADUP,
-    CONTROLLERSENSORUPDATE,
-    CONTROLLERUPDATECOMPLETE_RESERVED_FOR_SDL3,
-    CONTROLLERSTEAMHANDLEUPDATED,
-    FINGERDOWN = 0x700,
-    FINGERUP,
-    FINGERMOTION,
-    DOLLARGESTURE = 0x800,
-    DOLLARRECORD,
-    MULTIGESTURE,
-    CLIPBOARDUPDATE = 0x900,
-    DROPFILE = 0x1000,
-    DROPTEXT,
-    DROPBEGIN,
-    DROPCOMPLETE,
-    AUDIODEVICEADDED = 0x1100,
-    AUDIODEVICEREMOVED,
-    SENSORUPDATE = 0x1200,
-    RENDER_TARGETS_RESET = 0x2000,
-    RENDER_DEVICE_RESET,
-    POLLSENTINEL = 0x7F00,
-    USEREVENT = 0x8000,
-    LASTEVENT = 0xFFFF,
+    SDL_FIRSTEVENT = 0,
+    SDL_QUIT = 0x100,
+    SDL_APP_TERMINATING,
+    SDL_APP_LOWMEMORY,
+    SDL_APP_WILLENTERBACKGROUND,
+    SDL_APP_DIDENTERBACKGROUND,
+    SDL_APP_WILLENTERFOREGROUND,
+    SDL_APP_DIDENTERFOREGROUND,
+    SDL_LOCALECHANGED,
+    SDL_DISPLAYEVENT = 0x150,
+    SDL_WINDOWEVENT = 0x200,
+    SDL_SYSWMEVENT,
+    SDL_KEYDOWN = 0x300,
+    SDL_KEYUP,
+    SDL_TEXTEDITING,
+    SDL_TEXTINPUT,
+    SDL_KEYMAPCHANGED,
+    SDL_TEXTEDITING_EXT,
+    SDL_MOUSEMOTION = 0x400,
+    SDL_MOUSEBUTTONDOWN,
+    SDL_MOUSEBUTTONUP,
+    SDL_MOUSEWHEEL,
+    SDL_JOYAXISMOTION = 0x600,
+    SDL_JOYBALLMOTION,
+    SDL_JOYHATMOTION,
+    SDL_JOYBUTTONDOWN,
+    SDL_JOYBUTTONUP,
+    SDL_JOYDEVICEADDED,
+    SDL_JOYDEVICEREMOVED,
+    SDL_JOYBATTERYUPDATED,
+    SDL_CONTROLLERAXISMOTION = 0x650,
+    SDL_CONTROLLERBUTTONDOWN,
+    SDL_CONTROLLERBUTTONUP,
+    SDL_CONTROLLERDEVICEADDED,
+    SDL_CONTROLLERDEVICEREMOVED,
+    SDL_CONTROLLERDEVICEREMAPPED,
+    SDL_CONTROLLERTOUCHPADDOWN,
+    SDL_CONTROLLERTOUCHPADMOTION,
+    SDL_CONTROLLERTOUCHPADUP,
+    SDL_CONTROLLERSENSORUPDATE,
+    SDL_CONTROLLERUPDATECOMPLETE_RESERVED_FOR_SDL3,
+    SDL_CONTROLLERSTEAMHANDLEUPDATED,
+    SDL_FINGERDOWN = 0x700,
+    SDL_FINGERUP,
+    SDL_FINGERMOTION,
+    SDL_DOLLARGESTURE = 0x800,
+    SDL_DOLLARRECORD,
+    SDL_MULTIGESTURE,
+    SDL_CLIPBOARDUPDATE = 0x900,
+    SDL_DROPFILE = 0x1000,
+    SDL_DROPTEXT,
+    SDL_DROPBEGIN,
+    SDL_DROPCOMPLETE,
+    SDL_AUDIODEVICEADDED = 0x1100,
+    SDL_AUDIODEVICEREMOVED,
+    SDL_SENSORUPDATE = 0x1200,
+    SDL_RENDER_TARGETS_RESET = 0x2000,
+    SDL_RENDER_DEVICE_RESET,
+    SDL_POLLSENTINEL = 0x7F00,
+    SDL_USEREVENT = 0x8000,
+    SDL_LASTEVENT = 0xFFFF,
 }
 
-public enum ButtonState : byte
+internal partial struct SDL_CommonEvent
 {
-    [NativeTypeName("#define SDL_RELEASED 0")]
-    RELEASED = 0,
-    [NativeTypeName("#define SDL_PRESSED 1")]
-    PRESSED = 1,
-}
-
-public enum EventState : byte
-{
-    [NativeTypeName("#define SDL_QUERY -1")]
-    QUERY = unchecked((byte)-1),
-    [NativeTypeName("#define SDL_IGNORE 0")]
-    IGNORE = 0,
-    [NativeTypeName("#define SDL_DISABLE 0")]
-    DISABLE = 0,
-    [NativeTypeName("#define SDL_ENABLE 1")]
-    ENABLE = 1,
-}
-
-public enum EventAction
-{
-    ADDEVENT,
-    PEEKEVENT,
-    GETEVENT,
-}
-
-public partial struct CommonEvent
-{
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 }
 
-public partial struct DisplayEvent
+internal partial struct SDL_DisplayEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
@@ -121,9 +94,9 @@ public partial struct DisplayEvent
     public int data1;
 }
 
-public partial struct WindowEvent
+internal partial struct SDL_WindowEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
@@ -142,15 +115,15 @@ public partial struct WindowEvent
     public int data2;
 }
 
-public partial struct KeyboardEvent
+internal partial struct SDL_KeyboardEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
     public uint windowID;
 
-    public ButtonState state;
+    public byte state;
 
     public byte repeat;
 
@@ -158,12 +131,12 @@ public partial struct KeyboardEvent
 
     public byte padding3;
 
-    public Keysym keysym;
+    public SDL_Keysym keysym;
 }
 
-public partial struct TextEditingEvent
+internal partial struct SDL_TextEditingEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
@@ -177,15 +150,15 @@ public partial struct TextEditingEvent
     public int length;
 
     [InlineArray(32)]
-    public partial struct _text_e__FixedBuffer
+    internal partial struct _text_e__FixedBuffer
     {
         public byte e0;
     }
 }
 
-public unsafe partial struct TextEditingExtEvent
+internal unsafe partial struct SDL_TextEditingExtEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
@@ -199,9 +172,9 @@ public unsafe partial struct TextEditingExtEvent
     public int length;
 }
 
-public partial struct TextInputEvent
+internal partial struct SDL_TextInputEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
@@ -211,15 +184,15 @@ public partial struct TextInputEvent
     public _text_e__FixedBuffer text;
 
     [InlineArray(32)]
-    public partial struct _text_e__FixedBuffer
+    internal partial struct _text_e__FixedBuffer
     {
         public byte e0;
     }
 }
 
-public partial struct MouseMotionEvent
+internal partial struct SDL_MouseMotionEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
@@ -238,9 +211,9 @@ public partial struct MouseMotionEvent
     public int yrel;
 }
 
-public partial struct MouseButtonEvent
+internal partial struct SDL_MouseButtonEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
@@ -250,7 +223,7 @@ public partial struct MouseButtonEvent
 
     public byte button;
 
-    public ButtonState state;
+    public byte state;
 
     public byte clicks;
 
@@ -261,9 +234,9 @@ public partial struct MouseButtonEvent
     public int y;
 }
 
-public partial struct MouseWheelEvent
+internal partial struct SDL_MouseWheelEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
@@ -286,9 +259,9 @@ public partial struct MouseWheelEvent
     public int mouseY;
 }
 
-public partial struct JoyAxisEvent
+internal partial struct SDL_JoyAxisEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
@@ -308,9 +281,9 @@ public partial struct JoyAxisEvent
     public ushort padding4;
 }
 
-public partial struct JoyBallEvent
+internal partial struct SDL_JoyBallEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
@@ -330,9 +303,9 @@ public partial struct JoyBallEvent
     public short yrel;
 }
 
-public partial struct JoyHatEvent
+internal partial struct SDL_JoyHatEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
@@ -348,9 +321,9 @@ public partial struct JoyHatEvent
     public byte padding2;
 }
 
-public partial struct JoyButtonEvent
+internal partial struct SDL_JoyButtonEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
@@ -359,37 +332,37 @@ public partial struct JoyButtonEvent
 
     public byte button;
 
-    public ButtonState state;
+    public byte state;
 
     public byte padding1;
 
     public byte padding2;
 }
 
-public partial struct JoyDeviceEvent
+internal partial struct SDL_JoyDeviceEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
     public int which;
 }
 
-public partial struct JoyBatteryEvent
+internal partial struct SDL_JoyBatteryEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
     [NativeTypeName("SDL_JoystickID")]
     public int which;
 
-    public JoystickPowerLevel level;
+    public SDL_JoystickPowerLevel level;
 }
 
-public partial struct ControllerAxisEvent
+internal partial struct SDL_ControllerAxisEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
@@ -409,9 +382,9 @@ public partial struct ControllerAxisEvent
     public ushort padding4;
 }
 
-public partial struct ControllerButtonEvent
+internal partial struct SDL_ControllerButtonEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
@@ -420,25 +393,25 @@ public partial struct ControllerButtonEvent
 
     public byte button;
 
-    public ButtonState state;
+    public byte state;
 
     public byte padding1;
 
     public byte padding2;
 }
 
-public partial struct ControllerDeviceEvent
+internal partial struct SDL_ControllerDeviceEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
     public int which;
 }
 
-public partial struct ControllerTouchpadEvent
+internal partial struct SDL_ControllerTouchpadEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
@@ -456,9 +429,9 @@ public partial struct ControllerTouchpadEvent
     public float pressure;
 }
 
-public partial struct ControllerSensorEvent
+internal partial struct SDL_ControllerSensorEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
@@ -473,15 +446,15 @@ public partial struct ControllerSensorEvent
     public ulong timestamp_us;
 
     [InlineArray(3)]
-    public partial struct _data_e__FixedBuffer
+    internal partial struct _data_e__FixedBuffer
     {
         public float e0;
     }
 }
 
-public partial struct AudioDeviceEvent
+internal partial struct SDL_AudioDeviceEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
@@ -496,16 +469,16 @@ public partial struct AudioDeviceEvent
     public byte padding3;
 }
 
-public partial struct TouchFingerEvent
+internal partial struct SDL_TouchFingerEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
     [NativeTypeName("SDL_TouchID")]
     public long touchId;
 
-    [NativeTypeName("FingerID")]
+    [NativeTypeName("SDL_FingerID")]
     public long fingerId;
 
     public float x;
@@ -521,9 +494,9 @@ public partial struct TouchFingerEvent
     public uint windowID;
 }
 
-public partial struct MultiGestureEvent
+internal partial struct SDL_MultiGestureEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
@@ -543,9 +516,9 @@ public partial struct MultiGestureEvent
     public ushort padding;
 }
 
-public partial struct DollarGestureEvent
+internal partial struct SDL_DollarGestureEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
@@ -564,9 +537,9 @@ public partial struct DollarGestureEvent
     public float y;
 }
 
-public unsafe partial struct DropEvent
+internal unsafe partial struct SDL_DropEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
@@ -576,9 +549,9 @@ public unsafe partial struct DropEvent
     public uint windowID;
 }
 
-public partial struct SensorEvent
+internal partial struct SDL_SensorEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
@@ -590,22 +563,22 @@ public partial struct SensorEvent
     public ulong timestamp_us;
 
     [InlineArray(6)]
-    public partial struct _data_e__FixedBuffer
+    internal partial struct _data_e__FixedBuffer
     {
         public float e0;
     }
 }
 
-public partial struct QuitEvent
+internal partial struct SDL_QuitEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 }
 
-public unsafe partial struct UserEvent
+internal unsafe partial struct SDL_UserEvent
 {
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
@@ -618,176 +591,223 @@ public unsafe partial struct UserEvent
     public void* data2;
 }
 
-public partial struct SysWMmsg
+internal unsafe partial struct SDL_SysWMEvent
 {
-}
-
-public unsafe partial struct SysWMEvent
-{
-    public EventType type;
+    public uint type;
 
     public uint timestamp;
 
-    public SysWMmsg* msg;
+    public SDL_SysWMmsg* msg;
 }
 
 [StructLayout(LayoutKind.Explicit)]
-public partial struct Event
+internal partial struct SDL_Event
 {
     [FieldOffset(0)]
-    public EventType type;
+    public uint type;
 
     [FieldOffset(0)]
-    public CommonEvent common;
+    public SDL_CommonEvent common;
 
     [FieldOffset(0)]
-    public DisplayEvent display;
+    public SDL_DisplayEvent display;
 
     [FieldOffset(0)]
-    public WindowEvent window;
+    public SDL_WindowEvent window;
 
     [FieldOffset(0)]
-    public KeyboardEvent key;
+    public SDL_KeyboardEvent key;
 
     [FieldOffset(0)]
-    public TextEditingEvent edit;
+    public SDL_TextEditingEvent edit;
 
     [FieldOffset(0)]
-    public TextEditingExtEvent editExt;
+    public SDL_TextEditingExtEvent editExt;
 
     [FieldOffset(0)]
-    public TextInputEvent text;
+    public SDL_TextInputEvent text;
 
     [FieldOffset(0)]
-    public MouseMotionEvent motion;
+    public SDL_MouseMotionEvent motion;
 
     [FieldOffset(0)]
-    public MouseButtonEvent button;
+    public SDL_MouseButtonEvent button;
 
     [FieldOffset(0)]
-    public MouseWheelEvent wheel;
+    public SDL_MouseWheelEvent wheel;
 
     [FieldOffset(0)]
-    public JoyAxisEvent jaxis;
+    public SDL_JoyAxisEvent jaxis;
 
     [FieldOffset(0)]
-    public JoyBallEvent jball;
+    public SDL_JoyBallEvent jball;
 
     [FieldOffset(0)]
-    public JoyHatEvent jhat;
+    public SDL_JoyHatEvent jhat;
 
     [FieldOffset(0)]
-    public JoyButtonEvent jbutton;
+    public SDL_JoyButtonEvent jbutton;
 
     [FieldOffset(0)]
-    public JoyDeviceEvent jdevice;
+    public SDL_JoyDeviceEvent jdevice;
 
     [FieldOffset(0)]
-    public JoyBatteryEvent jbattery;
+    public SDL_JoyBatteryEvent jbattery;
 
     [FieldOffset(0)]
-    public ControllerAxisEvent caxis;
+    public SDL_ControllerAxisEvent caxis;
 
     [FieldOffset(0)]
-    public ControllerButtonEvent cbutton;
+    public SDL_ControllerButtonEvent cbutton;
 
     [FieldOffset(0)]
-    public ControllerDeviceEvent cdevice;
+    public SDL_ControllerDeviceEvent cdevice;
 
     [FieldOffset(0)]
-    public ControllerTouchpadEvent ctouchpad;
+    public SDL_ControllerTouchpadEvent ctouchpad;
 
     [FieldOffset(0)]
-    public ControllerSensorEvent csensor;
+    public SDL_ControllerSensorEvent csensor;
 
     [FieldOffset(0)]
-    public AudioDeviceEvent adevice;
+    public SDL_AudioDeviceEvent adevice;
 
     [FieldOffset(0)]
-    public SensorEvent sensor;
+    public SDL_SensorEvent sensor;
 
     [FieldOffset(0)]
-    public QuitEvent quit;
+    public SDL_QuitEvent quit;
 
     [FieldOffset(0)]
-    public UserEvent user;
+    public SDL_UserEvent user;
 
     [FieldOffset(0)]
-    public SysWMEvent syswm;
+    public SDL_SysWMEvent syswm;
 
     [FieldOffset(0)]
-    public TouchFingerEvent tfinger;
+    public SDL_TouchFingerEvent tfinger;
 
     [FieldOffset(0)]
-    public MultiGestureEvent mgesture;
+    public SDL_MultiGestureEvent mgesture;
 
     [FieldOffset(0)]
-    public DollarGestureEvent dgesture;
+    public SDL_DollarGestureEvent dgesture;
 
     [FieldOffset(0)]
-    public DropEvent drop;
+    public SDL_DropEvent drop;
 
     [FieldOffset(0)]
     [NativeTypeName("[56]")]
     public _padding_e__FixedBuffer padding;
 
     [InlineArray(56)]
-    public partial struct _padding_e__FixedBuffer
+    internal partial struct _padding_e__FixedBuffer
     {
         public byte e0;
     }
 }
 
-public static unsafe partial class SDL
+internal enum SDL_eventaction
 {
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_PumpEvents", ExactSpelling = true)]
-    public static extern void PumpEvents();
+    SDL_ADDEVENT,
+    SDL_PEEKEVENT,
+    SDL_GETEVENT,
+}
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_PeepEvents", ExactSpelling = true)]
-    public static extern int PeepEvents(Event* events, int numevents, EventAction action, uint minType, uint maxType);
+internal static unsafe partial class SDL
+{
+    [LibraryImport("SDL2", EntryPoint = "SDL_PumpEvents")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void PumpEvents();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_HasEvent", ExactSpelling = true)]
-    public static extern CBool HasEvent(EventType type);
+    [LibraryImport("SDL2", EntryPoint = "SDL_PeepEvents")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int PeepEvents(SDL_Event* events, int numevents, SDL_eventaction action, uint minType, uint maxType);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_HasEvents", ExactSpelling = true)]
-    public static extern CBool HasEvents(uint minType, uint maxType);
+    [LibraryImport("SDL2", EntryPoint = "SDL_HasEvent")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool HasEvent(uint type);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_FlushEvent", ExactSpelling = true)]
-    public static extern void FlushEvent(EventType type);
+    [LibraryImport("SDL2", EntryPoint = "SDL_HasEvents")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool HasEvents(uint minType, uint maxType);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_FlushEvents", ExactSpelling = true)]
-    public static extern void FlushEvents(uint minType, uint maxType);
+    [LibraryImport("SDL2", EntryPoint = "SDL_FlushEvent")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void FlushEvent(uint type);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_PollEvent", ExactSpelling = true)]
-    public static extern int PollEvent(Event* @event);
+    [LibraryImport("SDL2", EntryPoint = "SDL_FlushEvents")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void FlushEvents(uint minType, uint maxType);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_WaitEvent", ExactSpelling = true)]
-    public static extern int WaitEvent(Event* @event);
+    [LibraryImport("SDL2", EntryPoint = "SDL_PollEvent")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int PollEvent(SDL_Event* @event);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_WaitEventTimeout", ExactSpelling = true)]
-    public static extern int WaitEventTimeout(Event* @event, int timeout);
+    [LibraryImport("SDL2", EntryPoint = "SDL_WaitEvent")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int WaitEvent(SDL_Event* @event);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_PushEvent", ExactSpelling = true)]
-    public static extern int PushEvent(Event* @event);
+    [LibraryImport("SDL2", EntryPoint = "SDL_WaitEventTimeout")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int WaitEventTimeout(SDL_Event* @event, int timeout);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetEventFilter", ExactSpelling = true)]
-    public static extern void SetEventFilter([NativeTypeName("EventFilter")] delegate* unmanaged[Cdecl]<void*, Event*, int> filter, void* userdata);
+    [LibraryImport("SDL2", EntryPoint = "SDL_PushEvent")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int PushEvent(SDL_Event* @event);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetEventFilter", ExactSpelling = true)]
-    public static extern CBool GetEventFilter([NativeTypeName("EventFilter *")] delegate* unmanaged[Cdecl]<void*, Event*, int>* filter, void** userdata);
+    [LibraryImport("SDL2", EntryPoint = "SDL_SetEventFilter")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void SetEventFilter([NativeTypeName("SDL_EventFilter")] delegate* unmanaged[Cdecl]<void*, SDL_Event*, int> filter, void* userdata);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_AddEventWatch", ExactSpelling = true)]
-    public static extern void AddEventWatch([NativeTypeName("EventFilter")] delegate* unmanaged[Cdecl]<void*, Event*, int> filter, void* userdata);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetEventFilter")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool GetEventFilter([NativeTypeName("SDL_EventFilter *")] delegate* unmanaged[Cdecl]<void*, SDL_Event*, int>* filter, void** userdata);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_DelEventWatch", ExactSpelling = true)]
-    public static extern void DelEventWatch([NativeTypeName("EventFilter")] delegate* unmanaged[Cdecl]<void*, Event*, int> filter, void* userdata);
+    [LibraryImport("SDL2", EntryPoint = "SDL_AddEventWatch")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void AddEventWatch([NativeTypeName("SDL_EventFilter")] delegate* unmanaged[Cdecl]<void*, SDL_Event*, int> filter, void* userdata);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_FilterEvents", ExactSpelling = true)]
-    public static extern void FilterEvents([NativeTypeName("EventFilter")] delegate* unmanaged[Cdecl]<void*, Event*, int> filter, void* userdata);
+    [LibraryImport("SDL2", EntryPoint = "SDL_DelEventWatch")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void DelEventWatch([NativeTypeName("SDL_EventFilter")] delegate* unmanaged[Cdecl]<void*, SDL_Event*, int> filter, void* userdata);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "EventState", ExactSpelling = true)]
-    public static extern EventState EventState(EventType type, EventState state);
+    [LibraryImport("SDL2", EntryPoint = "SDL_FilterEvents")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void FilterEvents([NativeTypeName("SDL_EventFilter")] delegate* unmanaged[Cdecl]<void*, SDL_Event*, int> filter, void* userdata);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RegisterEvents", ExactSpelling = true)]
-    public static extern uint RegisterEvents(int numevents);
+    [LibraryImport("SDL2", EntryPoint = "SDL_EventState")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial byte EventState(uint type, int state);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RegisterEvents")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial uint RegisterEvents(int numevents);
+
+    [NativeTypeName("#define SDL_RELEASED 0")]
+    public const int SDL_RELEASED = 0;
+
+    [NativeTypeName("#define SDL_PRESSED 1")]
+    public const int SDL_PRESSED = 1;
+
+    [NativeTypeName("#define SDL_TEXTEDITINGEVENT_TEXT_SIZE (32)")]
+    public const int SDL_TEXTEDITINGEVENT_TEXT_SIZE = (32);
+
+    [NativeTypeName("#define SDL_TEXTINPUTEVENT_TEXT_SIZE (32)")]
+    public const int SDL_TEXTINPUTEVENT_TEXT_SIZE = (32);
+
+    [NativeTypeName("#define SDL_QUERY -1")]
+    public const int SDL_QUERY = -1;
+
+    [NativeTypeName("#define SDL_IGNORE 0")]
+    public const int SDL_IGNORE = 0;
+
+    [NativeTypeName("#define SDL_DISABLE 0")]
+    public const int SDL_DISABLE = 0;
+
+    [NativeTypeName("#define SDL_ENABLE 1")]
+    public const int SDL_ENABLE = 1;
 }

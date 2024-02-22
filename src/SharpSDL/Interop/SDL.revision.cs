@@ -2,7 +2,7 @@ using System;
 
 namespace SharpSDL.Interop;
 
-public static partial class SDL
+internal static partial class SDL
 {
     [NativeTypeName("#define SDL_REVISION \"\"")]
     public static ReadOnlySpan<byte> SDL_REVISION => ""u8;

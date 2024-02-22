@@ -2,80 +2,93 @@ using System.Runtime.InteropServices;
 
 namespace SharpSDL.Interop;
 
-public partial struct _SDL_Sensor
+internal enum SDL_SensorType
 {
+    SDL_SENSOR_INVALID = -1,
+    SDL_SENSOR_UNKNOWN,
+    SDL_SENSOR_ACCEL,
+    SDL_SENSOR_GYRO,
+    SDL_SENSOR_ACCEL_L,
+    SDL_SENSOR_GYRO_L,
+    SDL_SENSOR_ACCEL_R,
+    SDL_SENSOR_GYRO_R,
 }
 
-public enum SensorType
+internal static unsafe partial class SDL
 {
-    INVALID = -1,
-    UNKNOWN,
-    ACCEL,
-    GYRO,
-    ACCEL_L,
-    GYRO_L,
-    ACCEL_R,
-    GYRO_R,
-}
+    [LibraryImport("SDL2", EntryPoint = "SDL_LockSensors")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void LockSensors();
 
-public static unsafe partial class SDL
-{
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_LockSensors", ExactSpelling = true)]
-    public static extern void LockSensors();
+    [LibraryImport("SDL2", EntryPoint = "SDL_UnlockSensors")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void UnlockSensors();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_UnlockSensors", ExactSpelling = true)]
-    public static extern void UnlockSensors();
+    [LibraryImport("SDL2", EntryPoint = "SDL_NumSensors")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int NumSensors();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_NumSensors", ExactSpelling = true)]
-    public static extern int NumSensors();
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SensorGetDeviceName", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_SensorGetDeviceName")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
-    public static extern byte* SensorGetDeviceName(int device_index);
+    public static partial byte* SensorGetDeviceName(int device_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SensorGetDeviceType", ExactSpelling = true)]
-    public static extern SensorType SensorGetDeviceType(int device_index);
+    [LibraryImport("SDL2", EntryPoint = "SDL_SensorGetDeviceType")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial SDL_SensorType SensorGetDeviceType(int device_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SensorGetDeviceNonPortableType", ExactSpelling = true)]
-    public static extern int SensorGetDeviceNonPortableType(int device_index);
+    [LibraryImport("SDL2", EntryPoint = "SDL_SensorGetDeviceNonPortableType")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int SensorGetDeviceNonPortableType(int device_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SensorGetDeviceInstanceID", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_SensorGetDeviceInstanceID")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("SDL_SensorID")]
-    public static extern int SensorGetDeviceInstanceID(int device_index);
+    public static partial int SensorGetDeviceInstanceID(int device_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SensorOpen", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_SensorOpen")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("SDL_Sensor *")]
-    public static extern _SDL_Sensor* SensorOpen(int device_index);
+    public static partial nint SensorOpen(int device_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SensorFromInstanceID", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_SensorFromInstanceID")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("SDL_Sensor *")]
-    public static extern _SDL_Sensor* SensorFromInstanceID([NativeTypeName("SDL_SensorID")] int instance_id);
+    public static partial nint SensorFromInstanceID([NativeTypeName("SDL_SensorID")] int instance_id);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SensorGetName", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_SensorGetName")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
-    public static extern byte* SensorGetName([NativeTypeName("SDL_Sensor *")] _SDL_Sensor* sensor);
+    public static partial byte* SensorGetName([NativeTypeName("SDL_Sensor *")] nint sensor);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SensorGetType", ExactSpelling = true)]
-    public static extern SensorType SensorGetType([NativeTypeName("SDL_Sensor *")] _SDL_Sensor* sensor);
+    [LibraryImport("SDL2", EntryPoint = "SDL_SensorGetType")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial SDL_SensorType SensorGetType([NativeTypeName("SDL_Sensor *")] nint sensor);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SensorGetNonPortableType", ExactSpelling = true)]
-    public static extern int SensorGetNonPortableType([NativeTypeName("SDL_Sensor *")] _SDL_Sensor* sensor);
+    [LibraryImport("SDL2", EntryPoint = "SDL_SensorGetNonPortableType")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int SensorGetNonPortableType([NativeTypeName("SDL_Sensor *")] nint sensor);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SensorGetInstanceID", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_SensorGetInstanceID")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("SDL_SensorID")]
-    public static extern int SensorGetInstanceID([NativeTypeName("SDL_Sensor *")] _SDL_Sensor* sensor);
+    public static partial int SensorGetInstanceID([NativeTypeName("SDL_Sensor *")] nint sensor);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SensorGetData", ExactSpelling = true)]
-    public static extern int SensorGetData([NativeTypeName("SDL_Sensor *")] _SDL_Sensor* sensor, float* data, int num_values);
+    [LibraryImport("SDL2", EntryPoint = "SDL_SensorGetData")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int SensorGetData([NativeTypeName("SDL_Sensor *")] nint sensor, float* data, int num_values);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SensorGetDataWithTimestamp", ExactSpelling = true)]
-    public static extern int SensorGetDataWithTimestamp([NativeTypeName("SDL_Sensor *")] _SDL_Sensor* sensor, [NativeTypeName(" *")] ulong* timestamp, float* data, int num_values);
+    [LibraryImport("SDL2", EntryPoint = "SDL_SensorGetDataWithTimestamp")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int SensorGetDataWithTimestamp([NativeTypeName("SDL_Sensor *")] nint sensor, [NativeTypeName(" *")] ulong* timestamp, float* data, int num_values);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SensorClose", ExactSpelling = true)]
-    public static extern void SensorClose([NativeTypeName("SDL_Sensor *")] _SDL_Sensor* sensor);
+    [LibraryImport("SDL2", EntryPoint = "SDL_SensorClose")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void SensorClose([NativeTypeName("SDL_Sensor *")] nint sensor);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SensorUpdate", ExactSpelling = true)]
-    public static extern void SensorUpdate();
+    [LibraryImport("SDL2", EntryPoint = "SDL_SensorUpdate")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void SensorUpdate();
 
     [NativeTypeName("#define SDL_STANDARD_GRAVITY 9.80665f")]
     public const float SDL_STANDARD_GRAVITY = 9.80665f;

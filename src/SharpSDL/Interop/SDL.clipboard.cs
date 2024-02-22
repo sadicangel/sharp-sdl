@@ -2,25 +2,33 @@ using System.Runtime.InteropServices;
 
 namespace SharpSDL.Interop;
 
-public static unsafe partial class SDL
+internal static unsafe partial class SDL
 {
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetClipboardText", ExactSpelling = true)]
-    public static extern int SetClipboardText([NativeTypeName("const char *")] byte* text);
+    [LibraryImport("SDL2", EntryPoint = "SDL_SetClipboardText")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int SetClipboardText([NativeTypeName("const char *")] byte* text);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetClipboardText", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetClipboardText")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("char *")]
-    public static extern byte* GetClipboardText();
+    public static partial byte* GetClipboardText();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_HasClipboardText", ExactSpelling = true)]
-    public static extern CBool HasClipboardText();
+    [LibraryImport("SDL2", EntryPoint = "SDL_HasClipboardText")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool HasClipboardText();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetPrimarySelectionText", ExactSpelling = true)]
-    public static extern int SetPrimarySelectionText([NativeTypeName("const char *")] byte* text);
+    [LibraryImport("SDL2", EntryPoint = "SDL_SetPrimarySelectionText")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int SetPrimarySelectionText([NativeTypeName("const char *")] byte* text);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetPrimarySelectionText", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetPrimarySelectionText")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("char *")]
-    public static extern byte* GetPrimarySelectionText();
+    public static partial byte* GetPrimarySelectionText();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_HasPrimarySelectionText", ExactSpelling = true)]
-    public static extern CBool HasPrimarySelectionText();
+    [LibraryImport("SDL2", EntryPoint = "SDL_HasPrimarySelectionText")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool HasPrimarySelectionText();
 }

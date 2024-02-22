@@ -2,17 +2,18 @@ using System.Runtime.InteropServices;
 
 namespace SharpSDL.Interop;
 
-public enum PowerState
+internal enum SDL_PowerState
 {
-    UNKNOWN,
-    ON_BATTERY,
-    NO_BATTERY,
-    CHARGING,
-    CHARGED,
+    SDL_POWERSTATE_UNKNOWN,
+    SDL_POWERSTATE_ON_BATTERY,
+    SDL_POWERSTATE_NO_BATTERY,
+    SDL_POWERSTATE_CHARGING,
+    SDL_POWERSTATE_CHARGED,
 }
 
-public static unsafe partial class SDL
+internal static unsafe partial class SDL
 {
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetPowerInfo", ExactSpelling = true)]
-    public static extern PowerState GetPowerInfo(int* seconds, int* percent);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetPowerInfo")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial SDL_PowerState GetPowerInfo(int* seconds, int* percent);
 }

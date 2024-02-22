@@ -51,8 +51,6 @@ Get-ChildItem $dst -Filter "SDL.*" | ForEach-Object {
     [System.IO.File]::Delete($_);
 }
 
-[string[]] $generated = @();
-
 $headers | ForEach-Object {
     $in = "$src\$($_)";
     $out = "$dst\$([System.IO.Path]::ChangeExtension($_.Replace("SDL_", "SDL."), ".cs"))";
@@ -64,37 +62,75 @@ $headers | ForEach-Object {
         --namespace "SharpSDL.Interop" `
         --methodClassName "SDL" `
         --prefixStrip "SDL_" `
+        --exclude "SDL_bool" `
+        --exclude "DUMMY_ENUM" `
         --nativeTypeNamesToStrip `
         "Uint8" `
+        "const Uint8" `
         "Uint8 *" `
+        "const Uint8 *" `
         "Uint16" `
+        "const Uint16" `
         "Uint16 *" `
+        "const Uint16 *" `
         "Uint32" `
+        "const Uint32" `
         "Uint32 *" `
+        "const Uint32 *" `
         "Uint64" `
+        "const Uint64" `
         "Uint64 *" `
+        "const Uint64 *" `
         "Sint8" `
+        "const Sint8" `
         "Sint8 *" `
+        "const Sint8 *" `
         "Sint16" `
+        "const Sint16" `
         "Sint16 *" `
+        "const Sint16 *" `
         "Sint32" `
+        "const Sint32" `
         "Sint32 *" `
+        "const Sint32 *" `
         "Sint64" `
+        "const Sint64" `
         "Sint64 *" `
+        "const Sint64 *" `
         --remap "sbyte=byte" `
+        --remap "_SDL_AudioStream*=nint" `
+        --remap "_SDL_GameController*=nint" `
+        --remap "_SDL_Haptic*=nint" `
+        --remap "_SDL_iconv_t*=nint" `
+        --remap "_SDL_Joystick*=nint" `
+        --remap "_SDL_Sensor*=nint" `
+        --remap "HDC__*=nint" `
+        --remap "HINSTANCE__*=nint" `
+        --remap "HWND__*=nint" `
+        --remap "IDirect3DDevice9*=nint" `
+        --remap "ID3D11Device*=nint" `
+        --remap "ID3D12Device*=nint" `
+        --remap "SDL_bool=CBool" `
+        --remap "SDL_BlitMap*=nint" `
+        --remap "SDL_Cursor*=nint" `
+        --remap "SDL_Renderer*=nint" `
+        --remap "SDL_Texture*=nint" `
+        --remap "SDL_Window*=nint" `
+        --remap "VkInstance_T*=nint" `
+        --remap "VkSurfaceKHR_T*=nint" `
         --config preview-codegen `
         --config generate-macro-bindings `
         --config generate-unmanaged-constants `
         --config exclude-using-statics-for-enums `
         --config exclude-funcs-with-body `
+        --config exclude-empty-records `
     | Out-File $log -Append
     #--config generate-file-scoped-namespaces `
     #--config generate-helper-types `
     #--config log-visited-files `
-    
-    $generated += $out;
 }
+
 
 $source = Get-Content -Path ".\fixbinds.cs";
 Add-Type -TypeDefinition "$source";
-[FixBinds]::Process($generated);
+[FixBinds]::Fix($dst);

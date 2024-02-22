@@ -2,56 +2,30 @@ using System.Runtime.InteropServices;
 
 namespace SharpSDL.Interop;
 
-public enum RWopsType : uint
+internal unsafe partial struct SDL_RWops
 {
-    [NativeTypeName("#define SDL_RWOPS_UNKNOWN 0U")]
-    UNKNOWN = 0U,
-    [NativeTypeName("#define SDL_RWOPS_WINFILE 1U")]
-    WINFILE = 1U,
-    [NativeTypeName("#define SDL_RWOPS_STDFILE 2U")]
-    STDFILE = 2U,
-    [NativeTypeName("#define SDL_RWOPS_JNIFILE 3U")]
-    JNIFILE = 3U,
-    [NativeTypeName("#define SDL_RWOPS_MEMORY 4U")]
-    MEMORY = 4U,
-    [NativeTypeName("#define SDL_RWOPS_MEMORY_RO 5U")]
-    MEMORY_RO = 5U,
-}
+    [NativeTypeName(" (*)(struct SDL_RWops *) __attribute__((cdecl))")]
+    public delegate* unmanaged[Cdecl]<SDL_RWops*, long> size;
 
-public enum SeekMode
-{
-    [NativeTypeName("#define RW_SEEK_SET 0")]
-    SET = 0,
-    [NativeTypeName("#define RW_SEEK_CUR 1")]
-    CUR = 1,
-    [NativeTypeName("#define RW_SEEK_END 2")]
-    END = 2,
-}
+    [NativeTypeName(" (*)(struct SDL_RWops *, , int) __attribute__((cdecl))")]
+    public delegate* unmanaged[Cdecl]<SDL_RWops*, long, int, long> seek;
 
-public unsafe partial struct RWops
-{
-    [NativeTypeName(" (*)(struct RWops *) __attribute__((cdecl))")]
-    public delegate* unmanaged[Cdecl]<RWops*, long> size;
+    [NativeTypeName("size_t (*)(struct SDL_RWops *, void *, size_t, size_t) __attribute__((cdecl))")]
+    public delegate* unmanaged[Cdecl]<SDL_RWops*, void*, nuint, nuint, nuint> read;
 
-    [NativeTypeName(" (*)(struct RWops *, , int) __attribute__((cdecl))")]
-    public delegate* unmanaged[Cdecl]<RWops*, long, int, long> seek;
+    [NativeTypeName("size_t (*)(struct SDL_RWops *, const void *, size_t, size_t) __attribute__((cdecl))")]
+    public delegate* unmanaged[Cdecl]<SDL_RWops*, void*, nuint, nuint, nuint> write;
 
-    [NativeTypeName("size_t (*)(struct RWops *, void *, size_t, size_t) __attribute__((cdecl))")]
-    public delegate* unmanaged[Cdecl]<RWops*, void*, nuint, nuint, nuint> read;
+    [NativeTypeName("int (*)(struct SDL_RWops *) __attribute__((cdecl))")]
+    public delegate* unmanaged[Cdecl]<SDL_RWops*, int> close;
 
-    [NativeTypeName("size_t (*)(struct RWops *, const void *, size_t, size_t) __attribute__((cdecl))")]
-    public delegate* unmanaged[Cdecl]<RWops*, void*, nuint, nuint, nuint> write;
-
-    [NativeTypeName("int (*)(struct RWops *) __attribute__((cdecl))")]
-    public delegate* unmanaged[Cdecl]<RWops*, int> close;
-
-    public RWopsType type;
+    public uint type;
 
     [NativeTypeName("__AnonymousRecord_SDL_rwops_L94_C5")]
     public _hidden_e__Union hidden;
 
     [StructLayout(LayoutKind.Explicit)]
-    public partial struct _hidden_e__Union
+    internal partial struct _hidden_e__Union
     {
         [FieldOffset(0)]
         [NativeTypeName("__AnonymousRecord_SDL_rwops_L102_C9")]
@@ -65,8 +39,9 @@ public unsafe partial struct RWops
         [NativeTypeName("__AnonymousRecord_SDL_rwops_L128_C9")]
         public _unknown_e__Struct unknown;
 
-        public unsafe partial struct _windowsio_e__Struct
+        internal unsafe partial struct _windowsio_e__Struct
         {
+            [NativeTypeName("SDL_bool")]
             public CBool append;
 
             public void* h;
@@ -74,7 +49,7 @@ public unsafe partial struct RWops
             [NativeTypeName("__AnonymousRecord_SDL_rwops_L106_C13")]
             public _buffer_e__Struct buffer;
 
-            public unsafe partial struct _buffer_e__Struct
+            internal unsafe partial struct _buffer_e__Struct
             {
                 public void* data;
 
@@ -86,7 +61,7 @@ public unsafe partial struct RWops
             }
         }
 
-        public unsafe partial struct _mem_e__Struct
+        internal unsafe partial struct _mem_e__Struct
         {
             [NativeTypeName(" *")]
             public byte* @base;
@@ -98,7 +73,7 @@ public unsafe partial struct RWops
             public byte* stop;
         }
 
-        public unsafe partial struct _unknown_e__Struct
+        internal unsafe partial struct _unknown_e__Struct
         {
             public void* data1;
 
@@ -107,98 +82,153 @@ public unsafe partial struct RWops
     }
 }
 
-public static unsafe partial class SDL
+internal static unsafe partial class SDL
 {
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RWFromFile", ExactSpelling = true)]
-    public static extern RWops* RWFromFile([NativeTypeName("const char *")] byte* file, [NativeTypeName("const char *")] byte* mode);
+    [LibraryImport("SDL2", EntryPoint = "SDL_RWFromFile")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial SDL_RWops* RWFromFile([NativeTypeName("const char *")] byte* file, [NativeTypeName("const char *")] byte* mode);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RWFromFP", ExactSpelling = true)]
-    public static extern RWops* RWFromFP(void* fp, CBool autoclose);
+    [LibraryImport("SDL2", EntryPoint = "SDL_RWFromFP")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial SDL_RWops* RWFromFP(void* fp, [NativeTypeName("SDL_bool")] CBool autoclose);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RWFromMem", ExactSpelling = true)]
-    public static extern RWops* RWFromMem(void* mem, int size);
+    [LibraryImport("SDL2", EntryPoint = "SDL_RWFromMem")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial SDL_RWops* RWFromMem(void* mem, int size);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RWFromConstMem", ExactSpelling = true)]
-    public static extern RWops* RWFromConstMem([NativeTypeName("const void *")] void* mem, int size);
+    [LibraryImport("SDL2", EntryPoint = "SDL_RWFromConstMem")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial SDL_RWops* RWFromConstMem([NativeTypeName("const void *")] void* mem, int size);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_AllocRW", ExactSpelling = true)]
-    public static extern RWops* AllocRW();
+    [LibraryImport("SDL2", EntryPoint = "SDL_AllocRW")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial SDL_RWops* AllocRW();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_FreeRW", ExactSpelling = true)]
-    public static extern void FreeRW(RWops* area);
+    [LibraryImport("SDL2", EntryPoint = "SDL_FreeRW")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void FreeRW(SDL_RWops* area);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RWsize", ExactSpelling = true)]
-    public static extern long RWsize(RWops* context);
+    [LibraryImport("SDL2", EntryPoint = "SDL_RWsize")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial long RWsize(SDL_RWops* context);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RWseek", ExactSpelling = true)]
-    public static extern long RWseek(RWops* context, long offset, SeekMode whence);
+    [LibraryImport("SDL2", EntryPoint = "SDL_RWseek")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial long RWseek(SDL_RWops* context, long offset, int whence);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RWtell", ExactSpelling = true)]
-    public static extern long RWtell(RWops* context);
+    [LibraryImport("SDL2", EntryPoint = "SDL_RWtell")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial long RWtell(SDL_RWops* context);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RWread", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_RWread")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("size_t")]
-    public static extern nuint RWread(RWops* context, void* ptr, [NativeTypeName("size_t")] nuint size, [NativeTypeName("size_t")] nuint maxnum);
+    public static partial nuint RWread(SDL_RWops* context, void* ptr, [NativeTypeName("size_t")] nuint size, [NativeTypeName("size_t")] nuint maxnum);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RWwrite", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_RWwrite")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("size_t")]
-    public static extern nuint RWwrite(RWops* context, [NativeTypeName("const void *")] void* ptr, [NativeTypeName("size_t")] nuint size, [NativeTypeName("size_t")] nuint num);
+    public static partial nuint RWwrite(SDL_RWops* context, [NativeTypeName("const void *")] void* ptr, [NativeTypeName("size_t")] nuint size, [NativeTypeName("size_t")] nuint num);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RWclose", ExactSpelling = true)]
-    public static extern int RWclose(RWops* context);
+    [LibraryImport("SDL2", EntryPoint = "SDL_RWclose")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int RWclose(SDL_RWops* context);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_LoadFile_RW", ExactSpelling = true)]
-    public static extern void* LoadFile_RW(RWops* src, [NativeTypeName("size_t *")] nuint* datasize, int freesrc);
+    [LibraryImport("SDL2", EntryPoint = "SDL_LoadFile_RW")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void* LoadFile_RW(SDL_RWops* src, [NativeTypeName("size_t *")] nuint* datasize, int freesrc);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_LoadFile", ExactSpelling = true)]
-    public static extern void* LoadFile([NativeTypeName("const char *")] byte* file, [NativeTypeName("size_t *")] nuint* datasize);
+    [LibraryImport("SDL2", EntryPoint = "SDL_LoadFile")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void* LoadFile([NativeTypeName("const char *")] byte* file, [NativeTypeName("size_t *")] nuint* datasize);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_ReadU8", ExactSpelling = true)]
-    public static extern byte ReadU8(RWops* src);
+    [LibraryImport("SDL2", EntryPoint = "SDL_ReadU8")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial byte ReadU8(SDL_RWops* src);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_ReadLE16", ExactSpelling = true)]
-    public static extern ushort ReadLE16(RWops* src);
+    [LibraryImport("SDL2", EntryPoint = "SDL_ReadLE16")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial ushort ReadLE16(SDL_RWops* src);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_ReadBE16", ExactSpelling = true)]
-    public static extern ushort ReadBE16(RWops* src);
+    [LibraryImport("SDL2", EntryPoint = "SDL_ReadBE16")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial ushort ReadBE16(SDL_RWops* src);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_ReadLE32", ExactSpelling = true)]
-    public static extern uint ReadLE32(RWops* src);
+    [LibraryImport("SDL2", EntryPoint = "SDL_ReadLE32")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial uint ReadLE32(SDL_RWops* src);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_ReadBE32", ExactSpelling = true)]
-    public static extern uint ReadBE32(RWops* src);
+    [LibraryImport("SDL2", EntryPoint = "SDL_ReadBE32")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial uint ReadBE32(SDL_RWops* src);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_ReadLE64", ExactSpelling = true)]
-    public static extern ulong ReadLE64(RWops* src);
+    [LibraryImport("SDL2", EntryPoint = "SDL_ReadLE64")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial ulong ReadLE64(SDL_RWops* src);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_ReadBE64", ExactSpelling = true)]
-    public static extern ulong ReadBE64(RWops* src);
+    [LibraryImport("SDL2", EntryPoint = "SDL_ReadBE64")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial ulong ReadBE64(SDL_RWops* src);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_WriteU8", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_WriteU8")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("size_t")]
-    public static extern nuint WriteU8(RWops* dst, byte value);
+    public static partial nuint WriteU8(SDL_RWops* dst, byte value);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_WriteLE16", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_WriteLE16")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("size_t")]
-    public static extern nuint WriteLE16(RWops* dst, ushort value);
+    public static partial nuint WriteLE16(SDL_RWops* dst, ushort value);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_WriteBE16", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_WriteBE16")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("size_t")]
-    public static extern nuint WriteBE16(RWops* dst, ushort value);
+    public static partial nuint WriteBE16(SDL_RWops* dst, ushort value);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_WriteLE32", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_WriteLE32")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("size_t")]
-    public static extern nuint WriteLE32(RWops* dst, uint value);
+    public static partial nuint WriteLE32(SDL_RWops* dst, uint value);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_WriteBE32", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_WriteBE32")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("size_t")]
-    public static extern nuint WriteBE32(RWops* dst, uint value);
+    public static partial nuint WriteBE32(SDL_RWops* dst, uint value);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_WriteLE64", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_WriteLE64")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("size_t")]
-    public static extern nuint WriteLE64(RWops* dst, ulong value);
+    public static partial nuint WriteLE64(SDL_RWops* dst, ulong value);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_WriteBE64", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_WriteBE64")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("size_t")]
-    public static extern nuint WriteBE64(RWops* dst, ulong value);
+    public static partial nuint WriteBE64(SDL_RWops* dst, ulong value);
+
+    [NativeTypeName("#define SDL_RWOPS_UNKNOWN 0U")]
+    public const uint SDL_RWOPS_UNKNOWN = 0U;
+
+    [NativeTypeName("#define SDL_RWOPS_WINFILE 1U")]
+    public const uint SDL_RWOPS_WINFILE = 1U;
+
+    [NativeTypeName("#define SDL_RWOPS_STDFILE 2U")]
+    public const uint SDL_RWOPS_STDFILE = 2U;
+
+    [NativeTypeName("#define SDL_RWOPS_JNIFILE 3U")]
+    public const uint SDL_RWOPS_JNIFILE = 3U;
+
+    [NativeTypeName("#define SDL_RWOPS_MEMORY 4U")]
+    public const uint SDL_RWOPS_MEMORY = 4U;
+
+    [NativeTypeName("#define SDL_RWOPS_MEMORY_RO 5U")]
+    public const uint SDL_RWOPS_MEMORY_RO = 5U;
+
+    [NativeTypeName("#define RW_SEEK_SET 0")]
+    public const int RW_SEEK_SET = 0;
+
+    [NativeTypeName("#define RW_SEEK_CUR 1")]
+    public const int RW_SEEK_CUR = 1;
+
+    [NativeTypeName("#define RW_SEEK_END 2")]
+    public const int RW_SEEK_END = 2;
 }

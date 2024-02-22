@@ -2,27 +2,35 @@ using System.Runtime.InteropServices;
 
 namespace SharpSDL.Interop;
 
-public static unsafe partial class SDL
+internal static unsafe partial class SDL
 {
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetTicks", ExactSpelling = true)]
-    public static extern uint GetTicks();
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetTicks")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial uint GetTicks();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetTicks64", ExactSpelling = true)]
-    public static extern ulong GetTicks64();
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetTicks64")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial ulong GetTicks64();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetPerformanceCounter", ExactSpelling = true)]
-    public static extern ulong GetPerformanceCounter();
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetPerformanceCounter")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial ulong GetPerformanceCounter();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetPerformanceFrequency", ExactSpelling = true)]
-    public static extern ulong GetPerformanceFrequency();
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetPerformanceFrequency")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial ulong GetPerformanceFrequency();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_Delay", ExactSpelling = true)]
-    public static extern void Delay(uint ms);
+    [LibraryImport("SDL2", EntryPoint = "SDL_Delay")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void Delay(uint ms);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_AddTimer", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_AddTimer")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("SDL_TimerID")]
-    public static extern int AddTimer(uint interval, [NativeTypeName("SDL_TimerCallback")] delegate* unmanaged[Cdecl]<uint, void*, uint> callback, void* param2);
+    public static partial int AddTimer(uint interval, [NativeTypeName("SDL_TimerCallback")] delegate* unmanaged[Cdecl]<uint, void*, uint> callback, void* param2);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RemoveTimer", ExactSpelling = true)]
-    public static extern CBool RemoveTimer([NativeTypeName("SDL_TimerID")] int id);
+    [LibraryImport("SDL2", EntryPoint = "SDL_RemoveTimer")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool RemoveTimer([NativeTypeName("SDL_TimerID")] int id);
 }

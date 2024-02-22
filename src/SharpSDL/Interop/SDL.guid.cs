@@ -3,23 +3,25 @@ using System.Runtime.InteropServices;
 
 namespace SharpSDL.Interop;
 
-public partial struct GUID
+internal partial struct SDL_GUID
 {
     [NativeTypeName("[16]")]
     public _data_e__FixedBuffer data;
 
     [InlineArray(16)]
-    public partial struct _data_e__FixedBuffer
+    internal partial struct _data_e__FixedBuffer
     {
         public byte e0;
     }
 }
 
-public static unsafe partial class SDL
+internal static unsafe partial class SDL
 {
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "GUIDToString", ExactSpelling = true)]
-    public static extern void GUIDToString(GUID guid, [NativeTypeName("char *")] byte* pszGUID, int cbGUID);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GUIDToString")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void GUIDToString(SDL_GUID guid, [NativeTypeName("char *")] byte* pszGUID, int cbGUID);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "GUIDFromString", ExactSpelling = true)]
-    public static extern GUID GUIDFromString([NativeTypeName("const char *")] byte* pchGUID);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GUIDFromString")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial SDL_GUID GUIDFromString([NativeTypeName("const char *")] byte* pchGUID);
 }

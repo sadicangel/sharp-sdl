@@ -2,42 +2,42 @@ using System.Runtime.InteropServices;
 
 namespace SharpSDL.Interop;
 
-[Flags]
-public enum BlendMode
+internal enum SDL_BlendMode
 {
-    NONE = 0x00000000,
-    BLEND = 0x00000001,
-    ADD = 0x00000002,
-    MOD = 0x00000004,
-    MUL = 0x00000008,
-    INVALID = 0x7FFFFFFF,
+    SDL_BLENDMODE_NONE = 0x00000000,
+    SDL_BLENDMODE_BLEND = 0x00000001,
+    SDL_BLENDMODE_ADD = 0x00000002,
+    SDL_BLENDMODE_MOD = 0x00000004,
+    SDL_BLENDMODE_MUL = 0x00000008,
+    SDL_BLENDMODE_INVALID = 0x7FFFFFFF,
 }
 
-public enum BlendOperation
+internal enum SDL_BlendOperation
 {
-    ADD = 0x1,
-    SUBTRACT = 0x2,
-    REV_SUBTRACT = 0x3,
-    MINIMUM = 0x4,
-    MAXIMUM = 0x5,
+    SDL_BLENDOPERATION_ADD = 0x1,
+    SDL_BLENDOPERATION_SUBTRACT = 0x2,
+    SDL_BLENDOPERATION_REV_SUBTRACT = 0x3,
+    SDL_BLENDOPERATION_MINIMUM = 0x4,
+    SDL_BLENDOPERATION_MAXIMUM = 0x5,
 }
 
-public enum BlendFactor
+internal enum SDL_BlendFactor
 {
-    ZERO = 0x1,
-    ONE = 0x2,
-    SRC_COLOR = 0x3,
-    ONE_MINUS_SRC_COLOR = 0x4,
-    SRC_ALPHA = 0x5,
-    ONE_MINUS_SRC_ALPHA = 0x6,
-    DST_COLOR = 0x7,
-    ONE_MINUS_DST_COLOR = 0x8,
-    DST_ALPHA = 0x9,
-    ONE_MINUS_DST_ALPHA = 0xA,
+    SDL_BLENDFACTOR_ZERO = 0x1,
+    SDL_BLENDFACTOR_ONE = 0x2,
+    SDL_BLENDFACTOR_SRC_COLOR = 0x3,
+    SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR = 0x4,
+    SDL_BLENDFACTOR_SRC_ALPHA = 0x5,
+    SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA = 0x6,
+    SDL_BLENDFACTOR_DST_COLOR = 0x7,
+    SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR = 0x8,
+    SDL_BLENDFACTOR_DST_ALPHA = 0x9,
+    SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA = 0xA,
 }
 
-public static partial class SDL
+internal static partial class SDL
 {
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_ComposeCustomBlendMode", ExactSpelling = true)]
-    public static extern BlendMode ComposeCustomBlendMode(BlendFactor srcColorFactor, BlendFactor dstColorFactor, BlendOperation colorOperation, BlendFactor srcAlphaFactor, BlendFactor dstAlphaFactor, BlendOperation alphaOperation);
+    [LibraryImport("SDL2", EntryPoint = "SDL_ComposeCustomBlendMode")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial SDL_BlendMode ComposeCustomBlendMode(SDL_BlendFactor srcColorFactor, SDL_BlendFactor dstColorFactor, SDL_BlendOperation colorOperation, SDL_BlendFactor srcAlphaFactor, SDL_BlendFactor dstAlphaFactor, SDL_BlendOperation alphaOperation);
 }

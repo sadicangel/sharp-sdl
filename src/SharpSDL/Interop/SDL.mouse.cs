@@ -2,98 +2,133 @@ using System.Runtime.InteropServices;
 
 namespace SharpSDL.Interop;
 
-public partial struct Cursor
+internal enum SDL_SystemCursor
 {
+    SDL_SYSTEM_CURSOR_ARROW,
+    SDL_SYSTEM_CURSOR_IBEAM,
+    SDL_SYSTEM_CURSOR_WAIT,
+    SDL_SYSTEM_CURSOR_CROSSHAIR,
+    SDL_SYSTEM_CURSOR_WAITARROW,
+    SDL_SYSTEM_CURSOR_SIZENWSE,
+    SDL_SYSTEM_CURSOR_SIZENESW,
+    SDL_SYSTEM_CURSOR_SIZEWE,
+    SDL_SYSTEM_CURSOR_SIZENS,
+    SDL_SYSTEM_CURSOR_SIZEALL,
+    SDL_SYSTEM_CURSOR_NO,
+    SDL_SYSTEM_CURSOR_HAND,
+    SDL_NUM_SYSTEM_CURSORS,
 }
 
-public enum SystemCursor
+internal enum SDL_MouseWheelDirection
 {
-    ARROW,
-    IBEAM,
-    WAIT,
-    CROSSHAIR,
-    WAITARROW,
-    SIZENWSE,
-    SIZENESW,
-    SIZEWE,
-    SIZENS,
-    SIZEALL,
-    NO,
-    HAND,
-    CUSTOM,
+    SDL_MOUSEWHEEL_NORMAL,
+    SDL_MOUSEWHEEL_FLIPPED,
 }
 
-public enum MouseWheelDirection
+internal static unsafe partial class SDL
 {
-    NORMAL,
-    FLIPPED,
-}
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetMouseFocus")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_Window*")]
+    public static partial nint GetMouseFocus();
 
-[Flags]
-public enum MouseButtonState : uint
-{
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetMouseState")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial uint GetMouseState(int* x, int* y);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetGlobalMouseState")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial uint GetGlobalMouseState(int* x, int* y);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetRelativeMouseState")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial uint GetRelativeMouseState(int* x, int* y);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_WarpMouseInWindow")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void WarpMouseInWindow([NativeTypeName("SDL_Window*")] nint window, int x, int y);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_WarpMouseGlobal")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int WarpMouseGlobal(int x, int y);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_SetRelativeMouseMode")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int SetRelativeMouseMode([NativeTypeName("SDL_bool")] CBool enabled);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_CaptureMouse")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int CaptureMouse([NativeTypeName("SDL_bool")] CBool enabled);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetRelativeMouseMode")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool GetRelativeMouseMode();
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_CreateCursor")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_Cursor*")]
+    public static partial nint CreateCursor([NativeTypeName(" *")] byte* data, [NativeTypeName(" *")] byte* mask, int w, int h, int hot_x, int hot_y);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_CreateColorCursor")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_Cursor*")]
+    public static partial nint CreateColorCursor(SDL_Surface* surface, int hot_x, int hot_y);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_CreateSystemCursor")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_Cursor*")]
+    public static partial nint CreateSystemCursor(SDL_SystemCursor id);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_SetCursor")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void SetCursor([NativeTypeName("SDL_Cursor*")] nint cursor);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetCursor")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_Cursor*")]
+    public static partial nint GetCursor();
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetDefaultCursor")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_Cursor*")]
+    public static partial nint GetDefaultCursor();
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_FreeCursor")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void FreeCursor([NativeTypeName("SDL_Cursor*")] nint cursor);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_ShowCursor")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int ShowCursor(int toggle);
+
+    [NativeTypeName("#define SDL_BUTTON_LEFT 1")]
+    public const int SDL_BUTTON_LEFT = 1;
+
+    [NativeTypeName("#define SDL_BUTTON_MIDDLE 2")]
+    public const int SDL_BUTTON_MIDDLE = 2;
+
+    [NativeTypeName("#define SDL_BUTTON_RIGHT 3")]
+    public const int SDL_BUTTON_RIGHT = 3;
+
+    [NativeTypeName("#define SDL_BUTTON_X1 4")]
+    public const int SDL_BUTTON_X1 = 4;
+
+    [NativeTypeName("#define SDL_BUTTON_X2 5")]
+    public const int SDL_BUTTON_X2 = 5;
+
     [NativeTypeName("#define SDL_BUTTON_LMASK SDL_BUTTON(SDL_BUTTON_LEFT)")]
-    LEFT = 1 << ((1) - 1),
+    public const int SDL_BUTTON_LMASK = (1 << ((1) - 1));
+
     [NativeTypeName("#define SDL_BUTTON_MMASK SDL_BUTTON(SDL_BUTTON_MIDDLE)")]
-    MIDDLE = 1 << ((2) - 1),
+    public const int SDL_BUTTON_MMASK = (1 << ((2) - 1));
+
     [NativeTypeName("#define SDL_BUTTON_RMASK SDL_BUTTON(SDL_BUTTON_RIGHT)")]
-    RIGHT = 1 << ((3) - 1),
+    public const int SDL_BUTTON_RMASK = (1 << ((3) - 1));
+
     [NativeTypeName("#define SDL_BUTTON_X1MASK SDL_BUTTON(SDL_BUTTON_X1)")]
-    X1 = 1 << ((4) - 1),
+    public const int SDL_BUTTON_X1MASK = (1 << ((4) - 1));
+
     [NativeTypeName("#define SDL_BUTTON_X2MASK SDL_BUTTON(SDL_BUTTON_X2)")]
-    X2 = 1 << ((5) - 1),
-}
-
-public static unsafe partial class SDL
-{
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetMouseFocus", ExactSpelling = true)]
-    public static extern Window* GetMouseFocus();
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetMouseState", ExactSpelling = true)]
-    public static extern MouseButtonState GetMouseState(int* x, int* y);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetGlobalMouseState", ExactSpelling = true)]
-    public static extern MouseButtonState GetGlobalMouseState(int* x, int* y);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetRelativeMouseState", ExactSpelling = true)]
-    public static extern MouseButtonState GetRelativeMouseState(int* x, int* y);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_WarpMouseInWindow", ExactSpelling = true)]
-    public static extern void WarpMouseInWindow(Window* window, int x, int y);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_WarpMouseGlobal", ExactSpelling = true)]
-    public static extern int WarpMouseGlobal(int x, int y);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetRelativeMouseMode", ExactSpelling = true)]
-    public static extern int SetRelativeMouseMode(CBool enabled);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_CaptureMouse", ExactSpelling = true)]
-    public static extern int CaptureMouse(CBool enabled);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetRelativeMouseMode", ExactSpelling = true)]
-    public static extern CBool GetRelativeMouseMode();
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_CreateCursor", ExactSpelling = true)]
-    public static extern Cursor* CreateCursor([NativeTypeName("const  *")] byte* data, [NativeTypeName("const  *")] byte* mask, int w, int h, int hot_x, int hot_y);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_CreateColorCursor", ExactSpelling = true)]
-    public static extern Cursor* CreateColorCursor(Surface* surface, int hot_x, int hot_y);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_CreateSystemCursor", ExactSpelling = true)]
-    public static extern Cursor* CreateSystemCursor(SystemCursor id);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetCursor", ExactSpelling = true)]
-    public static extern void SetCursor(Cursor* cursor);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetCursor", ExactSpelling = true)]
-    public static extern Cursor* GetCursor();
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetDefaultCursor", ExactSpelling = true)]
-    public static extern Cursor* GetDefaultCursor();
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_FreeCursor", ExactSpelling = true)]
-    public static extern void FreeCursor(Cursor* cursor);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_ShowCursor", ExactSpelling = true)]
-    public static extern int ShowCursor(int toggle);
+    public const int SDL_BUTTON_X2MASK = (1 << ((5) - 1));
 }

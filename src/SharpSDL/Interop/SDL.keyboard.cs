@@ -2,9 +2,9 @@ using System.Runtime.InteropServices;
 
 namespace SharpSDL.Interop;
 
-public partial struct Keysym
+internal partial struct SDL_Keysym
 {
-    public Scancode scancode;
+    public SDL_Scancode scancode;
 
     [NativeTypeName("SDL_Keycode")]
     public int sym;
@@ -14,67 +14,91 @@ public partial struct Keysym
     public uint unused;
 }
 
-public static unsafe partial class SDL
+internal static unsafe partial class SDL
 {
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetKeyboardFocus", ExactSpelling = true)]
-    public static extern Window* GetKeyboardFocus();
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetKeyboardFocus")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_Window*")]
+    public static partial nint GetKeyboardFocus();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetKeyboardState", ExactSpelling = true)]
-    [return: NativeTypeName("const  *")]
-    public static extern byte* GetKeyboardState(int* numkeys);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetKeyboardState")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName(" *")]
+    public static partial byte* GetKeyboardState(int* numkeys);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_ResetKeyboard", ExactSpelling = true)]
-    public static extern void ResetKeyboard();
+    [LibraryImport("SDL2", EntryPoint = "SDL_ResetKeyboard")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void ResetKeyboard();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetModState", ExactSpelling = true)]
-    public static extern Keymod GetModState();
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetModState")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial SDL_Keymod GetModState();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetModState", ExactSpelling = true)]
-    public static extern void SetModState(Keymod modstate);
+    [LibraryImport("SDL2", EntryPoint = "SDL_SetModState")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void SetModState(SDL_Keymod modstate);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetKeyFromScancode", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetKeyFromScancode")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("SDL_Keycode")]
-    public static extern int GetKeyFromScancode(Scancode scancode);
+    public static partial int GetKeyFromScancode(SDL_Scancode scancode);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetScancodeFromKey", ExactSpelling = true)]
-    public static extern Scancode GetScancodeFromKey([NativeTypeName("SDL_Keycode")] int key);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetScancodeFromKey")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial SDL_Scancode GetScancodeFromKey([NativeTypeName("SDL_Keycode")] int key);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetScancodeName", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetScancodeName")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
-    public static extern byte* GetScancodeName(Scancode scancode);
+    public static partial byte* GetScancodeName(SDL_Scancode scancode);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetScancodeFromName", ExactSpelling = true)]
-    public static extern Scancode GetScancodeFromName([NativeTypeName("const char *")] byte* name);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetScancodeFromName")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial SDL_Scancode GetScancodeFromName([NativeTypeName("const char *")] byte* name);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetKeyName", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetKeyName")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
-    public static extern byte* GetKeyName([NativeTypeName("SDL_Keycode")] int key);
+    public static partial byte* GetKeyName([NativeTypeName("SDL_Keycode")] int key);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetKeyFromName", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetKeyFromName")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("SDL_Keycode")]
-    public static extern int GetKeyFromName([NativeTypeName("const char *")] byte* name);
+    public static partial int GetKeyFromName([NativeTypeName("const char *")] byte* name);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_StartTextInput", ExactSpelling = true)]
-    public static extern void StartTextInput();
+    [LibraryImport("SDL2", EntryPoint = "SDL_StartTextInput")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void StartTextInput();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_IsTextInputActive", ExactSpelling = true)]
-    public static extern CBool IsTextInputActive();
+    [LibraryImport("SDL2", EntryPoint = "SDL_IsTextInputActive")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool IsTextInputActive();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_StopTextInput", ExactSpelling = true)]
-    public static extern void StopTextInput();
+    [LibraryImport("SDL2", EntryPoint = "SDL_StopTextInput")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void StopTextInput();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_ClearComposition", ExactSpelling = true)]
-    public static extern void ClearComposition();
+    [LibraryImport("SDL2", EntryPoint = "SDL_ClearComposition")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void ClearComposition();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_IsTextInputShown", ExactSpelling = true)]
-    public static extern CBool IsTextInputShown();
+    [LibraryImport("SDL2", EntryPoint = "SDL_IsTextInputShown")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool IsTextInputShown();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetTextInputRect", ExactSpelling = true)]
-    public static extern void SetTextInputRect([NativeTypeName("const Rect *")] Rect* rect);
+    [LibraryImport("SDL2", EntryPoint = "SDL_SetTextInputRect")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void SetTextInputRect([NativeTypeName("const SDL_Rect *")] SDL_Rect* rect);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_HasScreenKeyboardSupport", ExactSpelling = true)]
-    public static extern CBool HasScreenKeyboardSupport();
+    [LibraryImport("SDL2", EntryPoint = "SDL_HasScreenKeyboardSupport")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool HasScreenKeyboardSupport();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_IsScreenKeyboardShown", ExactSpelling = true)]
-    public static extern CBool IsScreenKeyboardShown(Window* window);
+    [LibraryImport("SDL2", EntryPoint = "SDL_IsScreenKeyboardShown")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool IsScreenKeyboardShown([NativeTypeName("SDL_Window*")] nint window);
 }

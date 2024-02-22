@@ -2,17 +2,17 @@ using System.Runtime.InteropServices;
 
 namespace SharpSDL.Interop;
 
-public enum TouchDeviceType
+internal enum SDL_TouchDeviceType
 {
-    INVALID = -1,
-    DIRECT,
-    INDIRECT_ABSOLUTE,
-    INDIRECT_RELATIVE,
+    SDL_TOUCH_DEVICE_INVALID = -1,
+    SDL_TOUCH_DEVICE_DIRECT,
+    SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE,
+    SDL_TOUCH_DEVICE_INDIRECT_RELATIVE,
 }
 
-public partial struct Finger
+internal partial struct SDL_Finger
 {
-    [NativeTypeName("FingerID")]
+    [NativeTypeName("SDL_FingerID")]
     public long id;
 
     public float x;
@@ -22,27 +22,33 @@ public partial struct Finger
     public float pressure;
 }
 
-public static unsafe partial class SDL
+internal static unsafe partial class SDL
 {
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetNumTouchDevices", ExactSpelling = true)]
-    public static extern int GetNumTouchDevices();
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetNumTouchDevices")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int GetNumTouchDevices();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetTouchDevice", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetTouchDevice")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("SDL_TouchID")]
-    public static extern long GetTouchDevice(int index);
+    public static partial long GetTouchDevice(int index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetTouchName", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetTouchName")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
-    public static extern byte* GetTouchName(int index);
+    public static partial byte* GetTouchName(int index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetTouchDeviceType", ExactSpelling = true)]
-    public static extern TouchDeviceType GetTouchDeviceType([NativeTypeName("SDL_TouchID")] long touchID);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetTouchDeviceType")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial SDL_TouchDeviceType GetTouchDeviceType([NativeTypeName("SDL_TouchID")] long touchID);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetNumTouchFingers", ExactSpelling = true)]
-    public static extern int GetNumTouchFingers([NativeTypeName("SDL_TouchID")] long touchID);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetNumTouchFingers")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int GetNumTouchFingers([NativeTypeName("SDL_TouchID")] long touchID);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetTouchFinger", ExactSpelling = true)]
-    public static extern Finger* GetTouchFinger([NativeTypeName("SDL_TouchID")] long touchID, int index);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetTouchFinger")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial SDL_Finger* GetTouchFinger([NativeTypeName("SDL_TouchID")] long touchID, int index);
 
     [NativeTypeName("#define SDL_TOUCH_MOUSEID (()-1)")]
     public const uint SDL_TOUCH_MOUSEID = unchecked((uint)(-1));

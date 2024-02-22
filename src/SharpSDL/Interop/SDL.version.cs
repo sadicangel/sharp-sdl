@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace SharpSDL.Interop;
 
-public partial struct Version
+internal partial struct SDL_version
 {
     public byte major;
 
@@ -12,18 +12,21 @@ public partial struct Version
     public byte patch;
 }
 
-public static unsafe partial class SDL
+internal static unsafe partial class SDL
 {
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetVersion", ExactSpelling = true)]
-    public static extern void GetVersion(Version* ver);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetVersion")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void GetVersion(SDL_version* ver);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetRevision", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetRevision")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
-    public static extern byte* GetRevision();
+    public static partial byte* GetRevision();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetRevisionNumber", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetRevisionNumber")]
     [Obsolete]
-    public static extern int GetRevisionNumber();
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int GetRevisionNumber();
 
     [NativeTypeName("#define SDL_MAJOR_VERSION 2")]
     public const int SDL_MAJOR_VERSION = 2;

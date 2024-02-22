@@ -2,31 +2,31 @@ using System.Runtime.InteropServices;
 
 namespace SharpSDL.Interop;
 
-public partial struct VkInstance_T
+internal static unsafe partial class SDL
 {
-}
+    [LibraryImport("SDL2", EntryPoint = "SDL_Vulkan_LoadLibrary")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int Vulkan_LoadLibrary([NativeTypeName("const char *")] byte* path);
 
-public partial struct VkSurfaceKHR_T
-{
-}
+    [LibraryImport("SDL2", EntryPoint = "SDL_Vulkan_GetVkGetInstanceProcAddr")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void* Vulkan_GetVkGetInstanceProcAddr();
 
-public static unsafe partial class SDL
-{
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_Vulkan_LoadLibrary", ExactSpelling = true)]
-    public static extern int Vulkan_LoadLibrary([NativeTypeName("const char *")] byte* path);
+    [LibraryImport("SDL2", EntryPoint = "SDL_Vulkan_UnloadLibrary")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void Vulkan_UnloadLibrary();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_Vulkan_GetVkGetInstanceProcAddr", ExactSpelling = true)]
-    public static extern void* Vulkan_GetVkGetInstanceProcAddr();
+    [LibraryImport("SDL2", EntryPoint = "SDL_Vulkan_GetInstanceExtensions")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool Vulkan_GetInstanceExtensions([NativeTypeName("SDL_Window*")] nint window, [NativeTypeName("unsigned int *")] uint* pCount, [NativeTypeName("const char **")] byte** pNames);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_Vulkan_UnloadLibrary", ExactSpelling = true)]
-    public static extern void Vulkan_UnloadLibrary();
+    [LibraryImport("SDL2", EntryPoint = "SDL_Vulkan_CreateSurface")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool Vulkan_CreateSurface([NativeTypeName("SDL_Window*")] nint window, [NativeTypeName("VkInstance")] nint instance, [NativeTypeName("VkSurfaceKHR *")] nint* surface);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_Vulkan_GetInstanceExtensions", ExactSpelling = true)]
-    public static extern CBool Vulkan_GetInstanceExtensions(Window* window, [NativeTypeName("unsigned int *")] uint* pCount, [NativeTypeName("const char **")] byte** pNames);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_Vulkan_CreateSurface", ExactSpelling = true)]
-    public static extern CBool Vulkan_CreateSurface(Window* window, [NativeTypeName("VkInstance")] VkInstance_T* instance, [NativeTypeName("VkSurfaceKHR *")] VkSurfaceKHR_T** surface);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_Vulkan_GetDrawableSize", ExactSpelling = true)]
-    public static extern void Vulkan_GetDrawableSize(Window* window, int* w, int* h);
+    [LibraryImport("SDL2", EntryPoint = "SDL_Vulkan_GetDrawableSize")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void Vulkan_GetDrawableSize([NativeTypeName("SDL_Window*")] nint window, int* w, int* h);
 }

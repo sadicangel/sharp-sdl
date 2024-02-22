@@ -2,9 +2,10 @@ using System.Runtime.InteropServices;
 
 namespace SharpSDL.Interop;
 
-public static unsafe partial class SDL
+internal static unsafe partial class SDL
 {
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetPlatform", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetPlatform")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
-    public static extern byte* GetPlatform();
+    public static partial byte* GetPlatform();
 }

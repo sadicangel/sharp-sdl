@@ -3,21 +3,20 @@ using System.Runtime.InteropServices;
 
 namespace SharpSDL.Interop;
 
-[Flags]
-public enum RendererFlags : uint
+internal enum SDL_RendererFlags
 {
-    SOFTWARE = 0x00000001,
-    ACCELERATED = 0x00000002,
-    PRESENTVSYNC = 0x00000004,
-    TARGETTEXTURE = 0x00000008,
+    SDL_RENDERER_SOFTWARE = 0x00000001,
+    SDL_RENDERER_ACCELERATED = 0x00000002,
+    SDL_RENDERER_PRESENTVSYNC = 0x00000004,
+    SDL_RENDERER_TARGETTEXTURE = 0x00000008,
 }
 
-public unsafe partial struct RendererInfo
+internal unsafe partial struct SDL_RendererInfo
 {
     [NativeTypeName("const char *")]
     public byte* name;
 
-    public RendererFlags flags;
+    public uint flags;
 
     public uint num_texture_formats;
 
@@ -29,299 +28,382 @@ public unsafe partial struct RendererInfo
     public int max_texture_height;
 
     [InlineArray(16)]
-    public partial struct _texture_formats_e__FixedBuffer
+    internal partial struct _texture_formats_e__FixedBuffer
     {
         public uint e0;
     }
 }
 
-public partial struct Vertex
+internal partial struct SDL_Vertex
 {
-    public FPoint position;
+    public SDL_FPoint position;
 
-    public Color color;
+    public SDL_Color color;
 
-    public FPoint tex_coord;
+    public SDL_FPoint tex_coord;
 }
 
-public enum ScaleMode
+internal enum SDL_ScaleMode
 {
-    Nearest,
-    Linear,
-    Best,
+    SDL_ScaleModeNearest,
+    SDL_ScaleModeLinear,
+    SDL_ScaleModeBest,
 }
 
-public enum TextureAccess
+internal enum SDL_TextureAccess
 {
-    STATIC,
-    STREAMING,
-    TARGET,
+    SDL_TEXTUREACCESS_STATIC,
+    SDL_TEXTUREACCESS_STREAMING,
+    SDL_TEXTUREACCESS_TARGET,
 }
 
-public enum TextureModulate
+internal enum SDL_TextureModulate
 {
-    NONE = 0x00000000,
-    COLOR = 0x00000001,
-    ALPHA = 0x00000002,
+    SDL_TEXTUREMODULATE_NONE = 0x00000000,
+    SDL_TEXTUREMODULATE_COLOR = 0x00000001,
+    SDL_TEXTUREMODULATE_ALPHA = 0x00000002,
 }
 
-public enum RendererFlip
+internal enum SDL_RendererFlip
 {
-    NONE = 0x00000000,
-    HORIZONTAL = 0x00000001,
-    VERTICAL = 0x00000002,
+    SDL_FLIP_NONE = 0x00000000,
+    SDL_FLIP_HORIZONTAL = 0x00000001,
+    SDL_FLIP_VERTICAL = 0x00000002,
 }
 
-public partial struct Renderer
+internal static unsafe partial class SDL
 {
-}
-
-public partial struct Texture
-{
-}
-
-public static unsafe partial class SDL
-{
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetNumRenderDrivers", ExactSpelling = true)]
-    public static extern int GetNumRenderDrivers();
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetRenderDriverInfo", ExactSpelling = true)]
-    public static extern int GetRenderDriverInfo(int index, RendererInfo* info);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_CreateWindowAndRenderer", ExactSpelling = true)]
-    public static extern int CreateWindowAndRenderer(int width, int height, WindowFlags window_flags, Window** window, Renderer** renderer);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_CreateRenderer", ExactSpelling = true)]
-    public static extern Renderer* CreateRenderer(Window* window, int index, RendererFlags flags);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_CreateSoftwareRenderer", ExactSpelling = true)]
-    public static extern Renderer* CreateSoftwareRenderer(Surface* surface);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetRenderer", ExactSpelling = true)]
-    public static extern Renderer* GetRenderer(Window* window);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderGetWindow", ExactSpelling = true)]
-    public static extern Window* RenderGetWindow(Renderer* renderer);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetRendererInfo", ExactSpelling = true)]
-    public static extern int GetRendererInfo(Renderer* renderer, RendererInfo* info);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetRendererOutputSize", ExactSpelling = true)]
-    public static extern int GetRendererOutputSize(Renderer* renderer, int* w, int* h);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_CreateTexture", ExactSpelling = true)]
-    public static extern Texture* CreateTexture(Renderer* renderer, uint format, int access, int w, int h);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_CreateTextureFromSurface", ExactSpelling = true)]
-    public static extern Texture* CreateTextureFromSurface(Renderer* renderer, Surface* surface);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_QueryTexture", ExactSpelling = true)]
-    public static extern int QueryTexture(Texture* texture, [NativeTypeName(" *")] uint* format, int* access, int* w, int* h);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetTextureColorMod", ExactSpelling = true)]
-    public static extern int SetTextureColorMod(Texture* texture, byte r, byte g, byte b);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetTextureColorMod", ExactSpelling = true)]
-    public static extern int GetTextureColorMod(Texture* texture, [NativeTypeName(" *")] byte* r, [NativeTypeName(" *")] byte* g, [NativeTypeName(" *")] byte* b);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetTextureAlphaMod", ExactSpelling = true)]
-    public static extern int SetTextureAlphaMod(Texture* texture, byte alpha);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetTextureAlphaMod", ExactSpelling = true)]
-    public static extern int GetTextureAlphaMod(Texture* texture, [NativeTypeName(" *")] byte* alpha);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetTextureBlendMode", ExactSpelling = true)]
-    public static extern int SetTextureBlendMode(Texture* texture, BlendMode blendMode);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetTextureBlendMode", ExactSpelling = true)]
-    public static extern int GetTextureBlendMode(Texture* texture, BlendMode* blendMode);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetTextureScaleMode", ExactSpelling = true)]
-    public static extern int SetTextureScaleMode(Texture* texture, ScaleMode scaleMode);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetTextureScaleMode", ExactSpelling = true)]
-    public static extern int GetTextureScaleMode(Texture* texture, ScaleMode* scaleMode);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetTextureUserData", ExactSpelling = true)]
-    public static extern int SetTextureUserData(Texture* texture, void* userdata);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetTextureUserData", ExactSpelling = true)]
-    public static extern void* GetTextureUserData(Texture* texture);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_UpdateTexture", ExactSpelling = true)]
-    public static extern int UpdateTexture(Texture* texture, [NativeTypeName("const Rect *")] Rect* rect, [NativeTypeName("const void *")] void* pixels, int pitch);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_UpdateYUVTexture", ExactSpelling = true)]
-    public static extern int UpdateYUVTexture(Texture* texture, [NativeTypeName("const Rect *")] Rect* rect, [NativeTypeName("const  *")] byte* Yplane, int Ypitch, [NativeTypeName("const  *")] byte* Uplane, int Upitch, [NativeTypeName("const  *")] byte* Vplane, int Vpitch);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_UpdateNVTexture", ExactSpelling = true)]
-    public static extern int UpdateNVTexture(Texture* texture, [NativeTypeName("const Rect *")] Rect* rect, [NativeTypeName("const  *")] byte* Yplane, int Ypitch, [NativeTypeName("const  *")] byte* UVplane, int UVpitch);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_LockTexture", ExactSpelling = true)]
-    public static extern int LockTexture(Texture* texture, [NativeTypeName("const Rect *")] Rect* rect, void** pixels, int* pitch);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_LockTextureToSurface", ExactSpelling = true)]
-    public static extern int LockTextureToSurface(Texture* texture, [NativeTypeName("const Rect *")] Rect* rect, Surface** surface);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_UnlockTexture", ExactSpelling = true)]
-    public static extern void UnlockTexture(Texture* texture);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderTargetSupported", ExactSpelling = true)]
-    public static extern CBool RenderTargetSupported(Renderer* renderer);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetRenderTarget", ExactSpelling = true)]
-    public static extern int SetRenderTarget(Renderer* renderer, Texture* texture);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetRenderTarget", ExactSpelling = true)]
-    public static extern Texture* GetRenderTarget(Renderer* renderer);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderSetLogicalSize", ExactSpelling = true)]
-    public static extern int RenderSetLogicalSize(Renderer* renderer, int w, int h);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderGetLogicalSize", ExactSpelling = true)]
-    public static extern void RenderGetLogicalSize(Renderer* renderer, int* w, int* h);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderSetIntegerScale", ExactSpelling = true)]
-    public static extern int RenderSetIntegerScale(Renderer* renderer, CBool enable);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderGetIntegerScale", ExactSpelling = true)]
-    public static extern CBool RenderGetIntegerScale(Renderer* renderer);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderSetViewport", ExactSpelling = true)]
-    public static extern int RenderSetViewport(Renderer* renderer, [NativeTypeName("const Rect *")] Rect* rect);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderGetViewport", ExactSpelling = true)]
-    public static extern void RenderGetViewport(Renderer* renderer, Rect* rect);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderSetClipRect", ExactSpelling = true)]
-    public static extern int RenderSetClipRect(Renderer* renderer, [NativeTypeName("const Rect *")] Rect* rect);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderGetClipRect", ExactSpelling = true)]
-    public static extern void RenderGetClipRect(Renderer* renderer, Rect* rect);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderIsClipEnabled", ExactSpelling = true)]
-    public static extern CBool RenderIsClipEnabled(Renderer* renderer);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderSetScale", ExactSpelling = true)]
-    public static extern int RenderSetScale(Renderer* renderer, float scaleX, float scaleY);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderGetScale", ExactSpelling = true)]
-    public static extern void RenderGetScale(Renderer* renderer, float* scaleX, float* scaleY);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderWindowToLogical", ExactSpelling = true)]
-    public static extern void RenderWindowToLogical(Renderer* renderer, int windowX, int windowY, float* logicalX, float* logicalY);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderLogicalToWindow", ExactSpelling = true)]
-    public static extern void RenderLogicalToWindow(Renderer* renderer, float logicalX, float logicalY, int* windowX, int* windowY);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetRenderDrawColor", ExactSpelling = true)]
-    public static extern int SetRenderDrawColor(Renderer* renderer, byte r, byte g, byte b, byte a);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetRenderDrawColor", ExactSpelling = true)]
-    public static extern int GetRenderDrawColor(Renderer* renderer, [NativeTypeName(" *")] byte* r, [NativeTypeName(" *")] byte* g, [NativeTypeName(" *")] byte* b, [NativeTypeName(" *")] byte* a);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetRenderDrawBlendMode", ExactSpelling = true)]
-    public static extern int SetRenderDrawBlendMode(Renderer* renderer, BlendMode blendMode);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetRenderDrawBlendMode", ExactSpelling = true)]
-    public static extern int GetRenderDrawBlendMode(Renderer* renderer, BlendMode* blendMode);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderClear", ExactSpelling = true)]
-    public static extern int RenderClear(Renderer* renderer);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderDrawPoint", ExactSpelling = true)]
-    public static extern int RenderDrawPoint(Renderer* renderer, int x, int y);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderDrawPoints", ExactSpelling = true)]
-    public static extern int RenderDrawPoints(Renderer* renderer, [NativeTypeName("const Point *")] Point* points, int count);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderDrawLine", ExactSpelling = true)]
-    public static extern int RenderDrawLine(Renderer* renderer, int x1, int y1, int x2, int y2);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderDrawLines", ExactSpelling = true)]
-    public static extern int RenderDrawLines(Renderer* renderer, [NativeTypeName("const Point *")] Point* points, int count);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderDrawRect", ExactSpelling = true)]
-    public static extern int RenderDrawRect(Renderer* renderer, [NativeTypeName("const Rect *")] Rect* rect);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderDrawRects", ExactSpelling = true)]
-    public static extern int RenderDrawRects(Renderer* renderer, [NativeTypeName("const Rect *")] Rect* rects, int count);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderFillRect", ExactSpelling = true)]
-    public static extern int RenderFillRect(Renderer* renderer, [NativeTypeName("const Rect *")] Rect* rect);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderFillRects", ExactSpelling = true)]
-    public static extern int RenderFillRects(Renderer* renderer, [NativeTypeName("const Rect *")] Rect* rects, int count);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderCopy", ExactSpelling = true)]
-    public static extern int RenderCopy(Renderer* renderer, Texture* texture, [NativeTypeName("const Rect *")] Rect* srcrect, [NativeTypeName("const Rect *")] Rect* dstrect);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderCopyEx", ExactSpelling = true)]
-    public static extern int RenderCopyEx(Renderer* renderer, Texture* texture, [NativeTypeName("const Rect *")] Rect* srcrect, [NativeTypeName("const Rect *")] Rect* dstrect, [NativeTypeName("const double")] double angle, [NativeTypeName("const Point *")] Point* center, [NativeTypeName("const RendererFlip")] RendererFlip flip);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderDrawPointF", ExactSpelling = true)]
-    public static extern int RenderDrawPointF(Renderer* renderer, float x, float y);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderDrawPointsF", ExactSpelling = true)]
-    public static extern int RenderDrawPointsF(Renderer* renderer, [NativeTypeName("const FPoint *")] FPoint* points, int count);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderDrawLineF", ExactSpelling = true)]
-    public static extern int RenderDrawLineF(Renderer* renderer, float x1, float y1, float x2, float y2);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderDrawLinesF", ExactSpelling = true)]
-    public static extern int RenderDrawLinesF(Renderer* renderer, [NativeTypeName("const FPoint *")] FPoint* points, int count);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderDrawRectF", ExactSpelling = true)]
-    public static extern int RenderDrawRectF(Renderer* renderer, [NativeTypeName("const FRect *")] FRect* rect);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderDrawRectsF", ExactSpelling = true)]
-    public static extern int RenderDrawRectsF(Renderer* renderer, [NativeTypeName("const FRect *")] FRect* rects, int count);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderFillRectF", ExactSpelling = true)]
-    public static extern int RenderFillRectF(Renderer* renderer, [NativeTypeName("const FRect *")] FRect* rect);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderFillRectsF", ExactSpelling = true)]
-    public static extern int RenderFillRectsF(Renderer* renderer, [NativeTypeName("const FRect *")] FRect* rects, int count);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderCopyF", ExactSpelling = true)]
-    public static extern int RenderCopyF(Renderer* renderer, Texture* texture, [NativeTypeName("const Rect *")] Rect* srcrect, [NativeTypeName("const FRect *")] FRect* dstrect);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderCopyExF", ExactSpelling = true)]
-    public static extern int RenderCopyExF(Renderer* renderer, Texture* texture, [NativeTypeName("const Rect *")] Rect* srcrect, [NativeTypeName("const FRect *")] FRect* dstrect, [NativeTypeName("const double")] double angle, [NativeTypeName("const FPoint *")] FPoint* center, [NativeTypeName("const RendererFlip")] RendererFlip flip);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderGeometry", ExactSpelling = true)]
-    public static extern int RenderGeometry(Renderer* renderer, Texture* texture, [NativeTypeName("const Vertex *")] Vertex* vertices, int num_vertices, [NativeTypeName("const int *")] int* indices, int num_indices);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderGeometryRaw", ExactSpelling = true)]
-    public static extern int RenderGeometryRaw(Renderer* renderer, Texture* texture, [NativeTypeName("const float *")] float* xy, int xy_stride, [NativeTypeName("const Color *")] Color* color, int color_stride, [NativeTypeName("const float *")] float* uv, int uv_stride, int num_vertices, [NativeTypeName("const void *")] void* indices, int num_indices, int size_indices);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderReadPixels", ExactSpelling = true)]
-    public static extern int RenderReadPixels(Renderer* renderer, [NativeTypeName("const Rect *")] Rect* rect, uint format, void* pixels, int pitch);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderPresent", ExactSpelling = true)]
-    public static extern void RenderPresent(Renderer* renderer);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_DestroyTexture", ExactSpelling = true)]
-    public static extern void DestroyTexture(Texture* texture);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_DestroyRenderer", ExactSpelling = true)]
-    public static extern void DestroyRenderer(Renderer* renderer);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderFlush", ExactSpelling = true)]
-    public static extern int RenderFlush(Renderer* renderer);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GL_BindTexture", ExactSpelling = true)]
-    public static extern int GL_BindTexture(Texture* texture, float* texw, float* texh);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GL_UnbindTexture", ExactSpelling = true)]
-    public static extern int GL_UnbindTexture(Texture* texture);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderGetMetalLayer", ExactSpelling = true)]
-    public static extern void* RenderGetMetalLayer(Renderer* renderer);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderGetMetalCommandEncoder", ExactSpelling = true)]
-    public static extern void* RenderGetMetalCommandEncoder(Renderer* renderer);
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderSetVSync", ExactSpelling = true)]
-    public static extern int RenderSetVSync(Renderer* renderer, int vsync);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetNumRenderDrivers")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetNumRenderDrivers();
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetRenderDriverInfo")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetRenderDriverInfo(int index, SDL_RendererInfo* info);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_CreateWindowAndRenderer")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int CreateWindowAndRenderer(int width, int height, uint window_flags, [NativeTypeName("SDL_Window **")] nint* window, [NativeTypeName("SDL_Renderer **")] nint* renderer);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_CreateRenderer")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: NativeTypeName("SDL_Renderer*")]
+    public static partial nint CreateRenderer([NativeTypeName("SDL_Window*")] nint window, int index, uint flags);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_CreateSoftwareRenderer")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: NativeTypeName("SDL_Renderer*")]
+    public static partial nint CreateSoftwareRenderer(SDL_Surface* surface);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetRenderer")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: NativeTypeName("SDL_Renderer*")]
+    public static partial nint GetRenderer([NativeTypeName("SDL_Window*")] nint window);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderGetWindow")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: NativeTypeName("SDL_Window*")]
+    public static partial nint RenderGetWindow([NativeTypeName("SDL_Renderer*")] nint renderer);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetRendererInfo")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetRendererInfo([NativeTypeName("SDL_Renderer*")] nint renderer, SDL_RendererInfo* info);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetRendererOutputSize")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetRendererOutputSize([NativeTypeName("SDL_Renderer*")] nint renderer, int* w, int* h);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_CreateTexture")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: NativeTypeName("SDL_Texture*")]
+    public static partial nint CreateTexture([NativeTypeName("SDL_Renderer*")] nint renderer, uint format, int access, int w, int h);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_CreateTextureFromSurface")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: NativeTypeName("SDL_Texture*")]
+    public static partial nint CreateTextureFromSurface([NativeTypeName("SDL_Renderer*")] nint renderer, SDL_Surface* surface);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_QueryTexture")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int QueryTexture([NativeTypeName("SDL_Texture*")] nint texture, [NativeTypeName(" *")] uint* format, int* access, int* w, int* h);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_SetTextureColorMod")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetTextureColorMod([NativeTypeName("SDL_Texture*")] nint texture, byte r, byte g, byte b);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetTextureColorMod")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetTextureColorMod([NativeTypeName("SDL_Texture*")] nint texture, [NativeTypeName(" *")] byte* r, [NativeTypeName(" *")] byte* g, [NativeTypeName(" *")] byte* b);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_SetTextureAlphaMod")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetTextureAlphaMod([NativeTypeName("SDL_Texture*")] nint texture, byte alpha);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetTextureAlphaMod")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetTextureAlphaMod([NativeTypeName("SDL_Texture*")] nint texture, [NativeTypeName(" *")] byte* alpha);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_SetTextureBlendMode")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetTextureBlendMode([NativeTypeName("SDL_Texture*")] nint texture, SDL_BlendMode blendMode);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetTextureBlendMode")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetTextureBlendMode([NativeTypeName("SDL_Texture*")] nint texture, SDL_BlendMode* blendMode);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_SetTextureScaleMode")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetTextureScaleMode([NativeTypeName("SDL_Texture*")] nint texture, SDL_ScaleMode scaleMode);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetTextureScaleMode")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetTextureScaleMode([NativeTypeName("SDL_Texture*")] nint texture, SDL_ScaleMode* scaleMode);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_SetTextureUserData")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetTextureUserData([NativeTypeName("SDL_Texture*")] nint texture, void* userdata);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetTextureUserData")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void* GetTextureUserData([NativeTypeName("SDL_Texture*")] nint texture);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_UpdateTexture")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int UpdateTexture([NativeTypeName("SDL_Texture*")] nint texture, [NativeTypeName("const SDL_Rect *")] SDL_Rect* rect, [NativeTypeName("const void *")] void* pixels, int pitch);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_UpdateYUVTexture")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int UpdateYUVTexture([NativeTypeName("SDL_Texture*")] nint texture, [NativeTypeName("const SDL_Rect *")] SDL_Rect* rect, [NativeTypeName(" *")] byte* Yplane, int Ypitch, [NativeTypeName(" *")] byte* Uplane, int Upitch, [NativeTypeName(" *")] byte* Vplane, int Vpitch);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_UpdateNVTexture")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int UpdateNVTexture([NativeTypeName("SDL_Texture*")] nint texture, [NativeTypeName("const SDL_Rect *")] SDL_Rect* rect, [NativeTypeName(" *")] byte* Yplane, int Ypitch, [NativeTypeName(" *")] byte* UVplane, int UVpitch);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_LockTexture")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int LockTexture([NativeTypeName("SDL_Texture*")] nint texture, [NativeTypeName("const SDL_Rect *")] SDL_Rect* rect, void** pixels, int* pitch);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_LockTextureToSurface")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int LockTextureToSurface([NativeTypeName("SDL_Texture*")] nint texture, [NativeTypeName("const SDL_Rect *")] SDL_Rect* rect, SDL_Surface** surface);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_UnlockTexture")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void UnlockTexture([NativeTypeName("SDL_Texture*")] nint texture);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderTargetSupported")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool RenderTargetSupported([NativeTypeName("SDL_Renderer*")] nint renderer);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_SetRenderTarget")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetRenderTarget([NativeTypeName("SDL_Renderer*")] nint renderer, [NativeTypeName("SDL_Texture*")] nint texture);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetRenderTarget")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: NativeTypeName("SDL_Texture*")]
+    public static partial nint GetRenderTarget([NativeTypeName("SDL_Renderer*")] nint renderer);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderSetLogicalSize")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderSetLogicalSize([NativeTypeName("SDL_Renderer*")] nint renderer, int w, int h);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderGetLogicalSize")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void RenderGetLogicalSize([NativeTypeName("SDL_Renderer*")] nint renderer, int* w, int* h);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderSetIntegerScale")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderSetIntegerScale([NativeTypeName("SDL_Renderer*")] nint renderer, [NativeTypeName("SDL_bool")] CBool enable);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderGetIntegerScale")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool RenderGetIntegerScale([NativeTypeName("SDL_Renderer*")] nint renderer);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderSetViewport")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderSetViewport([NativeTypeName("SDL_Renderer*")] nint renderer, [NativeTypeName("const SDL_Rect *")] SDL_Rect* rect);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderGetViewport")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void RenderGetViewport([NativeTypeName("SDL_Renderer*")] nint renderer, SDL_Rect* rect);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderSetClipRect")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderSetClipRect([NativeTypeName("SDL_Renderer*")] nint renderer, [NativeTypeName("const SDL_Rect *")] SDL_Rect* rect);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderGetClipRect")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void RenderGetClipRect([NativeTypeName("SDL_Renderer*")] nint renderer, SDL_Rect* rect);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderIsClipEnabled")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool RenderIsClipEnabled([NativeTypeName("SDL_Renderer*")] nint renderer);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderSetScale")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderSetScale([NativeTypeName("SDL_Renderer*")] nint renderer, float scaleX, float scaleY);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderGetScale")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void RenderGetScale([NativeTypeName("SDL_Renderer*")] nint renderer, float* scaleX, float* scaleY);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderWindowToLogical")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void RenderWindowToLogical([NativeTypeName("SDL_Renderer*")] nint renderer, int windowX, int windowY, float* logicalX, float* logicalY);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderLogicalToWindow")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void RenderLogicalToWindow([NativeTypeName("SDL_Renderer*")] nint renderer, float logicalX, float logicalY, int* windowX, int* windowY);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_SetRenderDrawColor")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetRenderDrawColor([NativeTypeName("SDL_Renderer*")] nint renderer, byte r, byte g, byte b, byte a);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetRenderDrawColor")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetRenderDrawColor([NativeTypeName("SDL_Renderer*")] nint renderer, [NativeTypeName(" *")] byte* r, [NativeTypeName(" *")] byte* g, [NativeTypeName(" *")] byte* b, [NativeTypeName(" *")] byte* a);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_SetRenderDrawBlendMode")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetRenderDrawBlendMode([NativeTypeName("SDL_Renderer*")] nint renderer, SDL_BlendMode blendMode);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetRenderDrawBlendMode")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetRenderDrawBlendMode([NativeTypeName("SDL_Renderer*")] nint renderer, SDL_BlendMode* blendMode);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderClear")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderClear([NativeTypeName("SDL_Renderer*")] nint renderer);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderDrawPoint")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderDrawPoint([NativeTypeName("SDL_Renderer*")] nint renderer, int x, int y);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderDrawPoints")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderDrawPoints([NativeTypeName("SDL_Renderer*")] nint renderer, [NativeTypeName("const SDL_Point *")] SDL_Point* points, int count);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderDrawLine")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderDrawLine([NativeTypeName("SDL_Renderer*")] nint renderer, int x1, int y1, int x2, int y2);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderDrawLines")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderDrawLines([NativeTypeName("SDL_Renderer*")] nint renderer, [NativeTypeName("const SDL_Point *")] SDL_Point* points, int count);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderDrawRect")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderDrawRect([NativeTypeName("SDL_Renderer*")] nint renderer, [NativeTypeName("const SDL_Rect *")] SDL_Rect* rect);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderDrawRects")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderDrawRects([NativeTypeName("SDL_Renderer*")] nint renderer, [NativeTypeName("const SDL_Rect *")] SDL_Rect* rects, int count);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderFillRect")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderFillRect([NativeTypeName("SDL_Renderer*")] nint renderer, [NativeTypeName("const SDL_Rect *")] SDL_Rect* rect);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderFillRects")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderFillRects([NativeTypeName("SDL_Renderer*")] nint renderer, [NativeTypeName("const SDL_Rect *")] SDL_Rect* rects, int count);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderCopy")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderCopy([NativeTypeName("SDL_Renderer*")] nint renderer, [NativeTypeName("SDL_Texture*")] nint texture, [NativeTypeName("const SDL_Rect *")] SDL_Rect* srcrect, [NativeTypeName("const SDL_Rect *")] SDL_Rect* dstrect);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderCopyEx")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderCopyEx([NativeTypeName("SDL_Renderer*")] nint renderer, [NativeTypeName("SDL_Texture*")] nint texture, [NativeTypeName("const SDL_Rect *")] SDL_Rect* srcrect, [NativeTypeName("const SDL_Rect *")] SDL_Rect* dstrect, [NativeTypeName("const double")] double angle, [NativeTypeName("const SDL_Point *")] SDL_Point* center, [NativeTypeName("const SDL_RendererFlip")] SDL_RendererFlip flip);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderDrawPointF")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderDrawPointF([NativeTypeName("SDL_Renderer*")] nint renderer, float x, float y);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderDrawPointsF")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderDrawPointsF([NativeTypeName("SDL_Renderer*")] nint renderer, [NativeTypeName("const SDL_FPoint *")] SDL_FPoint* points, int count);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderDrawLineF")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderDrawLineF([NativeTypeName("SDL_Renderer*")] nint renderer, float x1, float y1, float x2, float y2);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderDrawLinesF")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderDrawLinesF([NativeTypeName("SDL_Renderer*")] nint renderer, [NativeTypeName("const SDL_FPoint *")] SDL_FPoint* points, int count);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderDrawRectF")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderDrawRectF([NativeTypeName("SDL_Renderer*")] nint renderer, [NativeTypeName("const SDL_FRect *")] SDL_FRect* rect);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderDrawRectsF")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderDrawRectsF([NativeTypeName("SDL_Renderer*")] nint renderer, [NativeTypeName("const SDL_FRect *")] SDL_FRect* rects, int count);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderFillRectF")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderFillRectF([NativeTypeName("SDL_Renderer*")] nint renderer, [NativeTypeName("const SDL_FRect *")] SDL_FRect* rect);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderFillRectsF")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderFillRectsF([NativeTypeName("SDL_Renderer*")] nint renderer, [NativeTypeName("const SDL_FRect *")] SDL_FRect* rects, int count);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderCopyF")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderCopyF([NativeTypeName("SDL_Renderer*")] nint renderer, [NativeTypeName("SDL_Texture*")] nint texture, [NativeTypeName("const SDL_Rect *")] SDL_Rect* srcrect, [NativeTypeName("const SDL_FRect *")] SDL_FRect* dstrect);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderCopyExF")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderCopyExF([NativeTypeName("SDL_Renderer*")] nint renderer, [NativeTypeName("SDL_Texture*")] nint texture, [NativeTypeName("const SDL_Rect *")] SDL_Rect* srcrect, [NativeTypeName("const SDL_FRect *")] SDL_FRect* dstrect, [NativeTypeName("const double")] double angle, [NativeTypeName("const SDL_FPoint *")] SDL_FPoint* center, [NativeTypeName("const SDL_RendererFlip")] SDL_RendererFlip flip);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderGeometry")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderGeometry([NativeTypeName("SDL_Renderer*")] nint renderer, [NativeTypeName("SDL_Texture*")] nint texture, [NativeTypeName("const SDL_Vertex *")] SDL_Vertex* vertices, int num_vertices, [NativeTypeName("const int *")] int* indices, int num_indices);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderGeometryRaw")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderGeometryRaw([NativeTypeName("SDL_Renderer*")] nint renderer, [NativeTypeName("SDL_Texture*")] nint texture, [NativeTypeName("const float *")] float* xy, int xy_stride, [NativeTypeName("const SDL_Color *")] SDL_Color* color, int color_stride, [NativeTypeName("const float *")] float* uv, int uv_stride, int num_vertices, [NativeTypeName("const void *")] void* indices, int num_indices, int size_indices);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderReadPixels")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderReadPixels([NativeTypeName("SDL_Renderer*")] nint renderer, [NativeTypeName("const SDL_Rect *")] SDL_Rect* rect, uint format, void* pixels, int pitch);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderPresent")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void RenderPresent([NativeTypeName("SDL_Renderer*")] nint renderer);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_DestroyTexture")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void DestroyTexture([NativeTypeName("SDL_Texture*")] nint texture);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_DestroyRenderer")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void DestroyRenderer([NativeTypeName("SDL_Renderer*")] nint renderer);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderFlush")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderFlush([NativeTypeName("SDL_Renderer*")] nint renderer);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_GL_BindTexture")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GL_BindTexture([NativeTypeName("SDL_Texture*")] nint texture, float* texw, float* texh);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_GL_UnbindTexture")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GL_UnbindTexture([NativeTypeName("SDL_Texture*")] nint texture);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderGetMetalLayer")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void* RenderGetMetalLayer([NativeTypeName("SDL_Renderer*")] nint renderer);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderGetMetalCommandEncoder")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void* RenderGetMetalCommandEncoder([NativeTypeName("SDL_Renderer*")] nint renderer);
+
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderSetVSync")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int RenderSetVSync([NativeTypeName("SDL_Renderer*")] nint renderer, int vsync);
 }

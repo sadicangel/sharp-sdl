@@ -2,7 +2,7 @@ using System.Runtime.InteropServices;
 
 namespace SharpSDL.Interop;
 
-public unsafe partial struct Locale
+internal unsafe partial struct SDL_Locale
 {
     [NativeTypeName("const char *")]
     public byte* language;
@@ -11,8 +11,9 @@ public unsafe partial struct Locale
     public byte* country;
 }
 
-public static unsafe partial class SDL
+internal static unsafe partial class SDL
 {
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetPreferredLocales", ExactSpelling = true)]
-    public static extern Locale* GetPreferredLocales();
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetPreferredLocales")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial SDL_Locale* GetPreferredLocales();
 }

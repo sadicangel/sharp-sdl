@@ -1,43 +1,57 @@
+using System;
 using System.Runtime.InteropServices;
 
 namespace SharpSDL.Interop;
 
-public enum HintPriority
+internal enum SDL_HintPriority
 {
-    DEFAULT,
-    NORMAL,
-    OVERRIDE,
+    SDL_HINT_DEFAULT,
+    SDL_HINT_NORMAL,
+    SDL_HINT_OVERRIDE,
 }
 
-public static unsafe partial class SDL
+internal static unsafe partial class SDL
 {
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetHintWithPriority", ExactSpelling = true)]
-    public static extern CBool SetHintWithPriority([NativeTypeName("const char *")] byte* name, [NativeTypeName("const char *")] byte* value, HintPriority priority);
+    [LibraryImport("SDL2", EntryPoint = "SDL_SetHintWithPriority")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool SetHintWithPriority([NativeTypeName("const char *")] byte* name, [NativeTypeName("const char *")] byte* value, SDL_HintPriority priority);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetHint", ExactSpelling = true)]
-    public static extern CBool SetHint([NativeTypeName("const char *")] byte* name, [NativeTypeName("const char *")] byte* value);
+    [LibraryImport("SDL2", EntryPoint = "SDL_SetHint")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool SetHint([NativeTypeName("const char *")] byte* name, [NativeTypeName("const char *")] byte* value);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_ResetHint", ExactSpelling = true)]
-    public static extern CBool ResetHint([NativeTypeName("const char *")] byte* name);
+    [LibraryImport("SDL2", EntryPoint = "SDL_ResetHint")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool ResetHint([NativeTypeName("const char *")] byte* name);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_ResetHints", ExactSpelling = true)]
-    public static extern void ResetHints();
+    [LibraryImport("SDL2", EntryPoint = "SDL_ResetHints")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void ResetHints();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetHint", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetHint")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
-    public static extern byte* GetHint([NativeTypeName("const char *")] byte* name);
+    public static partial byte* GetHint([NativeTypeName("const char *")] byte* name);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetHintBoolean", ExactSpelling = true)]
-    public static extern CBool GetHintBoolean([NativeTypeName("const char *")] byte* name, CBool default_value);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetHintBoolean")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool GetHintBoolean([NativeTypeName("const char *")] byte* name, [NativeTypeName("SDL_bool")] CBool default_value);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_AddHintCallback", ExactSpelling = true)]
-    public static extern void AddHintCallback([NativeTypeName("const char *")] byte* name, [NativeTypeName("SDL_HintCallback")] delegate* unmanaged[Cdecl]<void*, byte*, byte*, byte*, void> callback, void* userdata);
+    [LibraryImport("SDL2", EntryPoint = "SDL_AddHintCallback")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void AddHintCallback([NativeTypeName("const char *")] byte* name, [NativeTypeName("SDL_HintCallback")] delegate* unmanaged[Cdecl]<void*, byte*, byte*, byte*, void> callback, void* userdata);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_DelHintCallback", ExactSpelling = true)]
-    public static extern void DelHintCallback([NativeTypeName("const char *")] byte* name, [NativeTypeName("SDL_HintCallback")] delegate* unmanaged[Cdecl]<void*, byte*, byte*, byte*, void> callback, void* userdata);
+    [LibraryImport("SDL2", EntryPoint = "SDL_DelHintCallback")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void DelHintCallback([NativeTypeName("const char *")] byte* name, [NativeTypeName("SDL_HintCallback")] delegate* unmanaged[Cdecl]<void*, byte*, byte*, byte*, void> callback, void* userdata);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_ClearHints", ExactSpelling = true)]
-    public static extern void ClearHints();
+    [LibraryImport("SDL2", EntryPoint = "SDL_ClearHints")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void ClearHints();
 
     [NativeTypeName("#define SDL_HINT_ACCELEROMETER_AS_JOYSTICK \"SDL_ACCELEROMETER_AS_JOYSTICK\"")]
     public static ReadOnlySpan<byte> SDL_HINT_ACCELEROMETER_AS_JOYSTICK => "SDL_ACCELEROMETER_AS_JOYSTICK"u8;

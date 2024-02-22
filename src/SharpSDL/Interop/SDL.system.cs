@@ -2,56 +2,62 @@ using System.Runtime.InteropServices;
 
 namespace SharpSDL.Interop;
 
-public partial struct IDirect3DDevice9
+internal static unsafe partial class SDL
 {
-}
+    [LibraryImport("SDL2", EntryPoint = "SDL_SetWindowsMessageHook")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void SetWindowsMessageHook([NativeTypeName("SDL_WindowsMessageHook")] delegate* unmanaged[Cdecl]<void*, void*, uint, ulong, long, void> callback, void* userdata);
 
-public partial struct ID3D11Device
-{
-}
+    [LibraryImport("SDL2", EntryPoint = "SDL_Direct3D9GetAdapterIndex")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int Direct3D9GetAdapterIndex(int displayIndex);
 
-public partial struct ID3D12Device
-{
-}
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderGetD3D9Device")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("IDirect3DDevice9*")]
+    public static partial nint RenderGetD3D9Device([NativeTypeName("SDL_Renderer*")] nint renderer);
 
-public static unsafe partial class SDL
-{
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetWindowsMessageHook", ExactSpelling = true)]
-    public static extern void SetWindowsMessageHook([NativeTypeName("WindowsMessageHook")] delegate* unmanaged[Cdecl]<void*, void*, uint, ulong, long, void> callback, void* userdata);
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderGetD3D11Device")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("ID3D11Device*")]
+    public static partial nint RenderGetD3D11Device([NativeTypeName("SDL_Renderer*")] nint renderer);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_Direct3D9GetAdapterIndex", ExactSpelling = true)]
-    public static extern int Direct3D9GetAdapterIndex(int displayIndex);
+    [LibraryImport("SDL2", EntryPoint = "SDL_RenderGetD3D12Device")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("ID3D12Device*")]
+    public static partial nint RenderGetD3D12Device([NativeTypeName("SDL_Renderer*")] nint renderer);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderGetD3D9Device", ExactSpelling = true)]
-    public static extern IDirect3DDevice9* RenderGetD3D9Device(Renderer* renderer);
+    [LibraryImport("SDL2", EntryPoint = "SDL_DXGIGetOutputInfo")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool DXGIGetOutputInfo(int displayIndex, int* adapterIndex, int* outputIndex);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderGetD3D11Device", ExactSpelling = true)]
-    public static extern ID3D11Device* RenderGetD3D11Device(Renderer* renderer);
+    [LibraryImport("SDL2", EntryPoint = "SDL_IsTablet")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool IsTablet();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RenderGetD3D12Device", ExactSpelling = true)]
-    public static extern ID3D12Device* RenderGetD3D12Device(Renderer* renderer);
+    [LibraryImport("SDL2", EntryPoint = "SDL_OnApplicationWillTerminate")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void OnApplicationWillTerminate();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_DXGIGetOutputInfo", ExactSpelling = true)]
-    public static extern CBool DXGIGetOutputInfo(int displayIndex, int* adapterIndex, int* outputIndex);
+    [LibraryImport("SDL2", EntryPoint = "SDL_OnApplicationDidReceiveMemoryWarning")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void OnApplicationDidReceiveMemoryWarning();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_IsTablet", ExactSpelling = true)]
-    public static extern CBool IsTablet();
+    [LibraryImport("SDL2", EntryPoint = "SDL_OnApplicationWillResignActive")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void OnApplicationWillResignActive();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_OnApplicationWillTerminate", ExactSpelling = true)]
-    public static extern void OnApplicationWillTerminate();
+    [LibraryImport("SDL2", EntryPoint = "SDL_OnApplicationDidEnterBackground")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void OnApplicationDidEnterBackground();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_OnApplicationDidReceiveMemoryWarning", ExactSpelling = true)]
-    public static extern void OnApplicationDidReceiveMemoryWarning();
+    [LibraryImport("SDL2", EntryPoint = "SDL_OnApplicationWillEnterForeground")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void OnApplicationWillEnterForeground();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_OnApplicationWillResignActive", ExactSpelling = true)]
-    public static extern void OnApplicationWillResignActive();
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_OnApplicationDidEnterBackground", ExactSpelling = true)]
-    public static extern void OnApplicationDidEnterBackground();
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_OnApplicationWillEnterForeground", ExactSpelling = true)]
-    public static extern void OnApplicationWillEnterForeground();
-
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_OnApplicationDidBecomeActive", ExactSpelling = true)]
-    public static extern void OnApplicationDidBecomeActive();
+    [LibraryImport("SDL2", EntryPoint = "SDL_OnApplicationDidBecomeActive")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void OnApplicationDidBecomeActive();
 }

@@ -2,36 +2,32 @@ using System.Runtime.InteropServices;
 
 namespace SharpSDL.Interop;
 
-public partial struct _SDL_Joystick
+internal enum SDL_JoystickType
 {
+    SDL_JOYSTICK_TYPE_UNKNOWN,
+    SDL_JOYSTICK_TYPE_GAMECONTROLLER,
+    SDL_JOYSTICK_TYPE_WHEEL,
+    SDL_JOYSTICK_TYPE_ARCADE_STICK,
+    SDL_JOYSTICK_TYPE_FLIGHT_STICK,
+    SDL_JOYSTICK_TYPE_DANCE_PAD,
+    SDL_JOYSTICK_TYPE_GUITAR,
+    SDL_JOYSTICK_TYPE_DRUM_KIT,
+    SDL_JOYSTICK_TYPE_ARCADE_PAD,
+    SDL_JOYSTICK_TYPE_THROTTLE,
 }
 
-public enum JoystickType
+internal enum SDL_JoystickPowerLevel
 {
-    UNKNOWN,
-    GAMECONTROLLER,
-    WHEEL,
-    ARCADE_STICK,
-    FLIGHT_STICK,
-    DANCE_PAD,
-    GUITAR,
-    DRUM_KIT,
-    ARCADE_PAD,
-    THROTTLE,
+    SDL_JOYSTICK_POWER_UNKNOWN = -1,
+    SDL_JOYSTICK_POWER_EMPTY,
+    SDL_JOYSTICK_POWER_LOW,
+    SDL_JOYSTICK_POWER_MEDIUM,
+    SDL_JOYSTICK_POWER_FULL,
+    SDL_JOYSTICK_POWER_WIRED,
+    SDL_JOYSTICK_POWER_MAX,
 }
 
-public enum JoystickPowerLevel
-{
-    UNKNOWN = -1,
-    EMPTY,
-    LOW,
-    MEDIUM,
-    FULL,
-    WIRED,
-    MAX,
-}
-
-public unsafe partial struct VirtualJoystickDesc
+internal unsafe partial struct SDL_VirtualJoystickDesc
 {
     public ushort version;
 
@@ -77,194 +73,258 @@ public unsafe partial struct VirtualJoystickDesc
     public delegate* unmanaged[Cdecl]<void*, void*, int, int> SendEffect;
 }
 
-public static unsafe partial class SDL
+internal static unsafe partial class SDL
 {
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_LockJoysticks", ExactSpelling = true)]
-    public static extern void LockJoysticks();
+    [LibraryImport("SDL2", EntryPoint = "SDL_LockJoysticks")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void LockJoysticks();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_UnlockJoysticks", ExactSpelling = true)]
-    public static extern void UnlockJoysticks();
+    [LibraryImport("SDL2", EntryPoint = "SDL_UnlockJoysticks")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void UnlockJoysticks();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_NumJoysticks", ExactSpelling = true)]
-    public static extern int NumJoysticks();
+    [LibraryImport("SDL2", EntryPoint = "SDL_NumJoysticks")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int NumJoysticks();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickNameForIndex", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickNameForIndex")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
-    public static extern byte* JoystickNameForIndex(int device_index);
+    public static partial byte* JoystickNameForIndex(int device_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickPathForIndex", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickPathForIndex")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
-    public static extern byte* JoystickPathForIndex(int device_index);
+    public static partial byte* JoystickPathForIndex(int device_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickGetDevicePlayerIndex", ExactSpelling = true)]
-    public static extern int JoystickGetDevicePlayerIndex(int device_index);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickGetDevicePlayerIndex")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int JoystickGetDevicePlayerIndex(int device_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickGetDeviceGUID", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickGetDeviceGUID")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("SDL_JoystickGUID")]
-    public static extern GUID JoystickGetDeviceGUID(int device_index);
+    public static partial SDL_GUID JoystickGetDeviceGUID(int device_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickGetDeviceVendor", ExactSpelling = true)]
-    public static extern ushort JoystickGetDeviceVendor(int device_index);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickGetDeviceVendor")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial ushort JoystickGetDeviceVendor(int device_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickGetDeviceProduct", ExactSpelling = true)]
-    public static extern ushort JoystickGetDeviceProduct(int device_index);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickGetDeviceProduct")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial ushort JoystickGetDeviceProduct(int device_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickGetDeviceProductVersion", ExactSpelling = true)]
-    public static extern ushort JoystickGetDeviceProductVersion(int device_index);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickGetDeviceProductVersion")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial ushort JoystickGetDeviceProductVersion(int device_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickGetDeviceType", ExactSpelling = true)]
-    public static extern JoystickType JoystickGetDeviceType(int device_index);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickGetDeviceType")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial SDL_JoystickType JoystickGetDeviceType(int device_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickGetDeviceInstanceID", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickGetDeviceInstanceID")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("SDL_JoystickID")]
-    public static extern int JoystickGetDeviceInstanceID(int device_index);
+    public static partial int JoystickGetDeviceInstanceID(int device_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickOpen", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickOpen")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("SDL_Joystick *")]
-    public static extern _SDL_Joystick* JoystickOpen(int device_index);
+    public static partial nint JoystickOpen(int device_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickFromInstanceID", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickFromInstanceID")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("SDL_Joystick *")]
-    public static extern _SDL_Joystick* JoystickFromInstanceID([NativeTypeName("SDL_JoystickID")] int instance_id);
+    public static partial nint JoystickFromInstanceID([NativeTypeName("SDL_JoystickID")] int instance_id);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickFromPlayerIndex", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickFromPlayerIndex")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("SDL_Joystick *")]
-    public static extern _SDL_Joystick* JoystickFromPlayerIndex(int player_index);
+    public static partial nint JoystickFromPlayerIndex(int player_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickAttachVirtual", ExactSpelling = true)]
-    public static extern int JoystickAttachVirtual(JoystickType type, int naxes, int nbuttons, int nhats);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickAttachVirtual")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int JoystickAttachVirtual(SDL_JoystickType type, int naxes, int nbuttons, int nhats);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickAttachVirtualEx", ExactSpelling = true)]
-    public static extern int JoystickAttachVirtualEx([NativeTypeName("const VirtualJoystickDesc *")] VirtualJoystickDesc* desc);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickAttachVirtualEx")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int JoystickAttachVirtualEx([NativeTypeName("const SDL_VirtualJoystickDesc *")] SDL_VirtualJoystickDesc* desc);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickDetachVirtual", ExactSpelling = true)]
-    public static extern int JoystickDetachVirtual(int device_index);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickDetachVirtual")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int JoystickDetachVirtual(int device_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickIsVirtual", ExactSpelling = true)]
-    public static extern CBool JoystickIsVirtual(int device_index);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickIsVirtual")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool JoystickIsVirtual(int device_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickSetVirtualAxis", ExactSpelling = true)]
-    public static extern int JoystickSetVirtualAxis([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick, int axis, short value);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickSetVirtualAxis")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int JoystickSetVirtualAxis([NativeTypeName("SDL_Joystick *")] nint joystick, int axis, short value);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickSetVirtualButton", ExactSpelling = true)]
-    public static extern int JoystickSetVirtualButton([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick, int button, byte value);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickSetVirtualButton")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int JoystickSetVirtualButton([NativeTypeName("SDL_Joystick *")] nint joystick, int button, byte value);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickSetVirtualHat", ExactSpelling = true)]
-    public static extern int JoystickSetVirtualHat([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick, int hat, byte value);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickSetVirtualHat")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int JoystickSetVirtualHat([NativeTypeName("SDL_Joystick *")] nint joystick, int hat, byte value);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickName", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickName")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
-    public static extern byte* JoystickName([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick);
+    public static partial byte* JoystickName([NativeTypeName("SDL_Joystick *")] nint joystick);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickPath", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickPath")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
-    public static extern byte* JoystickPath([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick);
+    public static partial byte* JoystickPath([NativeTypeName("SDL_Joystick *")] nint joystick);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickGetPlayerIndex", ExactSpelling = true)]
-    public static extern int JoystickGetPlayerIndex([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickGetPlayerIndex")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int JoystickGetPlayerIndex([NativeTypeName("SDL_Joystick *")] nint joystick);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickSetPlayerIndex", ExactSpelling = true)]
-    public static extern void JoystickSetPlayerIndex([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick, int player_index);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickSetPlayerIndex")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void JoystickSetPlayerIndex([NativeTypeName("SDL_Joystick *")] nint joystick, int player_index);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickGetGUID", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickGetGUID")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("SDL_JoystickGUID")]
-    public static extern GUID JoystickGetGUID([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick);
+    public static partial SDL_GUID JoystickGetGUID([NativeTypeName("SDL_Joystick *")] nint joystick);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickGetVendor", ExactSpelling = true)]
-    public static extern ushort JoystickGetVendor([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickGetVendor")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial ushort JoystickGetVendor([NativeTypeName("SDL_Joystick *")] nint joystick);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickGetProduct", ExactSpelling = true)]
-    public static extern ushort JoystickGetProduct([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickGetProduct")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial ushort JoystickGetProduct([NativeTypeName("SDL_Joystick *")] nint joystick);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickGetProductVersion", ExactSpelling = true)]
-    public static extern ushort JoystickGetProductVersion([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickGetProductVersion")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial ushort JoystickGetProductVersion([NativeTypeName("SDL_Joystick *")] nint joystick);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickGetFirmwareVersion", ExactSpelling = true)]
-    public static extern ushort JoystickGetFirmwareVersion([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickGetFirmwareVersion")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial ushort JoystickGetFirmwareVersion([NativeTypeName("SDL_Joystick *")] nint joystick);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickGetSerial", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickGetSerial")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
-    public static extern byte* JoystickGetSerial([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick);
+    public static partial byte* JoystickGetSerial([NativeTypeName("SDL_Joystick *")] nint joystick);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickGetType", ExactSpelling = true)]
-    public static extern JoystickType JoystickGetType([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickGetType")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial SDL_JoystickType JoystickGetType([NativeTypeName("SDL_Joystick *")] nint joystick);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickGetGUIDString", ExactSpelling = true)]
-    public static extern void JoystickGetGUIDString([NativeTypeName("SDL_JoystickGUID")] GUID guid, [NativeTypeName("char *")] byte* pszGUID, int cbGUID);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickGetGUIDString")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void JoystickGetGUIDString([NativeTypeName("SDL_JoystickGUID")] SDL_GUID guid, [NativeTypeName("char *")] byte* pszGUID, int cbGUID);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickGetGUIDFromString", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickGetGUIDFromString")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("SDL_JoystickGUID")]
-    public static extern GUID JoystickGetGUIDFromString([NativeTypeName("const char *")] byte* pchGUID);
+    public static partial SDL_GUID JoystickGetGUIDFromString([NativeTypeName("const char *")] byte* pchGUID);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetJoystickGUIDInfo", ExactSpelling = true)]
-    public static extern void GetJoystickGUIDInfo([NativeTypeName("SDL_JoystickGUID")] GUID guid, [NativeTypeName(" *")] ushort* vendor, [NativeTypeName(" *")] ushort* product, [NativeTypeName(" *")] ushort* version, [NativeTypeName(" *")] ushort* crc16);
+    [LibraryImport("SDL2", EntryPoint = "SDL_GetJoystickGUIDInfo")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void GetJoystickGUIDInfo([NativeTypeName("SDL_JoystickGUID")] SDL_GUID guid, [NativeTypeName(" *")] ushort* vendor, [NativeTypeName(" *")] ushort* product, [NativeTypeName(" *")] ushort* version, [NativeTypeName(" *")] ushort* crc16);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickGetAttached", ExactSpelling = true)]
-    public static extern CBool JoystickGetAttached([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickGetAttached")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool JoystickGetAttached([NativeTypeName("SDL_Joystick *")] nint joystick);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickInstanceID", ExactSpelling = true)]
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickInstanceID")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
     [return: NativeTypeName("SDL_JoystickID")]
-    public static extern int JoystickInstanceID([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick);
+    public static partial int JoystickInstanceID([NativeTypeName("SDL_Joystick *")] nint joystick);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickNumAxes", ExactSpelling = true)]
-    public static extern int JoystickNumAxes([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickNumAxes")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int JoystickNumAxes([NativeTypeName("SDL_Joystick *")] nint joystick);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickNumBalls", ExactSpelling = true)]
-    public static extern int JoystickNumBalls([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickNumBalls")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int JoystickNumBalls([NativeTypeName("SDL_Joystick *")] nint joystick);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickNumHats", ExactSpelling = true)]
-    public static extern int JoystickNumHats([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickNumHats")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int JoystickNumHats([NativeTypeName("SDL_Joystick *")] nint joystick);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickNumButtons", ExactSpelling = true)]
-    public static extern int JoystickNumButtons([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickNumButtons")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int JoystickNumButtons([NativeTypeName("SDL_Joystick *")] nint joystick);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickUpdate", ExactSpelling = true)]
-    public static extern void JoystickUpdate();
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickUpdate")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void JoystickUpdate();
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickEventState", ExactSpelling = true)]
-    public static extern int JoystickEventState(int state);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickEventState")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int JoystickEventState(int state);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickGetAxis", ExactSpelling = true)]
-    public static extern short JoystickGetAxis([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick, int axis);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickGetAxis")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial short JoystickGetAxis([NativeTypeName("SDL_Joystick *")] nint joystick, int axis);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickGetAxisInitialState", ExactSpelling = true)]
-    public static extern CBool JoystickGetAxisInitialState([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick, int axis, [NativeTypeName(" *")] short* state);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickGetAxisInitialState")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool JoystickGetAxisInitialState([NativeTypeName("SDL_Joystick *")] nint joystick, int axis, [NativeTypeName(" *")] short* state);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickGetHat", ExactSpelling = true)]
-    public static extern byte JoystickGetHat([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick, int hat);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickGetHat")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial byte JoystickGetHat([NativeTypeName("SDL_Joystick *")] nint joystick, int hat);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickGetBall", ExactSpelling = true)]
-    public static extern int JoystickGetBall([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick, int ball, int* dx, int* dy);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickGetBall")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int JoystickGetBall([NativeTypeName("SDL_Joystick *")] nint joystick, int ball, int* dx, int* dy);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickGetButton", ExactSpelling = true)]
-    public static extern byte JoystickGetButton([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick, int button);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickGetButton")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial byte JoystickGetButton([NativeTypeName("SDL_Joystick *")] nint joystick, int button);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickRumble", ExactSpelling = true)]
-    public static extern int JoystickRumble([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick, ushort low_frequency_rumble, ushort high_frequency_rumble, uint duration_ms);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickRumble")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int JoystickRumble([NativeTypeName("SDL_Joystick *")] nint joystick, ushort low_frequency_rumble, ushort high_frequency_rumble, uint duration_ms);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickRumbleTriggers", ExactSpelling = true)]
-    public static extern int JoystickRumbleTriggers([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick, ushort left_rumble, ushort right_rumble, uint duration_ms);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickRumbleTriggers")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int JoystickRumbleTriggers([NativeTypeName("SDL_Joystick *")] nint joystick, ushort left_rumble, ushort right_rumble, uint duration_ms);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickHasLED", ExactSpelling = true)]
-    public static extern CBool JoystickHasLED([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickHasLED")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool JoystickHasLED([NativeTypeName("SDL_Joystick *")] nint joystick);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickHasRumble", ExactSpelling = true)]
-    public static extern CBool JoystickHasRumble([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickHasRumble")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool JoystickHasRumble([NativeTypeName("SDL_Joystick *")] nint joystick);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickHasRumbleTriggers", ExactSpelling = true)]
-    public static extern CBool JoystickHasRumbleTriggers([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickHasRumbleTriggers")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [return: NativeTypeName("SDL_bool")]
+    public static partial CBool JoystickHasRumbleTriggers([NativeTypeName("SDL_Joystick *")] nint joystick);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickSetLED", ExactSpelling = true)]
-    public static extern int JoystickSetLED([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick, byte red, byte green, byte blue);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickSetLED")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int JoystickSetLED([NativeTypeName("SDL_Joystick *")] nint joystick, byte red, byte green, byte blue);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickSendEffect", ExactSpelling = true)]
-    public static extern int JoystickSendEffect([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick, [NativeTypeName("const void *")] void* data, int size);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickSendEffect")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial int JoystickSendEffect([NativeTypeName("SDL_Joystick *")] nint joystick, [NativeTypeName("const void *")] void* data, int size);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickClose", ExactSpelling = true)]
-    public static extern void JoystickClose([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickClose")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial void JoystickClose([NativeTypeName("SDL_Joystick *")] nint joystick);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickCurrentPowerLevel", ExactSpelling = true)]
-    public static extern JoystickPowerLevel JoystickCurrentPowerLevel([NativeTypeName("SDL_Joystick *")] _SDL_Joystick* joystick);
+    [LibraryImport("SDL2", EntryPoint = "SDL_JoystickCurrentPowerLevel")]
+    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    public static partial SDL_JoystickPowerLevel JoystickCurrentPowerLevel([NativeTypeName("SDL_Joystick *")] nint joystick);
 
     [NativeTypeName("#define SDL_IPHONE_MAX_GFORCE 5.0")]
     public const double SDL_IPHONE_MAX_GFORCE = 5.0;
