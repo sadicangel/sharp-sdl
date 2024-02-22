@@ -1,108 +1,107 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace SharpSDL.Interop
+namespace SharpSDL.Interop;
+
+public enum SYSWM_TYPE
 {
-    public enum SYSWM_TYPE
+    UNKNOWN,
+    WINDOWS,
+    X11,
+    DIRECTFB,
+    COCOA,
+    UIKIT,
+    WAYLAND,
+    MIR,
+    WINRT,
+    ANDROID,
+    VIVANTE,
+    OS2,
+    HAIKU,
+    KMSDRM,
+    RISCOS,
+}
+
+public partial struct SysWMmsg
+{
+    public Version version;
+
+    public SYSWM_TYPE subsystem;
+
+    [NativeTypeName("__AnonymousRecord_SDL_syswm_L161_C5")]
+    public _msg_e__Union msg;
+
+    [StructLayout(LayoutKind.Explicit)]
+    public partial struct _msg_e__Union
     {
-        UNKNOWN,
-        WINDOWS,
-        X11,
-        DIRECTFB,
-        COCOA,
-        UIKIT,
-        WAYLAND,
-        MIR,
-        WINRT,
-        ANDROID,
-        VIVANTE,
-        OS2,
-        HAIKU,
-        KMSDRM,
-        RISCOS,
-    }
+        [FieldOffset(0)]
+        [NativeTypeName("__AnonymousRecord_SDL_syswm_L164_C9")]
+        public _win_e__Struct win;
 
-    public partial struct SysWMmsg
-    {
-        public Version version;
+        [FieldOffset(0)]
+        public int dummy;
 
-        public SYSWM_TYPE subsystem;
-
-        [NativeTypeName("__AnonymousRecord_SDL_syswm_L161_C5")]
-        public _msg_e__Union msg;
-
-        [StructLayout(LayoutKind.Explicit)]
-        public partial struct _msg_e__Union
+        public unsafe partial struct _win_e__Struct
         {
-            [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_SDL_syswm_L164_C9")]
-            public _win_e__Struct win;
+            [NativeTypeName("HWND")]
+            public nint hwnd;
 
-            [FieldOffset(0)]
-            public int dummy;
+            public uint msg;
 
-            public unsafe partial struct _win_e__Struct
-            {
-                [NativeTypeName("HWND")]
-                public nint hwnd;
+            [NativeTypeName("WPARAM")]
+            public ulong wParam;
 
-                public uint msg;
-
-                [NativeTypeName("WPARAM")]
-                public ulong wParam;
-
-                [NativeTypeName("LPARAM")]
-                public long lParam;
-            }
+            [NativeTypeName("LPARAM")]
+            public long lParam;
         }
     }
+}
 
-    public partial struct SysWMinfo
+public partial struct SysWMinfo
+{
+    public Version version;
+
+    public SYSWM_TYPE subsystem;
+
+    [NativeTypeName("__AnonymousRecord_SDL_syswm_L230_C5")]
+    public _info_e__Union info;
+
+    [StructLayout(LayoutKind.Explicit)]
+    public partial struct _info_e__Union
     {
-        public Version version;
+        [FieldOffset(0)]
+        [NativeTypeName("__AnonymousRecord_SDL_syswm_L233_C9")]
+        public _win_e__Struct win;
 
-        public SYSWM_TYPE subsystem;
+        [FieldOffset(0)]
+        [NativeTypeName("[64]")]
+        public _dummy_e__FixedBuffer dummy;
 
-        [NativeTypeName("__AnonymousRecord_SDL_syswm_L230_C5")]
-        public _info_e__Union info;
-
-        [StructLayout(LayoutKind.Explicit)]
-        public partial struct _info_e__Union
+        public unsafe partial struct _win_e__Struct
         {
-            [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_SDL_syswm_L233_C9")]
-            public _win_e__Struct win;
+            [NativeTypeName("HWND")]
+            public nint window;
 
-            [FieldOffset(0)]
-            [NativeTypeName("[64]")]
-            public _dummy_e__FixedBuffer dummy;
+            [NativeTypeName("HDC")]
+            public nint hdc;
 
-            public unsafe partial struct _win_e__Struct
-            {
-                [NativeTypeName("HWND")]
-                public nint window;
+            [NativeTypeName("HINSTANCE")]
+            public nint hinstance;
+        }
 
-                [NativeTypeName("HDC")]
-                public nint hdc;
-
-                [NativeTypeName("HINSTANCE")]
-                public nint hinstance;
-            }
-
-            [InlineArray(64)]
-            public partial struct _dummy_e__FixedBuffer
-            {
-                public byte e0;
-            }
+        [InlineArray(64)]
+        public partial struct _dummy_e__FixedBuffer
+        {
+            public byte e0;
         }
     }
+}
 
-    public static unsafe partial class SDL
-    {
-        [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetWindowWMInfo", ExactSpelling = true)]
-        public static extern CBool GetWindowWMInfo(Window* window, SysWMinfo* info);
+public static unsafe partial class SDL
+{
+    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetWindowWMInfo", ExactSpelling = true)]
+    public static extern CBool GetWindowWMInfo(Window* window, SysWMinfo* info);
 
-        [NativeTypeName("#define SDL_METALVIEW_TAG 255")]
-        public const int SDL_METALVIEW_TAG = 255;
-    }
+    [NativeTypeName("#define SDL_METALVIEW_TAG 255")]
+    public const int SDL_METALVIEW_TAG = 255;
 }
