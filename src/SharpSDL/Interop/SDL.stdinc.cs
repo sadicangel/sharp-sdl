@@ -1,6 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-
 namespace SharpSDL.Interop;
 
 internal enum SDL_DUMMY_ENUM

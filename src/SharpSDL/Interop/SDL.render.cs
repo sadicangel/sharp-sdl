@@ -1,6 +1,3 @@
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-
 namespace SharpSDL.Interop;
 
 internal enum SDL_RendererFlags

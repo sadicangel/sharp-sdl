@@ -1,5 +1,3 @@
-using System;
-
 namespace SharpSDL.Interop;
 
 internal static partial class SDL

@@ -1,6 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-
 namespace SharpSDL.Interop;
 
 internal partial struct SDL_version
