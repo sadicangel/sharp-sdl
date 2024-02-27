@@ -12,6 +12,6 @@ internal enum SDL_PowerState
 internal static unsafe partial class SDL
 {
     [LibraryImport("SDL2", EntryPoint = "SDL_GetPowerInfo")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial SDL_PowerState GetPowerInfo(int* seconds, int* percent);
 }

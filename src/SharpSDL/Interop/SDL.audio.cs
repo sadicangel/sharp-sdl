@@ -87,160 +87,160 @@ internal enum SDL_AudioStatus
 internal static unsafe partial class SDL
 {
     [LibraryImport("SDL2", EntryPoint = "SDL_GetNumAudioDrivers")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetNumAudioDrivers();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetAudioDriver")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
     public static partial byte* GetAudioDriver(int index);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_AudioInit")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int AudioInit([NativeTypeName("const char *")] byte* driver_name);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_AudioQuit")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void AudioQuit();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetCurrentAudioDriver")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
     public static partial byte* GetCurrentAudioDriver();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_OpenAudio")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int OpenAudio(SDL_AudioSpec* desired, SDL_AudioSpec* obtained);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetNumAudioDevices")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetNumAudioDevices(int iscapture);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetAudioDeviceName")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
     public static partial byte* GetAudioDeviceName(int index, int iscapture);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetAudioDeviceSpec")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetAudioDeviceSpec(int index, int iscapture, SDL_AudioSpec* spec);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetDefaultAudioInfo")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetDefaultAudioInfo([NativeTypeName("char **")] byte** name, SDL_AudioSpec* spec, int iscapture);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_OpenAudioDevice")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("SDL_AudioDeviceID")]
     public static partial uint OpenAudioDevice([NativeTypeName("const char *")] byte* device, int iscapture, [NativeTypeName("const SDL_AudioSpec *")] SDL_AudioSpec* desired, SDL_AudioSpec* obtained, int allowed_changes);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetAudioStatus")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial SDL_AudioStatus GetAudioStatus();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetAudioDeviceStatus")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial SDL_AudioStatus GetAudioDeviceStatus([NativeTypeName("SDL_AudioDeviceID")] uint dev);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_PauseAudio")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void PauseAudio(int pause_on);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_PauseAudioDevice")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void PauseAudioDevice([NativeTypeName("SDL_AudioDeviceID")] uint dev, int pause_on);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_LoadWAV_RW")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial SDL_AudioSpec* LoadWAV_RW(SDL_RWops* src, int freesrc, SDL_AudioSpec* spec, [NativeTypeName(" **")] byte** audio_buf, [NativeTypeName(" *")] uint* audio_len);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_FreeWAV")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void FreeWAV([NativeTypeName(" *")] byte* audio_buf);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_BuildAudioCVT")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int BuildAudioCVT(SDL_AudioCVT* cvt, [NativeTypeName("SDL_AudioFormat")] ushort src_format, byte src_channels, int src_rate, [NativeTypeName("SDL_AudioFormat")] ushort dst_format, byte dst_channels, int dst_rate);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_ConvertAudio")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int ConvertAudio(SDL_AudioCVT* cvt);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_NewAudioStream")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("SDL_AudioStream *")]
     public static partial nint NewAudioStream([NativeTypeName("const SDL_AudioFormat")] ushort src_format, byte src_channels, [NativeTypeName("const int")] int src_rate, [NativeTypeName("const SDL_AudioFormat")] ushort dst_format, byte dst_channels, [NativeTypeName("const int")] int dst_rate);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_AudioStreamPut")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int AudioStreamPut([NativeTypeName("SDL_AudioStream *")] nint stream, [NativeTypeName("const void *")] void* buf, int len);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_AudioStreamGet")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int AudioStreamGet([NativeTypeName("SDL_AudioStream *")] nint stream, void* buf, int len);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_AudioStreamAvailable")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int AudioStreamAvailable([NativeTypeName("SDL_AudioStream *")] nint stream);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_AudioStreamFlush")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int AudioStreamFlush([NativeTypeName("SDL_AudioStream *")] nint stream);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_AudioStreamClear")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void AudioStreamClear([NativeTypeName("SDL_AudioStream *")] nint stream);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_FreeAudioStream")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void FreeAudioStream([NativeTypeName("SDL_AudioStream *")] nint stream);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_MixAudio")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void MixAudio([NativeTypeName(" *")] byte* dst, [NativeTypeName(" *")] byte* src, uint len, int volume);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_MixAudioFormat")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void MixAudioFormat([NativeTypeName(" *")] byte* dst, [NativeTypeName(" *")] byte* src, [NativeTypeName("SDL_AudioFormat")] ushort format, uint len, int volume);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_QueueAudio")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int QueueAudio([NativeTypeName("SDL_AudioDeviceID")] uint dev, [NativeTypeName("const void *")] void* data, uint len);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_DequeueAudio")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint DequeueAudio([NativeTypeName("SDL_AudioDeviceID")] uint dev, void* data, uint len);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetQueuedAudioSize")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetQueuedAudioSize([NativeTypeName("SDL_AudioDeviceID")] uint dev);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_ClearQueuedAudio")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void ClearQueuedAudio([NativeTypeName("SDL_AudioDeviceID")] uint dev);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_LockAudio")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void LockAudio();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_LockAudioDevice")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void LockAudioDevice([NativeTypeName("SDL_AudioDeviceID")] uint dev);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_UnlockAudio")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void UnlockAudio();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_UnlockAudioDevice")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void UnlockAudioDevice([NativeTypeName("SDL_AudioDeviceID")] uint dev);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_CloseAudio")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void CloseAudio();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_CloseAudioDevice")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void CloseAudioDevice([NativeTypeName("SDL_AudioDeviceID")] uint dev);
 
     [NativeTypeName("#define SDL_AUDIO_MASK_BITSIZE (0xFF)")]

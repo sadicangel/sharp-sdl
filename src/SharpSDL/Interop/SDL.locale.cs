@@ -12,6 +12,6 @@ internal unsafe partial struct SDL_Locale
 internal static unsafe partial class SDL
 {
     [LibraryImport("SDL2", EntryPoint = "SDL_GetPreferredLocales")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial SDL_Locale* GetPreferredLocales();
 }

@@ -23,29 +23,29 @@ internal partial struct SDL_Finger
 internal static unsafe partial class SDL
 {
     [LibraryImport("SDL2", EntryPoint = "SDL_GetNumTouchDevices")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetNumTouchDevices();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetTouchDevice")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("SDL_TouchID")]
     public static partial long GetTouchDevice(int index);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetTouchName")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
     public static partial byte* GetTouchName(int index);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetTouchDeviceType")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial SDL_TouchDeviceType GetTouchDeviceType([NativeTypeName("SDL_TouchID")] long touchID);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetNumTouchFingers")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetNumTouchFingers([NativeTypeName("SDL_TouchID")] long touchID);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetTouchFinger")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial SDL_Finger* GetTouchFinger([NativeTypeName("SDL_TouchID")] long touchID, int index);
 
     [NativeTypeName("#define SDL_TOUCH_MOUSEID (()-1)")]

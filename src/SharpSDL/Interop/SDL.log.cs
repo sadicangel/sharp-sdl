@@ -38,19 +38,19 @@ internal enum SDL_LogPriority
 internal static unsafe partial class SDL
 {
     [LibraryImport("SDL2", EntryPoint = "SDL_LogSetAllPriority")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void LogSetAllPriority(SDL_LogPriority priority);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_LogSetPriority")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void LogSetPriority(int category, SDL_LogPriority priority);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_LogGetPriority")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial SDL_LogPriority LogGetPriority(int category);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_LogResetPriorities")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void LogResetPriorities();
 
     [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_Log", ExactSpelling = true)]
@@ -78,15 +78,15 @@ internal static unsafe partial class SDL
     public static extern void LogMessage(int category, SDL_LogPriority priority, [NativeTypeName("const char *")] byte* fmt, __arglist);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_LogMessageV")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void LogMessageV(int category, SDL_LogPriority priority, [NativeTypeName("const char *")] byte* fmt, [NativeTypeName("va_list")] byte* ap);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_LogGetOutputFunction")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void LogGetOutputFunction([NativeTypeName("SDL_LogOutputFunction *")] delegate* unmanaged[Cdecl]<void*, int, SDL_LogPriority, byte*, void>* callback, void** userdata);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_LogSetOutputFunction")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void LogSetOutputFunction([NativeTypeName("SDL_LogOutputFunction")] delegate* unmanaged[Cdecl]<void*, int, SDL_LogPriority, byte*, void> callback, void* userdata);
 
     [NativeTypeName("#define SDL_MAX_LOG_MESSAGE 4096")]

@@ -3,23 +3,23 @@ namespace SharpSDL.Interop;
 internal static partial class SDL
 {
     [LibraryImport("SDL2", EntryPoint = "SDL_Init")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int Init(uint flags);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_InitSubSystem")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int InitSubSystem(uint flags);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_QuitSubSystem")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void QuitSubSystem(uint flags);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_WasInit")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint WasInit(uint flags);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_Quit")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void Quit();
 
     [NativeTypeName("#define SDL_INIT_TIMER 0x00000001u")]

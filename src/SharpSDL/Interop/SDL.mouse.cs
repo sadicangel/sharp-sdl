@@ -26,78 +26,78 @@ internal enum SDL_MouseWheelDirection
 internal static unsafe partial class SDL
 {
     [LibraryImport("SDL2", EntryPoint = "SDL_GetMouseFocus")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("SDL_Window*")]
     public static partial nint GetMouseFocus();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetMouseState")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetMouseState(int* x, int* y);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetGlobalMouseState")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetGlobalMouseState(int* x, int* y);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetRelativeMouseState")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetRelativeMouseState(int* x, int* y);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_WarpMouseInWindow")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void WarpMouseInWindow([NativeTypeName("SDL_Window*")] nint window, int x, int y);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_WarpMouseGlobal")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int WarpMouseGlobal(int x, int y);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_SetRelativeMouseMode")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int SetRelativeMouseMode([NativeTypeName("SDL_bool")] CBool enabled);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_CaptureMouse")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int CaptureMouse([NativeTypeName("SDL_bool")] CBool enabled);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetRelativeMouseMode")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("SDL_bool")]
     public static partial CBool GetRelativeMouseMode();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_CreateCursor")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("SDL_Cursor*")]
     public static partial nint CreateCursor([NativeTypeName(" *")] byte* data, [NativeTypeName(" *")] byte* mask, int w, int h, int hot_x, int hot_y);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_CreateColorCursor")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("SDL_Cursor*")]
     public static partial nint CreateColorCursor(SDL_Surface* surface, int hot_x, int hot_y);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_CreateSystemCursor")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("SDL_Cursor*")]
     public static partial nint CreateSystemCursor(SDL_SystemCursor id);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_SetCursor")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetCursor([NativeTypeName("SDL_Cursor*")] nint cursor);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetCursor")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("SDL_Cursor*")]
     public static partial nint GetCursor();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetDefaultCursor")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("SDL_Cursor*")]
     public static partial nint GetDefaultCursor();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_FreeCursor")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void FreeCursor([NativeTypeName("SDL_Cursor*")] nint cursor);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_ShowCursor")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int ShowCursor(int toggle);
 
     [NativeTypeName("#define SDL_BUTTON_LEFT 1")]

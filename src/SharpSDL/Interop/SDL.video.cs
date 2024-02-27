@@ -165,409 +165,409 @@ internal enum SDL_HitTestResult
 internal static unsafe partial class SDL
 {
     [LibraryImport("SDL2", EntryPoint = "SDL_GetNumVideoDrivers")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetNumVideoDrivers();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetVideoDriver")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
     public static partial byte* GetVideoDriver(int index);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_VideoInit")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int VideoInit([NativeTypeName("const char *")] byte* driver_name);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_VideoQuit")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void VideoQuit();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetCurrentVideoDriver")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
     public static partial byte* GetCurrentVideoDriver();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetNumVideoDisplays")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetNumVideoDisplays();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetDisplayName")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
     public static partial byte* GetDisplayName(int displayIndex);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetDisplayBounds")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetDisplayBounds(int displayIndex, SDL_Rect* rect);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetDisplayUsableBounds")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetDisplayUsableBounds(int displayIndex, SDL_Rect* rect);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetDisplayDPI")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetDisplayDPI(int displayIndex, float* ddpi, float* hdpi, float* vdpi);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetDisplayOrientation")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial SDL_DisplayOrientation GetDisplayOrientation(int displayIndex);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetNumDisplayModes")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetNumDisplayModes(int displayIndex);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetDisplayMode")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetDisplayMode(int displayIndex, int modeIndex, SDL_DisplayMode* mode);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetDesktopDisplayMode")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetDesktopDisplayMode(int displayIndex, SDL_DisplayMode* mode);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetCurrentDisplayMode")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetCurrentDisplayMode(int displayIndex, SDL_DisplayMode* mode);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetClosestDisplayMode")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial SDL_DisplayMode* GetClosestDisplayMode(int displayIndex, [NativeTypeName("const SDL_DisplayMode *")] SDL_DisplayMode* mode, SDL_DisplayMode* closest);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetPointDisplayIndex")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetPointDisplayIndex([NativeTypeName("const SDL_Point *")] SDL_Point* point);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetRectDisplayIndex")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetRectDisplayIndex([NativeTypeName("const SDL_Rect *")] SDL_Rect* rect);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetWindowDisplayIndex")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetWindowDisplayIndex([NativeTypeName("SDL_Window*")] nint window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_SetWindowDisplayMode")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int SetWindowDisplayMode([NativeTypeName("SDL_Window*")] nint window, [NativeTypeName("const SDL_DisplayMode *")] SDL_DisplayMode* mode);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetWindowDisplayMode")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetWindowDisplayMode([NativeTypeName("SDL_Window*")] nint window, SDL_DisplayMode* mode);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetWindowICCProfile")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void* GetWindowICCProfile([NativeTypeName("SDL_Window*")] nint window, [NativeTypeName("size_t *")] nuint* size);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetWindowPixelFormat")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetWindowPixelFormat([NativeTypeName("SDL_Window*")] nint window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_CreateWindow")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("SDL_Window*")]
     public static partial nint CreateWindow([NativeTypeName("const char *")] byte* title, int x, int y, int w, int h, uint flags);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_CreateWindowFrom")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("SDL_Window*")]
     public static partial nint CreateWindowFrom([NativeTypeName("const void *")] void* data);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetWindowID")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetWindowID([NativeTypeName("SDL_Window*")] nint window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetWindowFromID")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("SDL_Window*")]
     public static partial nint GetWindowFromID(uint id);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetWindowFlags")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial uint GetWindowFlags([NativeTypeName("SDL_Window*")] nint window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_SetWindowTitle")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetWindowTitle([NativeTypeName("SDL_Window*")] nint window, [NativeTypeName("const char *")] byte* title);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetWindowTitle")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
     public static partial byte* GetWindowTitle([NativeTypeName("SDL_Window*")] nint window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_SetWindowIcon")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetWindowIcon([NativeTypeName("SDL_Window*")] nint window, SDL_Surface* icon);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_SetWindowData")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void* SetWindowData([NativeTypeName("SDL_Window*")] nint window, [NativeTypeName("const char *")] byte* name, void* userdata);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetWindowData")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void* GetWindowData([NativeTypeName("SDL_Window*")] nint window, [NativeTypeName("const char *")] byte* name);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_SetWindowPosition")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetWindowPosition([NativeTypeName("SDL_Window*")] nint window, int x, int y);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetWindowPosition")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void GetWindowPosition([NativeTypeName("SDL_Window*")] nint window, int* x, int* y);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_SetWindowSize")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetWindowSize([NativeTypeName("SDL_Window*")] nint window, int w, int h);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetWindowSize")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void GetWindowSize([NativeTypeName("SDL_Window*")] nint window, int* w, int* h);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetWindowBordersSize")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetWindowBordersSize([NativeTypeName("SDL_Window*")] nint window, int* top, int* left, int* bottom, int* right);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetWindowSizeInPixels")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void GetWindowSizeInPixels([NativeTypeName("SDL_Window*")] nint window, int* w, int* h);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_SetWindowMinimumSize")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetWindowMinimumSize([NativeTypeName("SDL_Window*")] nint window, int min_w, int min_h);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetWindowMinimumSize")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void GetWindowMinimumSize([NativeTypeName("SDL_Window*")] nint window, int* w, int* h);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_SetWindowMaximumSize")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetWindowMaximumSize([NativeTypeName("SDL_Window*")] nint window, int max_w, int max_h);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetWindowMaximumSize")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void GetWindowMaximumSize([NativeTypeName("SDL_Window*")] nint window, int* w, int* h);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_SetWindowBordered")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetWindowBordered([NativeTypeName("SDL_Window*")] nint window, [NativeTypeName("SDL_bool")] CBool bordered);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_SetWindowResizable")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetWindowResizable([NativeTypeName("SDL_Window*")] nint window, [NativeTypeName("SDL_bool")] CBool resizable);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_SetWindowAlwaysOnTop")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetWindowAlwaysOnTop([NativeTypeName("SDL_Window*")] nint window, [NativeTypeName("SDL_bool")] CBool on_top);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_ShowWindow")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void ShowWindow([NativeTypeName("SDL_Window*")] nint window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_HideWindow")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void HideWindow([NativeTypeName("SDL_Window*")] nint window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_RaiseWindow")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void RaiseWindow([NativeTypeName("SDL_Window*")] nint window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_MaximizeWindow")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void MaximizeWindow([NativeTypeName("SDL_Window*")] nint window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_MinimizeWindow")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void MinimizeWindow([NativeTypeName("SDL_Window*")] nint window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_RestoreWindow")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void RestoreWindow([NativeTypeName("SDL_Window*")] nint window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_SetWindowFullscreen")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int SetWindowFullscreen([NativeTypeName("SDL_Window*")] nint window, uint flags);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_HasWindowSurface")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("SDL_bool")]
     public static partial CBool HasWindowSurface([NativeTypeName("SDL_Window*")] nint window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetWindowSurface")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial SDL_Surface* GetWindowSurface([NativeTypeName("SDL_Window*")] nint window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_UpdateWindowSurface")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int UpdateWindowSurface([NativeTypeName("SDL_Window*")] nint window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_UpdateWindowSurfaceRects")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int UpdateWindowSurfaceRects([NativeTypeName("SDL_Window*")] nint window, [NativeTypeName("const SDL_Rect *")] SDL_Rect* rects, int numrects);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_DestroyWindowSurface")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int DestroyWindowSurface([NativeTypeName("SDL_Window*")] nint window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_SetWindowGrab")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetWindowGrab([NativeTypeName("SDL_Window*")] nint window, [NativeTypeName("SDL_bool")] CBool grabbed);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_SetWindowKeyboardGrab")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetWindowKeyboardGrab([NativeTypeName("SDL_Window*")] nint window, [NativeTypeName("SDL_bool")] CBool grabbed);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_SetWindowMouseGrab")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SetWindowMouseGrab([NativeTypeName("SDL_Window*")] nint window, [NativeTypeName("SDL_bool")] CBool grabbed);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetWindowGrab")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("SDL_bool")]
     public static partial CBool GetWindowGrab([NativeTypeName("SDL_Window*")] nint window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetWindowKeyboardGrab")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("SDL_bool")]
     public static partial CBool GetWindowKeyboardGrab([NativeTypeName("SDL_Window*")] nint window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetWindowMouseGrab")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("SDL_bool")]
     public static partial CBool GetWindowMouseGrab([NativeTypeName("SDL_Window*")] nint window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetGrabbedWindow")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("SDL_Window*")]
     public static partial nint GetGrabbedWindow();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_SetWindowMouseRect")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int SetWindowMouseRect([NativeTypeName("SDL_Window*")] nint window, [NativeTypeName("const SDL_Rect *")] SDL_Rect* rect);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetWindowMouseRect")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("const SDL_Rect *")]
     public static partial SDL_Rect* GetWindowMouseRect([NativeTypeName("SDL_Window*")] nint window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_SetWindowBrightness")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int SetWindowBrightness([NativeTypeName("SDL_Window*")] nint window, float brightness);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetWindowBrightness")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial float GetWindowBrightness([NativeTypeName("SDL_Window*")] nint window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_SetWindowOpacity")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int SetWindowOpacity([NativeTypeName("SDL_Window*")] nint window, float opacity);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetWindowOpacity")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetWindowOpacity([NativeTypeName("SDL_Window*")] nint window, float* out_opacity);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_SetWindowModalFor")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int SetWindowModalFor([NativeTypeName("SDL_Window*")] nint modal_window, [NativeTypeName("SDL_Window*")] nint parent_window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_SetWindowInputFocus")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int SetWindowInputFocus([NativeTypeName("SDL_Window*")] nint window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_SetWindowGammaRamp")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int SetWindowGammaRamp([NativeTypeName("SDL_Window*")] nint window, [NativeTypeName(" *")] ushort* red, [NativeTypeName(" *")] ushort* green, [NativeTypeName(" *")] ushort* blue);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetWindowGammaRamp")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetWindowGammaRamp([NativeTypeName("SDL_Window*")] nint window, [NativeTypeName(" *")] ushort* red, [NativeTypeName(" *")] ushort* green, [NativeTypeName(" *")] ushort* blue);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_SetWindowHitTest")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int SetWindowHitTest([NativeTypeName("SDL_Window*")] nint window, [NativeTypeName("SDL_HitTest")] delegate* unmanaged[Cdecl]<nint, SDL_Point*, void*, SDL_HitTestResult> callback, void* callback_data);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_FlashWindow")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int FlashWindow([NativeTypeName("SDL_Window*")] nint window, SDL_FlashOperation operation);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_DestroyWindow")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DestroyWindow([NativeTypeName("SDL_Window*")] nint window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_IsScreenSaverEnabled")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("SDL_bool")]
     public static partial CBool IsScreenSaverEnabled();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_EnableScreenSaver")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void EnableScreenSaver();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_DisableScreenSaver")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DisableScreenSaver();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GL_LoadLibrary")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GL_LoadLibrary([NativeTypeName("const char *")] byte* path);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GL_GetProcAddress")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void* GL_GetProcAddress([NativeTypeName("const char *")] byte* proc);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GL_UnloadLibrary")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void GL_UnloadLibrary();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GL_ExtensionSupported")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("SDL_bool")]
     public static partial CBool GL_ExtensionSupported([NativeTypeName("const char *")] byte* extension);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GL_ResetAttributes")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void GL_ResetAttributes();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GL_SetAttribute")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GL_SetAttribute(SDL_GLattr attr, int value);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GL_GetAttribute")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GL_GetAttribute(SDL_GLattr attr, int* value);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GL_CreateContext")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("SDL_GLContext")]
     public static partial void* GL_CreateContext([NativeTypeName("SDL_Window*")] nint window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GL_MakeCurrent")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GL_MakeCurrent([NativeTypeName("SDL_Window*")] nint window, [NativeTypeName("SDL_GLContext")] void* context);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GL_GetCurrentWindow")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("SDL_Window*")]
     public static partial nint GL_GetCurrentWindow();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GL_GetCurrentContext")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("SDL_GLContext")]
     public static partial void* GL_GetCurrentContext();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GL_GetDrawableSize")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void GL_GetDrawableSize([NativeTypeName("SDL_Window*")] nint window, int* w, int* h);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GL_SetSwapInterval")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GL_SetSwapInterval(int interval);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GL_GetSwapInterval")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GL_GetSwapInterval();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GL_SwapWindow")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void GL_SwapWindow([NativeTypeName("SDL_Window*")] nint window);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GL_DeleteContext")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void GL_DeleteContext([NativeTypeName("SDL_GLContext")] void* context);
 
     [NativeTypeName("#define SDL_WINDOWPOS_UNDEFINED_MASK 0x1FFF0000u")]

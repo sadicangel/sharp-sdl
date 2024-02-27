@@ -12,17 +12,17 @@ internal partial struct SDL_version
 internal static unsafe partial class SDL
 {
     [LibraryImport("SDL2", EntryPoint = "SDL_GetVersion")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void GetVersion(SDL_version* ver);
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetRevision")]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: NativeTypeName("const char *")]
     public static partial byte* GetRevision();
 
     [LibraryImport("SDL2", EntryPoint = "SDL_GetRevisionNumber")]
     [Obsolete]
-    [UnmanagedCallConv(CallConvs = [typeof(System.Runtime.CompilerServices.CallConvCdecl)])]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial int GetRevisionNumber();
 
     [NativeTypeName("#define SDL_MAJOR_VERSION 2")]
