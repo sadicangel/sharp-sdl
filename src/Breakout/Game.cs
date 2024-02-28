@@ -77,6 +77,10 @@ public sealed class Game
                             case KeyCode.Space:
                                 _pause = !_pause;
                                 break;
+
+                            case KeyCode.Escape:
+                                _quit = true;
+                                break;
                         }
                         break;
                 }
