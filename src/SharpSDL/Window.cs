@@ -152,8 +152,150 @@ public sealed class Window : IDisposable
 
     public bool IsAlwaysOnTop { get => Flags.HasFlag(WindowFlags.AlwaysOnTop); set => SDL.SetWindowAlwaysOnTop(_window, value); }
 
+    public bool HasSurface { get => SDL.HasWindowSurface(_window); }
+
+    public bool IsInputGrabbed { get => SDL.GetWindowGrab(_window); set => SDL.SetWindowGrab(_window, value); }
+
+    public bool IsMouseGrabbed { get => SDL.GetWindowMouseGrab(_window); set => SDL.SetWindowMouseGrab(_window, value); }
+
+    public bool IsKeyboardGrabbed { get => SDL.GetWindowKeyboardGrab(_window); set => SDL.SetWindowKeyboardGrab(_window, value); }
+
+    public Rect? MouseRect
+    {
+        get
+        {
+            unsafe
+            {
+                var rect = (Rect*)SDL.GetWindowMouseRect(_window);
+                return rect is null ? null : *rect;
+            }
+        }
+        set
+        {
+            unsafe
+            {
+                Unsafe.SkipInit(out Rect temp);
+                SDL_Rect* rect = null;
+
+                if (value.HasValue)
+                {
+                    temp = value.Value;
+                    rect = (SDL_Rect*)&temp;
+                }
+
+                if (SDL.SetWindowMouseRect(_window, rect) != 0)
+                    SdlException.ThrowLastError();
+            }
+        }
+    }
+
+    public float Brightness
+    {
+        get => SDL.GetWindowBrightness(_window);
+        set
+        {
+            if (SDL.SetWindowBrightness(_window, value) != 0)
+                SdlException.ThrowLastError();
+        }
+    }
+
+    public float Opacity
+    {
+        get
+        {
+            unsafe
+            {
+                float opacity;
+                if (SDL.GetWindowOpacity(_window, &opacity) != 0)
+                    SdlException.ThrowLastError();
+                return opacity;
+            }
+        }
+        set
+        {
+            if (SDL.SetWindowOpacity(_window, value) != 0)
+                SdlException.ThrowLastError();
+        }
+    }
+
+    // Display related.
+
+    public GammaRamp DisplayGammaRamp
+    {
+        get
+        {
+            unsafe
+            {
+                var r = new GammaRampArray();
+                var g = new GammaRampArray();
+                var b = new GammaRampArray();
+                if (SDL.GetWindowGammaRamp(_window, (ushort*)&r, (ushort*)&g, (ushort*)&b) != 0)
+                    SdlException.ThrowLastError();
+                return new GammaRamp(r, g, b);
+            }
+        }
+        set
+        {
+            unsafe
+            {
+                fixed (GammaRampArray* r = &value.Red, g = &value.Green, b = &value.Blue)
+                {
+                    if (SDL.SetWindowGammaRamp(_window, (ushort*)r, (ushort*)g, (ushort*)b) != 0)
+                        SdlException.ThrowLastError();
+                }
+            }
+        }
+    }
+
+    public static bool IsScreenSaverEnabled { get => SDL.IsScreenSaverEnabled(); set { if (value) SDL.EnableScreenSaver(); else SDL.DisableScreenSaver(); } }
+
+    // Display related.
+
     public unsafe void* SetData(byte* name, void* data) => SDL.SetWindowData(_window, name, data);
+
     public unsafe void* GetData(byte* name) => SDL.GetWindowData(_window, name);
+
+    public void SetFullscreenMode(FullscreenMode mode)
+    {
+        if (SDL.SetWindowFullscreen(_window, (uint)mode) != 0)
+            SdlException.ThrowLastError();
+    }
+
+    public nint GetSurface()
+    {
+        unsafe
+        {
+            var ptr = SDL.GetWindowSurface(_window);
+            if (ptr is null)
+                SdlException.ThrowLastError();
+            return (nint)ptr;
+        }
+    }
+
+    public void UpdateSurface()
+    {
+        unsafe
+        {
+            if (SDL.UpdateWindowSurface(_window) != 0)
+                SdlException.ThrowLastError();
+        }
+    }
+
+    public void UpdateSurfaceRects(ReadOnlySpan<Rect> rects)
+    {
+        unsafe
+        {
+            fixed (Rect* ptr = rects)
+                if (SDL.UpdateWindowSurfaceRects(_window, (SDL_Rect*)ptr, rects.Length) != 0)
+                    SdlException.ThrowLastError();
+        }
+    }
+
+    public void DestroySurface()
+    {
+        if (SDL.DestroyWindowSurface(_window) != 0)
+            SdlException.ThrowLastError();
+    }
 
     public void Show() => SDL.ShowWindow(_window);
     public void Hide() => SDL.HideWindow(_window);
@@ -161,6 +303,30 @@ public sealed class Window : IDisposable
     public void Maximize() => SDL.MaximizeWindow(_window);
     public void Minimize() => SDL.MinimizeWindow(_window);
     public void Restore() => SDL.RestoreWindow(_window);
+    public void Flash(FlashOperation operation)
+    {
+        if (SDL.FlashWindow(_window, (SDL_FlashOperation)operation) != 0)
+            SdlException.ThrowLastError();
+    }
+
+    public void SetModalFor(Window parent)
+    {
+        if (SDL.SetWindowModalFor(_window, parent._window) != 0)
+            SdlException.ThrowLastError();
+    }
+
+    public void SetInputFocus()
+    {
+        if (SDL.SetWindowInputFocus(_window) != 0)
+            SdlException.ThrowLastError();
+    }
+
+    // Make this more managed-like.
+    public unsafe void SetHitTest(delegate* unmanaged[Cdecl]<nint, Point*, void*, HitTestResult> callback, void* state)
+    {
+        if (SDL.SetWindowHitTest(_window, (delegate* unmanaged[Cdecl]<nint, SDL_Point*, void*, SDL_HitTestResult>)callback, state) != 0)
+            SdlException.ThrowLastError();
+    }
 
     public void Dispose()
     {
@@ -177,6 +343,14 @@ public sealed class Window : IDisposable
         var window = SDL.GetWindowFromID(id);
         if (window == 0)
             SdlException.ThrowLastError();
+        return new Window(window);
+    }
+
+    public static Window? GetGrabbedWindow()
+    {
+        var window = SDL.GetGrabbedWindow();
+        if (window is 0)
+            return null;
         return new Window(window);
     }
 }
@@ -209,4 +383,45 @@ public enum WindowFlags
     Vulkan = SDL_WindowFlags.SDL_WINDOW_VULKAN,
     Metal = SDL_WindowFlags.SDL_WINDOW_METAL,
     InputGrabbed = SDL_WindowFlags.SDL_WINDOW_INPUT_GRABBED,
+}
+
+public enum FullscreenMode
+{
+    Windowed = 0,
+    Fullscreen = SDL_WindowFlags.SDL_WINDOW_FULLSCREEN,
+    FullscreenDesktop = SDL_WindowFlags.SDL_WINDOW_FULLSCREEN_DESKTOP,
+}
+
+public sealed record class GammaRamp(GammaRampArray Red, GammaRampArray Green, GammaRampArray Blue)
+{
+    public readonly GammaRampArray Red = Red;
+    public readonly GammaRampArray Green = Green;
+    public readonly GammaRampArray Blue = Blue;
+}
+
+[InlineArray(256)]
+public struct GammaRampArray
+{
+    internal ushort _e0;
+}
+
+public enum HitTestResult
+{
+    Normal = SDL_HitTestResult.SDL_HITTEST_NORMAL,
+    Draggable = SDL_HitTestResult.SDL_HITTEST_DRAGGABLE,
+    ResizeTopLeft = SDL_HitTestResult.SDL_HITTEST_RESIZE_TOPLEFT,
+    ResizeTop = SDL_HitTestResult.SDL_HITTEST_RESIZE_TOP,
+    ResizeTopRight = SDL_HitTestResult.SDL_HITTEST_RESIZE_TOPRIGHT,
+    ResizeRight = SDL_HitTestResult.SDL_HITTEST_RESIZE_RIGHT,
+    ResizeBottomRight = SDL_HitTestResult.SDL_HITTEST_RESIZE_BOTTOMRIGHT,
+    ResizeBottom = SDL_HitTestResult.SDL_HITTEST_RESIZE_BOTTOM,
+    ResizeBottomLeft = SDL_HitTestResult.SDL_HITTEST_RESIZE_BOTTOMLEFT,
+    ResizeLeft = SDL_HitTestResult.SDL_HITTEST_RESIZE_LEFT,
+}
+
+public enum FlashOperation
+{
+    Cancel = SDL_FlashOperation.SDL_FLASH_CANCEL,
+    Briefly = SDL_FlashOperation.SDL_FLASH_BRIEFLY,
+    UntilFocused = SDL_FlashOperation.SDL_FLASH_UNTIL_FOCUSED,
 }
