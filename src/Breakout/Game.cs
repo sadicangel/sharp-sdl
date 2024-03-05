@@ -111,20 +111,20 @@ public sealed class Game
             Update(_settings.DeltaTimeSecs);
 
             // Render
-            renderer.Color = _settings.BackgroundColor;
+            renderer.DrawColor = _settings.BackgroundColor;
             renderer.Clear();
 
-            renderer.Color = _prj.Color;
+            renderer.DrawColor = _prj.Color;
             renderer.FillRect(_prj.Rect);
 
-            renderer.Color = _bar.Color;
+            renderer.DrawColor = _bar.Color;
             renderer.FillRect(_bar.Rect);
 
             foreach (var target in _targets)
             {
                 if (!target.Dead)
                 {
-                    renderer.Color = target.Color;
+                    renderer.DrawColor = target.Color;
                     renderer.FillRect(target.Rect);
                 }
             }

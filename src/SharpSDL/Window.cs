@@ -4,7 +4,7 @@ public sealed class Window : IDisposable
 {
     internal readonly nint _window;
 
-    private Window(nint window) => _window = window;
+    internal Window(nint window) => _window = window;
 
     public Window(string title, Point position, Size size, WindowFlags flags)
     {
