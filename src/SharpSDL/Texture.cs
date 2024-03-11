@@ -1,6 +1,6 @@
 ﻿namespace SharpSDL;
 
-public readonly struct Texture(nint texture)
+public sealed class Texture(nint texture) : IDisposable
 {
     internal readonly nint _texture = texture;
 
@@ -211,6 +211,16 @@ public readonly struct Texture(nint texture)
             format = f;
             access = a;
             size = s;
+        }
+    }
+
+    public void Dispose()
+    {
+        if (_texture != 0)
+        {
+            SDL.DestroyTexture(_texture);
+            ref var ptr = ref Unsafe.AsRef(in _texture);
+            ptr = 0;
         }
     }
 }

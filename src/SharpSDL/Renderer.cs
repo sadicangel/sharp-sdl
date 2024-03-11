@@ -5,17 +5,17 @@ namespace SharpSDL;
 public sealed class Renderer : IDisposable
 {
     internal readonly nint _renderer;
-
-    internal Renderer(nint renderer) => _renderer = renderer;
+    private readonly Window? _window;
 
     public Renderer(Window window, int index, RendererFlags flags)
     {
         _renderer = SDL.CreateRenderer(window._window, index, (uint)flags);
         if (_renderer == 0)
             SdlException.ThrowLastError();
+        _window = window;
     }
 
-    public Renderer(int width, int height, WindowFlags flags, out Window window)
+    public Renderer(int width, int height, WindowFlags flags)
     {
         unsafe
         {
@@ -25,8 +25,8 @@ public sealed class Renderer : IDisposable
             if (SDL.CreateWindowAndRenderer(width, height, (uint)flags, &windowPtr, &rendererPtr) != 0)
                 SdlException.ThrowLastError();
 
-            window = new Window(windowPtr);
             _renderer = rendererPtr;
+            _window = new Window(windowPtr);
         }
     }
 
@@ -124,7 +124,7 @@ public sealed class Renderer : IDisposable
         get => SDL.GetRenderTarget(_renderer) is var t && t != 0 ? new Texture(t) : null;
         set
         {
-            if (SDL.SetRenderTarget(_renderer, value.GetValueOrDefault()._texture) != 0)
+            if (SDL.SetRenderTarget(_renderer, value?._texture ?? 0) != 0)
                 SdlException.ThrowLastError();
         }
     }
@@ -231,6 +231,28 @@ public sealed class Renderer : IDisposable
         }
     }
 
+    public nint GetMetalLayer()
+    {
+        unsafe
+        {
+            return (nint)SDL.RenderGetMetalLayer(_renderer);
+        }
+    }
+
+    public nint GetMetalCommandEncoder()
+    {
+        unsafe
+        {
+            return (nint)SDL.RenderGetMetalCommandEncoder(_renderer);
+        }
+    }
+
+    public void SetVSync(bool enable)
+    {
+        if (SDL.RenderSetVSync(_renderer, enable ? 1 : 0) != 0)
+            SdlException.ThrowLastError();
+    }
+
     public Texture CreateTextureFromSurface(ref readonly Surface surface)
     {
         unsafe
@@ -249,11 +271,6 @@ public sealed class Renderer : IDisposable
     {
         if (SDL.RenderClear(_renderer) != 0)
             SdlException.ThrowLastError();
-    }
-
-    public void Present()
-    {
-        SDL.RenderPresent(_renderer);
     }
 
     public PointF WindowToLogical(Point point)
@@ -478,14 +495,14 @@ public sealed class Renderer : IDisposable
         }
     }
 
-    public void DrawGeometry(ReadOnlySpan<Vertex> vertices, ReadOnlySpan<int> indices = default, Texture texture = default)
+    public void DrawGeometry(ReadOnlySpan<Vertex> vertices, ReadOnlySpan<int> indices = default, Texture? texture = default)
     {
         unsafe
         {
             fixed (Vertex* v = vertices)
             fixed (int* i = indices)
             {
-                if (SDL.RenderGeometry(_renderer, texture._texture, (SDL_Vertex*)v, vertices.Length, indices.Length > 0 ? i : null, indices.Length) != 0)
+                if (SDL.RenderGeometry(_renderer, texture?._texture ?? 0, (SDL_Vertex*)v, vertices.Length, indices.Length > 0 ? i : null, indices.Length) != 0)
                     SdlException.ThrowLastError();
             }
         }
@@ -500,7 +517,7 @@ public sealed class Renderer : IDisposable
         ReadOnlySpan<float> uv,
         int uvStride,
         ReadOnlySpan<byte> indices = default,
-        Texture texture = default)
+        Texture? texture = default)
     {
         DrawGeometry<byte>(vertexCount, xy, xyStride, colors, colorStride, uv, uvStride, indices, texture);
     }
@@ -514,7 +531,7 @@ public sealed class Renderer : IDisposable
         ReadOnlySpan<float> uv,
         int uvStride,
         ReadOnlySpan<short> indices = default,
-        Texture texture = default)
+        Texture? texture = default)
     {
         DrawGeometry<short>(vertexCount, xy, xyStride, colors, colorStride, uv, uvStride, indices, texture);
     }
@@ -528,7 +545,7 @@ public sealed class Renderer : IDisposable
         ReadOnlySpan<float> uv,
         int uvStride,
         ReadOnlySpan<int> indices = default,
-        Texture texture = default)
+        Texture? texture = default)
     {
         DrawGeometry<int>(vertexCount, xy, xyStride, colors, colorStride, uv, uvStride, indices, texture);
     }
@@ -542,7 +559,7 @@ public sealed class Renderer : IDisposable
         ReadOnlySpan<float> uv,
         int uvStride,
         ReadOnlySpan<T> indices = default,
-        Texture texture = default)
+        Texture? texture = default)
         where T : unmanaged
     {
         unsafe
@@ -554,7 +571,7 @@ public sealed class Renderer : IDisposable
             {
                 var result = SDL.RenderGeometryRaw(
                     _renderer,
-                    texture._texture,
+                    texture?._texture ?? 0,
                     xy_p,
                     xyStride,
                     (SDL_Color*)colors_p,
@@ -572,10 +589,28 @@ public sealed class Renderer : IDisposable
         }
     }
 
+    public void ReadPixels(scoped ref readonly Rect rect, PixelFormatEnum format, nint pixels, int pitch)
+    {
+        unsafe
+        {
+            if (SDL.RenderReadPixels(_renderer, (SDL_Rect*)Unsafe.AsPointer(ref Unsafe.AsRef(in rect)), (uint)format, (void*)pixels, pitch) != 0)
+                SdlException.ThrowLastError();
+        }
+    }
+
+    public void Present() => SDL.RenderPresent(_renderer);
+
+    public void Flush()
+    {
+        if (SDL.RenderFlush(_renderer) != 0)
+            SdlException.ThrowLastError();
+    }
+
     public void Dispose()
     {
         if (_renderer != 0)
         {
+            _window?.Dispose();
             SDL.DestroyRenderer(_renderer);
             ref var ptr = ref Unsafe.AsRef(in _renderer);
             ptr = 0;
