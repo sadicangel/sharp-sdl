@@ -67,10 +67,10 @@ public sealed class TouchDevice
 
 public enum TouchDeviceType
 {
-    Invalid = -1,
-    Direct,
-    IndirectAbsolute,
-    IndirectRelative,
+    Invalid = SDL_TouchDeviceType.SDL_TOUCH_DEVICE_INVALID,
+    Direct = SDL_TouchDeviceType.SDL_TOUCH_DEVICE_DIRECT,
+    IndirectAbsolute = SDL_TouchDeviceType.SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE,
+    IndirectRelative = SDL_TouchDeviceType.SDL_TOUCH_DEVICE_INDIRECT_RELATIVE,
 }
 
 public readonly struct TouchFinger
