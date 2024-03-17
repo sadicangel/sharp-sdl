@@ -1,4 +1,5 @@
-﻿using Timer = SharpSDL.Timer;
+﻿using SharpSDL.Devices;
+using Timer = SharpSDL.Timer;
 
 namespace Breakout;
 

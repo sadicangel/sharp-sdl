@@ -1,4 +1,6 @@
-﻿namespace SharpSDL;
+﻿using SharpSDL.Devices;
+
+namespace SharpSDL;
 
 [StructLayout(LayoutKind.Explicit, Size = 56)]
 public readonly struct Event

@@ -28,7 +28,7 @@ public readonly struct PixelFormat
 public readonly struct Palette
 {
     public readonly int ColorCount;
-    public readonly unsafe Color* Colors;
+    public readonly unsafe ColorRgba* Colors;
     public readonly uint Version;
     public readonly int RefCount;
 }

@@ -76,13 +76,13 @@ public sealed class Renderer : IDisposable
         }
     }
 
-    public Color DrawColor
+    public ColorRgba DrawColor
     {
         get
         {
             unsafe
             {
-                Unsafe.SkipInit(out Color c);
+                Unsafe.SkipInit(out ColorRgba c);
                 if (SDL.GetRenderDrawColor(_renderer, &c.R, &c.G, &c.B, &c.A) != 0)
                     SdlException.ThrowLastError();
                 return c;
@@ -512,7 +512,7 @@ public sealed class Renderer : IDisposable
         int vertexCount,
         ReadOnlySpan<float> xy,
         int xyStride,
-        ReadOnlySpan<Color> colors,
+        ReadOnlySpan<ColorRgba> colors,
         int colorStride,
         ReadOnlySpan<float> uv,
         int uvStride,
@@ -526,7 +526,7 @@ public sealed class Renderer : IDisposable
         int vertexCount,
         ReadOnlySpan<float> xy,
         int xyStride,
-        ReadOnlySpan<Color> colors,
+        ReadOnlySpan<ColorRgba> colors,
         int colorStride,
         ReadOnlySpan<float> uv,
         int uvStride,
@@ -540,7 +540,7 @@ public sealed class Renderer : IDisposable
         int vertexCount,
         ReadOnlySpan<float> xy,
         int xyStride,
-        ReadOnlySpan<Color> colors,
+        ReadOnlySpan<ColorRgba> colors,
         int colorStride,
         ReadOnlySpan<float> uv,
         int uvStride,
@@ -554,7 +554,7 @@ public sealed class Renderer : IDisposable
         int vertexCount,
         ReadOnlySpan<float> xy,
         int xyStride,
-        ReadOnlySpan<Color> colors,
+        ReadOnlySpan<ColorRgba> colors,
         int colorStride,
         ReadOnlySpan<float> uv,
         int uvStride,
@@ -565,7 +565,7 @@ public sealed class Renderer : IDisposable
         unsafe
         {
             fixed (float* xy_p = xy)
-            fixed (Color* colors_p = colors)
+            fixed (ColorRgba* colors_p = colors)
             fixed (float* uv_p = uv)
             fixed (T* indices_p = indices)
             {

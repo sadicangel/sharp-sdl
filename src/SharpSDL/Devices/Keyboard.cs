@@ -1,4 +1,4 @@
-﻿namespace SharpSDL;
+﻿namespace SharpSDL.Devices;
 
 public sealed class Keyboard
 {

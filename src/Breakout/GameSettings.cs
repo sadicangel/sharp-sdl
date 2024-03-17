@@ -2,7 +2,7 @@
 public readonly record struct GameSettings(
     int Fps,
     Size WindowSize,
-    Color BackgroundColor,
+    ColorRgba BackgroundColor,
     Size ObjectSize
 )
 {
