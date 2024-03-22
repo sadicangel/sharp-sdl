@@ -57,14 +57,8 @@ public sealed class Mouse
     }
 
 
-    public static Window? GetWindowWithFocus()
-    {
-        unsafe
-        {
-            var window = SDL.GetMouseFocus();
-            return window is not 0 ? new Window(window) : null;
-        }
-    }
+    public static Window? GetWindowWithFocus() =>
+        SDL.GetMouseFocus() is var window and not 0 ? new Window(window) : null;
 
     public static void WarpInWindow(Point point, Window? window = null) =>
         SDL.WarpMouseInWindow(window?._window ?? 0, point.X, point.Y);
@@ -90,22 +84,6 @@ public enum MouseState : uint
     Right = 1 << 2,
     X1 = 1 << 3,
     X2 = 1 << 4,
-}
-
-public enum SystemCursor
-{
-    Arrow = SDL_SystemCursor.SDL_SYSTEM_CURSOR_ARROW,
-    IBeam = SDL_SystemCursor.SDL_SYSTEM_CURSOR_IBEAM,
-    Wait = SDL_SystemCursor.SDL_SYSTEM_CURSOR_WAIT,
-    Crosshair = SDL_SystemCursor.SDL_SYSTEM_CURSOR_CROSSHAIR,
-    WaitArrow = SDL_SystemCursor.SDL_SYSTEM_CURSOR_WAITARROW,
-    SizeNWSE = SDL_SystemCursor.SDL_SYSTEM_CURSOR_SIZENWSE,
-    SizeNESW = SDL_SystemCursor.SDL_SYSTEM_CURSOR_SIZENESW,
-    SizeWE = SDL_SystemCursor.SDL_SYSTEM_CURSOR_SIZEWE,
-    SizeNS = SDL_SystemCursor.SDL_SYSTEM_CURSOR_SIZENS,
-    SizeAll = SDL_SystemCursor.SDL_SYSTEM_CURSOR_SIZEALL,
-    No = SDL_SystemCursor.SDL_SYSTEM_CURSOR_NO,
-    Hand = SDL_SystemCursor.SDL_SYSTEM_CURSOR_HAND,
 }
 
 public enum MouseWheelDirection
