@@ -1,4 +1,6 @@
-﻿namespace SharpSDL;
+﻿using SharpSDL.Objects;
+
+namespace SharpSDL;
 
 public sealed class Texture(nint texture) : IDisposable
 {

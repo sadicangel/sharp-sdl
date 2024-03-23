@@ -16,4 +16,11 @@ public readonly record struct Version(byte Major, byte Minor, byte Patch)
             return version;
         }
     }
+    public static string GetPlatform()
+    {
+        unsafe
+        {
+            return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.GetPlatform()).AsUtf16(utf16 => new string(utf16));
+        }
+    }
 }

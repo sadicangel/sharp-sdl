@@ -1,4 +1,4 @@
-﻿namespace SharpSDL;
+﻿namespace SharpSDL.Objects;
 
 public record struct SizeF(float Width, float Height)
 {

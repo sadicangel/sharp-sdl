@@ -1,4 +1,6 @@
-﻿namespace SharpSDL.Devices;
+﻿using SharpSDL.Objects;
+
+namespace SharpSDL.Devices;
 
 public sealed class Mouse
 {

@@ -1,4 +1,5 @@
 ﻿using SharpSDL.Devices;
+using SharpSDL.Objects;
 using Timer = SharpSDL.Timer;
 
 namespace Breakout;
@@ -140,7 +141,7 @@ public sealed class Game
     {
         if (!_pause && _started)
         {
-            if (_prj.Rect.OverlapsWith(_bar.Rect))
+            if (_prj.Rect.IntersectsWith(_bar.Rect))
             {
                 _prj.Rect.Y = (int)(_bar.Rect.Y - _settings.ObjectSize.Height / 2 - _settings.ObjectSize.Width - 1.0f);
                 return;
@@ -148,21 +149,21 @@ public sealed class Game
 
             // Bar Collision
             var barN = _bar.Rect with { X = (int)Math.Clamp(_bar.Rect.X + _barDx * _bar.Speed * dt, 0, _settings.WindowSize.Width - _settings.ObjectSize.Width) };
-            if (!_prj.Rect.OverlapsWith(barN))
+            if (!_prj.Rect.IntersectsWith(barN))
             {
                 _bar.Rect = barN;
             }
 
             // Horizontal Collision
             var prjN = _prj.Rect with { X = (int)(_prj.Rect.X + _prjDx * _prj.Speed * dt) };
-            if (prjN.X < 0 || prjN.X + _prj.Rect.Width > _settings.WindowSize.Width || prjN.OverlapsWith(_bar.Rect))
+            if (prjN.X < 0 || prjN.X + _prj.Rect.Width > _settings.WindowSize.Width || prjN.IntersectsWith(_bar.Rect))
             {
                 _prjDx *= -1;
                 return;
             }
             for (int i = 0; i < _targets.Length; ++i)
             {
-                if (!_targets[i].Dead && prjN.OverlapsWith(_targets[i].Rect))
+                if (!_targets[i].Dead && prjN.IntersectsWith(_targets[i].Rect))
                 {
                     _targets[i].Dead = true;
                     _prjDx *= -1;
@@ -178,7 +179,7 @@ public sealed class Game
                 _prjDy *= -1;
                 return;
             }
-            if (prjN.OverlapsWith(_bar.Rect))
+            if (prjN.IntersectsWith(_bar.Rect))
             {
                 if (_barDx != 0) _prjDx = _barDx;
                 _prjDy *= -1;
@@ -186,7 +187,7 @@ public sealed class Game
             }
             for (int i = 0; i < _targets.Length; ++i)
             {
-                if (!_targets[i].Dead && prjN.OverlapsWith(_targets[i].Rect))
+                if (!_targets[i].Dead && prjN.IntersectsWith(_targets[i].Rect))
                 {
                     _targets[i].Dead = true;
                     _prjDy *= -1;

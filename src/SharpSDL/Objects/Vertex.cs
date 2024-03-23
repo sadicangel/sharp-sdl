@@ -1,4 +1,4 @@
-﻿namespace SharpSDL;
+﻿namespace SharpSDL.Objects;
 
 public readonly record struct Vertex(PointF Position, ColorRgba Color, PointF TexCoord)
 {

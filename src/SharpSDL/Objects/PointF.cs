@@ -1,4 +1,4 @@
-﻿namespace SharpSDL;
+﻿namespace SharpSDL.Objects;
 
 public record struct PointF(float X, float Y)
 {

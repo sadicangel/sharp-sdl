@@ -1,4 +1,6 @@
-﻿namespace Breakout;
+﻿using SharpSDL.Objects;
+
+namespace Breakout;
 public readonly record struct GameSettings(
     int Fps,
     Size WindowSize,

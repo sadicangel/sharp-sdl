@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using SharpSDL.Objects;
+using System.Text;
 
 namespace SharpSDL;
 
@@ -39,13 +40,7 @@ public sealed class Renderer : IDisposable
 
     public Window Window
     {
-        get
-        {
-            var window = SDL.RenderGetWindow(_renderer);
-            if (window == 0)
-                SdlException.ThrowLastError();
-            return new Window(window);
-        }
+        get => SDL.RenderGetWindow(_renderer) is var window and not 0 ? new Window(window) : SdlException.ThrowLastError<Window>();
     }
 
     public DriverInfo DriverInfo
@@ -68,7 +63,7 @@ public sealed class Renderer : IDisposable
         {
             unsafe
             {
-                Size size = default;
+                Unsafe.SkipInit(out Size size);
                 if (SDL.GetRendererOutputSize(_renderer, &size.Width, &size.Height) != 0)
                     SdlException.ThrowLastError();
                 return size;
@@ -101,7 +96,7 @@ public sealed class Renderer : IDisposable
         {
             unsafe
             {
-                BlendMode mode = default;
+                Unsafe.SkipInit(out BlendMode mode);
                 if (SDL.GetRenderDrawBlendMode(_renderer, (SDL_BlendMode*)&mode) != 0)
                     SdlException.ThrowLastError();
                 return mode;
