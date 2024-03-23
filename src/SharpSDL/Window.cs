@@ -249,6 +249,8 @@ public sealed class Window : IDisposable
         }
     }
 
+    public bool IsShapedWindow { get => SDL.IsShapedWindow(_window); }
+
     public static bool IsScreenSaverEnabled { get => SDL.IsScreenSaverEnabled(); set { if (value) SDL.EnableScreenSaver(); else SDL.DisableScreenSaver(); } }
 
     // Display related.
@@ -323,6 +325,42 @@ public sealed class Window : IDisposable
             SdlException.ThrowLastError();
     }
 
+    public void SetShape(scoped ref readonly Surface shape, WindowShapeMode mode)
+    {
+        unsafe
+        {
+            var result = SDL.SetWindowShape(
+                _window,
+                (SDL_Surface*)Unsafe.AsPointer(ref Unsafe.AsRef(in shape)),
+                (SDL_WindowShapeMode*)Unsafe.AsPointer(ref mode));
+
+            switch (result)
+            {
+                case SDL.SDL_NONSHAPEABLE_WINDOW:
+                    throw new SdlException("Window is not a valid shaped window");
+                case SDL.SDL_INVALID_SHAPE_ARGUMENT:
+                    throw new SdlException("Invalid shape argument");
+            }
+        }
+    }
+
+    public WindowShapeMode GetShapeMode()
+    {
+        Unsafe.SkipInit(out WindowShapeMode mode);
+        unsafe
+        {
+            var result = SDL.GetShapedWindowMode(_window, (SDL_WindowShapeMode*)&mode);
+            switch (result)
+            {
+                case SDL.SDL_NONSHAPEABLE_WINDOW:
+                    throw new SdlException("Window is not a valid shaped window");
+                case SDL.SDL_WINDOW_LACKS_SHAPE:
+                    throw new SdlException("Window does not have a shape");
+            }
+        }
+        return mode;
+    }
+
     // Make this more managed-like.
     public unsafe void SetHitTest(delegate* unmanaged[Cdecl]<nint, Point*, void*, HitTestResult> callback, void* state)
     {
@@ -340,6 +378,17 @@ public sealed class Window : IDisposable
         }
     }
 
+    public static Window CreateShaped(string title, Point position, Size size, WindowFlags flags)
+    {
+        unsafe
+        {
+            var window = title.AsUtf8(title => SDL.CreateWindow(title, position.X, position.Y, size.Width, size.Height, (uint)flags));
+            if (window == 0)
+                SdlException.ThrowLastError();
+            return new Window(window);
+        }
+    }
+
     public static Window FromWindowId(uint id)
     {
         var window = SDL.GetWindowFromID(id);
@@ -348,13 +397,16 @@ public sealed class Window : IDisposable
         return new Window(window);
     }
 
-    public static Window? GetGrabbedWindow()
+    public static Window? GetWindowWithInputGrabbed()
     {
         var window = SDL.GetGrabbedWindow();
         if (window is 0)
             return null;
         return new Window(window);
     }
+
+    public static Window? GetWindowWithMouseFocus() =>
+        SDL.GetMouseFocus() is var window and not 0 ? new Window(window) : null;
 }
 
 
@@ -426,4 +478,27 @@ public enum FlashOperation
     Cancel = SDL_FlashOperation.SDL_FLASH_CANCEL,
     Briefly = SDL_FlashOperation.SDL_FLASH_BRIEFLY,
     UntilFocused = SDL_FlashOperation.SDL_FLASH_UNTIL_FOCUSED,
+}
+
+public enum WindowShapeModeName
+{
+    Default = SharpSDL.Interop.WindowShapeMode.ShapeModeDefault,
+    BinarizeAlpha = SharpSDL.Interop.WindowShapeMode.ShapeModeBinarizeAlpha,
+    ReverseBinarizeAlpha = SharpSDL.Interop.WindowShapeMode.ShapeModeReverseBinarizeAlpha,
+    ColorKey = SharpSDL.Interop.WindowShapeMode.ShapeModeColorKey,
+}
+
+[StructLayout(LayoutKind.Explicit)]
+public readonly struct WindowShapeModeParams
+{
+    [FieldOffset(0)]
+    public readonly byte BinarizationCutOff;
+    [FieldOffset(0)]
+    public readonly ColorRgba ColorKey;
+}
+
+public readonly struct WindowShapeMode
+{
+    public readonly WindowShapeModeName Mode;
+    public readonly WindowShapeModeParams Parameters;
 }

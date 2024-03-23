@@ -58,10 +58,6 @@ public sealed class Mouse
         }
     }
 
-
-    public static Window? GetWindowWithFocus() =>
-        SDL.GetMouseFocus() is var window and not 0 ? new Window(window) : null;
-
     public static void WarpInWindow(Point point, Window? window = null) =>
         SDL.WarpMouseInWindow(window?._window ?? 0, point.X, point.Y);
 
