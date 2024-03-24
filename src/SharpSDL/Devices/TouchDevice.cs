@@ -4,12 +4,12 @@ namespace SharpSDL.Devices;
 public sealed class TouchDevice
 {
     private readonly long _touchId;
-    private readonly int _index;
+    private readonly int _touchIndex;
 
     internal TouchDevice(long id, int index)
     {
         _touchId = id;
-        _index = index;
+        _touchIndex = index;
     }
 
     public ReadOnlySpan<byte> Name
@@ -18,7 +18,7 @@ public sealed class TouchDevice
         {
             unsafe
             {
-                return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.GetTouchName(_index));
+                return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.GetTouchName(_touchIndex));
             }
         }
     }
