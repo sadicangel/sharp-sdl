@@ -83,6 +83,28 @@ public sealed class Sensor : IDisposable
     public static int GetSensorDeviceCount() => SDL.NumSensors();
 
     public static void UpdateSensors() => SDL.SensorUpdate();
+
+    public static IDisposable LockSensors() => new SensorsLock();
+
+}
+
+file sealed class SensorsLock : IDisposable
+{
+    private bool _disposed;
+
+    public SensorsLock()
+    {
+        SDL.LockSensors();
+    }
+
+    public void Dispose()
+    {
+        if (!_disposed)
+        {
+            _disposed = true;
+            SDL.UnlockSensors();
+        }
+    }
 }
 
 public enum SensorType

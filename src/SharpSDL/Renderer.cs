@@ -324,15 +324,15 @@ public sealed class Renderer : IDisposable
         }
     }
 
-    public void DrawLine(Point p1, Point p2)
+    public void DrawLine(Line line)
     {
-        if (SDL.RenderDrawLine(_renderer, p1.X, p1.Y, p2.X, p2.Y) != 0)
+        if (SDL.RenderDrawLine(_renderer, line.P1.X, line.P1.Y, line.P2.X, line.P2.Y) != 0)
             SdlException.ThrowLastError();
     }
 
-    public void DrawLine(PointF p1, PointF p2)
+    public void DrawLine(LineF line)
     {
-        if (SDL.RenderDrawLineF(_renderer, p1.X, p1.Y, p2.X, p2.Y) != 0)
+        if (SDL.RenderDrawLineF(_renderer, line.P1.X, line.P1.Y, line.P2.X, line.P2.Y) != 0)
             SdlException.ThrowLastError();
     }
 
