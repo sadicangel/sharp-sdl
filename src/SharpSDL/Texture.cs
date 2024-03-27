@@ -146,59 +146,32 @@ public sealed class Texture(nint texture) : IDisposable
         }
     }
 
-    public void Update(scoped ref readonly Rect rect, nint pixels, int pitch)
+    public void Update(Rect rect, nint pixels, int pitch)
     {
         unsafe
         {
-            if (SDL.UpdateTexture(_texture, (SDL_Rect*)Unsafe.AsPointer(ref Unsafe.AsRef(in rect)), (void*)pixels, pitch) != 0)
+            if (SDL.UpdateTexture(_texture, (SDL_Rect*)&rect, (void*)pixels, pitch) != 0)
                 SdlException.ThrowLastError();
         }
     }
 
-    public unsafe void UpdateYuv(scoped ref readonly Rect rect, byte* yPlane, int yPitch, byte* uPlane, int uPitch, byte* vPlane, int vPitch)
+    public unsafe void UpdateYuv(Rect rect, byte* yPlane, int yPitch, byte* uPlane, int uPitch, byte* vPlane, int vPitch)
     {
         unsafe
         {
-            if (SDL.UpdateYUVTexture(_texture, (SDL_Rect*)Unsafe.AsPointer(ref Unsafe.AsRef(in rect)), yPlane, yPitch, uPlane, uPitch, vPlane, vPitch) != 0)
+            if (SDL.UpdateYUVTexture(_texture, (SDL_Rect*)&rect, yPlane, yPitch, uPlane, uPitch, vPlane, vPitch) != 0)
                 SdlException.ThrowLastError();
         }
     }
 
-    public unsafe void UpdateNv(scoped ref readonly Rect rect, byte* yPlane, int yPitch, byte* uvPlane, int uvPitch)
+    public unsafe void UpdateNv(Rect rect, byte* yPlane, int yPitch, byte* uvPlane, int uvPitch)
     {
         unsafe
         {
-            if (SDL.UpdateNVTexture(_texture, (SDL_Rect*)Unsafe.AsPointer(ref Unsafe.AsRef(in rect)), yPlane, yPitch, uvPlane, uvPitch) != 0)
+            if (SDL.UpdateNVTexture(_texture, (SDL_Rect*)&rect, yPlane, yPitch, uvPlane, uvPitch) != 0)
                 SdlException.ThrowLastError();
         }
     }
-
-    public void Lock(scoped ref readonly Rect rect, out nint pixels, out int pitch)
-    {
-        unsafe
-        {
-            nint px = default;
-            int pt = default;
-            if (SDL.LockTexture(_texture, (SDL_Rect*)Unsafe.AsPointer(ref Unsafe.AsRef(in rect)), (void**)&px, &pt) != 0)
-                SdlException.ThrowLastError();
-
-            pixels = px;
-            pitch = pt;
-        }
-    }
-
-    public unsafe void Lock(scoped ref readonly Rect rect, out Surface* surface)
-    {
-        unsafe
-        {
-            Surface* s = default;
-            if (SDL.LockTextureToSurface(_texture, (SDL_Rect*)Unsafe.AsPointer(ref Unsafe.AsRef(in rect)), (SDL_Surface**)&s) != 0)
-                SdlException.ThrowLastError();
-            surface = s;
-        }
-    }
-
-    public void Unlock() => SDL.UnlockTexture(_texture);
 
     public void Deconstruct(out PixelFormatEnum format, out TextureAccess access, out Size size)
     {

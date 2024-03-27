@@ -31,9 +31,9 @@ public sealed class Renderer : IDisposable
         }
     }
 
-    public unsafe Renderer(Surface* surface)
+    public unsafe Renderer(Surface surface)
     {
-        _renderer = SDL.CreateSoftwareRenderer((SDL_Surface*)surface);
+        _renderer = SDL.CreateSoftwareRenderer(surface._surface);
         if (_renderer == 0)
             SdlException.ThrowLastError();
     }
@@ -248,17 +248,14 @@ public sealed class Renderer : IDisposable
             SdlException.ThrowLastError();
     }
 
-    public Texture CreateTextureFromSurface(ref readonly Surface surface)
+    public Texture CreateTextureFromSurface(Surface surface)
     {
         unsafe
         {
-            fixed (Surface* ptr = &surface)
-            {
-                var texture = SDL.CreateTextureFromSurface(_renderer, (SDL_Surface*)ptr);
-                if (texture == 0)
-                    SdlException.ThrowLastError();
-                return new Texture(texture);
-            }
+            var texture = SDL.CreateTextureFromSurface(_renderer, surface._surface);
+            if (texture == 0)
+                SdlException.ThrowLastError();
+            return new Texture(texture);
         }
     }
 
@@ -584,11 +581,11 @@ public sealed class Renderer : IDisposable
         }
     }
 
-    public void ReadPixels(scoped ref readonly Rect rect, PixelFormatEnum format, nint pixels, int pitch)
+    public void ReadPixels(Rect rect, PixelFormatEnum format, nint pixels, int pitch)
     {
         unsafe
         {
-            if (SDL.RenderReadPixels(_renderer, (SDL_Rect*)Unsafe.AsPointer(ref Unsafe.AsRef(in rect)), (uint)format, (void*)pixels, pitch) != 0)
+            if (SDL.RenderReadPixels(_renderer, (SDL_Rect*)&rect, (uint)format, (void*)pixels, pitch) != 0)
                 SdlException.ThrowLastError();
         }
     }

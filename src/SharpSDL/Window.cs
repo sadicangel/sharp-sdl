@@ -325,14 +325,11 @@ public sealed class Window : IDisposable
             SdlException.ThrowLastError();
     }
 
-    public void SetShape(scoped ref readonly Surface shape, WindowShapeMode mode)
+    public void SetShape(Surface shape, WindowShapeMode mode)
     {
         unsafe
         {
-            var result = SDL.SetWindowShape(
-                _window,
-                (SDL_Surface*)Unsafe.AsPointer(ref Unsafe.AsRef(in shape)),
-                (SDL_WindowShapeMode*)Unsafe.AsPointer(ref mode));
+            var result = SDL.SetWindowShape(_window, shape._surface, (SDL_WindowShapeMode*)Unsafe.AsPointer(ref mode));
 
             switch (result)
             {

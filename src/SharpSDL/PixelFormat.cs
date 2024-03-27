@@ -1,38 +1,233 @@
 ﻿using SharpSDL.Objects;
+using System.Text;
 
 namespace SharpSDL;
 
-public readonly struct PixelFormat
+public sealed class PixelFormat : IDisposable
 {
-    public readonly PixelFormatEnum Format;
-    public readonly unsafe Palette* Palette;
-    public readonly byte BitsPerPixel;
-    public readonly byte BytesPerPixel;
-    public readonly byte Padding0;
-    public readonly byte Padding1;
+    internal readonly unsafe SDL_PixelFormat* _format;
+    private readonly bool _owned;
+    private Palette? _palette;
+
+    internal unsafe PixelFormat(SDL_PixelFormat* format) => _format = format;
+
+    public PixelFormat(PixelFormatEnum format)
+    {
+        unsafe
+        {
+            _format = SDL.AllocFormat((uint)format);
+            if (_format is null)
+                SdlException.ThrowLastError();
+            _owned = true;
+        }
+    }
+
+    public PixelFormatEnum Format { get { unsafe { return (PixelFormatEnum)_format->format; } } }
+    public Palette Palette
+    {
+        get
+        {
+            unsafe
+            {
+                return _palette ??= new Palette(_format->palette);
+            }
+        }
+        set
+        {
+            _palette = value;
+            unsafe
+            {
+                if (SDL.SetPixelFormatPalette(_format, _palette._palette) != 0)
+                    SdlException.ThrowLastError();
+            }
+        }
+    }
+    public ReadOnlySpan<ColorRgba> PaletteColors
+    {
+        get
+        {
+            unsafe
+            {
+                return new ReadOnlySpan<ColorRgba>(_format->palette->colors, _format->palette->ncolors);
+            }
+        }
+        set
+        {
+            unsafe
+            {
+                fixed (ColorRgba* colors = value)
+                {
+                    if (SDL.SetPaletteColors(_format->palette, (SDL_Color*)colors, firstcolor: 0, value.Length) != 0)
+                        SdlException.ThrowLastError();
+                }
+            }
+        }
+    }
+    public byte BitsPerPixel { get { unsafe { return _format->BitsPerPixel; } } }
+    public byte BytesPerPixel { get { unsafe { return _format->BytesPerPixel; } } }
+    public uint RMask { get { unsafe { return _format->Rmask; } } }
+    public uint GMask { get { unsafe { return _format->Gmask; } } }
+    public uint BMask { get { unsafe { return _format->Bmask; } } }
+    public uint AMask { get { unsafe { return _format->Amask; } } }
+    public byte RLoss { get { unsafe { return _format->Rloss; } } }
+    public byte GLoss { get { unsafe { return _format->Gloss; } } }
+    public byte BLoss { get { unsafe { return _format->Bloss; } } }
+    public byte ALoss { get { unsafe { return _format->Aloss; } } }
+    public byte RShift { get { unsafe { return _format->Rshift; } } }
+    public byte GShift { get { unsafe { return _format->Gshift; } } }
+    public byte BShift { get { unsafe { return _format->Bshift; } } }
+    public byte AShift { get { unsafe { return _format->Ashift; } } }
+
+    public ReadOnlySpan<byte> Name
+    {
+        get
+        {
+            unsafe
+            {
+                return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.GetPixelFormatName(_format->format));
+            }
+        }
+    }
+
+    public string NameUtf16 { get => Encoding.UTF8.GetString(Name); }
+
+    public uint RgbToPixel(ColorRgb color)
+    {
+        unsafe
+        {
+            return SDL.MapRGB(_format, color.R, color.G, color.B);
+        }
+    }
+
+    public uint RgbaToPixel(ColorRgba color)
+    {
+        unsafe
+        {
+            return SDL.MapRGBA(_format, color.R, color.G, color.B, color.A);
+        }
+    }
+
+    public ColorRgb PixelToRgb(uint pixel)
+    {
+        unsafe
+        {
+            Unsafe.SkipInit(out ColorRgb c);
+            SDL.GetRGB(pixel, _format, &c.R, &c.G, &c.B);
+            return c;
+        }
+    }
+
+    public ColorRgba PixelToRgba(uint pixel)
+    {
+        unsafe
+        {
+            Unsafe.SkipInit(out ColorRgba c);
+            SDL.GetRGBA(pixel, _format, &c.R, &c.G, &c.B, &c.A);
+            return c;
+        }
+    }
+
+    public static RgbaMask PixelFormatEnumToRgbaMask(PixelFormatEnum format)
+    {
+        Unsafe.SkipInit(out RgbaMask mask);
+        unsafe
+        {
+            if (!SDL.PixelFormatEnumToMasks((uint)format, &mask.BitsPerPixel, &mask.RMask, &mask.GMask, &mask.BMask, &mask.AMask))
+                SdlException.ThrowLastError();
+        }
+        return mask;
+    }
+
+    public static PixelFormatEnum RgbaMaskToPixelFormatEnum(RgbaMask mask)
+        => (PixelFormatEnum)SDL.MasksToPixelFormatEnum(mask.BitsPerPixel, mask.RMask, mask.GMask, mask.BMask, mask.AMask);
+
+    public void Dispose()
+    {
+        if (_owned)
+        {
+            unsafe
+            {
+                if (_format is not null)
+                {
+                    SDL.FreeFormat(_format);
+                    fixed (SDL_PixelFormat** ptr = &_format)
+                        *ptr = null;
+                    _palette?.Dispose();
+                }
+            }
+        }
+    }
+}
+
+public readonly struct RgbaMask
+{
+    public readonly int BitsPerPixel;
     public readonly uint RMask;
     public readonly uint GMask;
     public readonly uint BMask;
     public readonly uint AMask;
-    public readonly byte RLoss;
-    public readonly byte GLoss;
-    public readonly byte BLoss;
-    public readonly byte ALoss;
-    public readonly byte RShift;
-    public readonly byte GShift;
-    public readonly byte BShift;
-    public readonly byte AShift;
-    public readonly int RefCount;
-    public readonly unsafe PixelFormat* Next;
 }
 
-
-public readonly struct Palette
+public sealed class Palette : IDisposable
 {
-    public readonly int ColorCount;
-    public readonly unsafe ColorRgba* Colors;
-    public readonly uint Version;
-    public readonly int RefCount;
+    internal readonly unsafe SDL_Palette* _palette;
+    private readonly bool _owned;
+    internal unsafe Palette(SDL_Palette* palette) => _palette = palette;
+
+    public Palette(int colors)
+    {
+        unsafe
+        {
+            _palette = SDL.AllocPalette(colors);
+            if (_palette is null)
+                SdlException.ThrowLastError();
+            _owned = true;
+        }
+    }
+    public ReadOnlySpan<ColorRgba> PaletteColors
+    {
+        get
+        {
+            unsafe
+            {
+                return new ReadOnlySpan<ColorRgba>(_palette->colors, _palette->ncolors);
+            }
+        }
+        set
+        {
+            unsafe
+            {
+                fixed (ColorRgba* colors = value)
+                {
+                    if (SDL.SetPaletteColors(_palette, (SDL_Color*)colors, firstcolor: 0, value.Length) != 0)
+                        SdlException.ThrowLastError();
+                }
+            }
+        }
+    }
+
+    public void SetColors(ReadOnlySpan<ColorRgba> colors, int index, int count)
+    {
+        unsafe
+        {
+            fixed (ColorRgba* ptr = colors)
+                if (SDL.SetPaletteColors(_palette, (SDL_Color*)ptr, index, count) != 0)
+                    SdlException.ThrowLastError();
+        }
+    }
+
+    public void Dispose()
+    {
+        if (_owned)
+        {
+            unsafe
+            {
+                SDL.FreePalette(_palette);
+                fixed (SDL_Palette** ptr = &_palette)
+                    *ptr = null;
+            }
+        }
+    }
 }
 
 public enum PixelFormatEnum : uint

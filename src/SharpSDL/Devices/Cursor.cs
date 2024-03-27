@@ -29,7 +29,7 @@ public sealed class Cursor : IDisposable
     {
         unsafe
         {
-            _cursor = SDL.CreateColorCursor((SDL_Surface*)&surface, topLeft.X, topLeft.Y);
+            _cursor = SDL.CreateColorCursor(surface._surface, topLeft.X, topLeft.Y);
             if (_cursor is 0)
                 SdlException.ThrowLastError();
         }
