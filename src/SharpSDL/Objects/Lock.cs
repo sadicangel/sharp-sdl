@@ -1,4 +1,6 @@
-﻿namespace SharpSDL.Objects;
+﻿using SharpSDL.Graphics;
+
+namespace SharpSDL.Objects;
 
 public sealed class Lock(Action unlock) : IDisposable
 {

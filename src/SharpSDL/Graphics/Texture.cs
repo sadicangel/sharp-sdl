@@ -1,6 +1,6 @@
 ﻿using SharpSDL.Objects;
 
-namespace SharpSDL;
+namespace SharpSDL.Graphics;
 
 public sealed class Texture(nint texture) : IDisposable
 {

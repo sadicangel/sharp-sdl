@@ -1,7 +1,7 @@
 ﻿using SharpSDL.Objects;
 using System.Text;
 
-namespace SharpSDL;
+namespace SharpSDL.Graphics;
 
 public sealed class PixelFormat : IDisposable
 {

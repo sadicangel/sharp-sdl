@@ -1,7 +1,7 @@
 ﻿using SharpSDL.IO;
 using SharpSDL.Objects;
 
-namespace SharpSDL;
+namespace SharpSDL.Graphics;
 
 public sealed class Surface : IDisposable
 {
@@ -61,8 +61,7 @@ public sealed class Surface : IDisposable
 
     public SurfaceFlags Flags { get { unsafe { return (SurfaceFlags)_surface->flags; } } }
     public PixelFormat Format { get { unsafe { return _format ??= new PixelFormat(_surface->format); } } }
-    public int Width { get { unsafe { return _surface->w; } } }
-    public int Height { get { unsafe { return _surface->h; } } }
+    public Size Size { get { unsafe { return new Size(_surface->w, _surface->h); } } }
     public int Pitch { get { unsafe { return _surface->pitch; } } }
     public nint Pixels { get { unsafe { return (nint)_surface->pixels; } } }
     public nint UserData { get { unsafe { return (nint)_surface->userdata; } } }

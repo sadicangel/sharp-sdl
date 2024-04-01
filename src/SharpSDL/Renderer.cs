@@ -1,4 +1,5 @@
-﻿using SharpSDL.Objects;
+﻿using SharpSDL.Graphics;
+using SharpSDL.Objects;
 using System.Text;
 
 namespace SharpSDL;

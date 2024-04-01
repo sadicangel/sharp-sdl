@@ -1,4 +1,5 @@
-﻿using SharpSDL.Objects;
+﻿using SharpSDL.Graphics;
+using SharpSDL.Objects;
 
 namespace SharpSDL.Devices;
 public sealed class Cursor : IDisposable
