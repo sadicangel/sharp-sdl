@@ -20,7 +20,8 @@ public sealed class Timer : IDisposable
         unsafe
         {
             _nativeCallback = new TimerCallbackUnmanaged((interval, _) => _callback.Invoke(interval, _callbackState));
-            _nativeCallbackId = SDL.AddTimer(interval, (delegate* unmanaged[Cdecl]<uint, void*, uint>)Marshal.GetFunctionPointerForDelegate(_nativeCallback).ToPointer(), null);
+            var fPtr = (delegate* unmanaged[Cdecl]<uint, void*, uint>)Marshal.GetFunctionPointerForDelegate(_nativeCallback).ToPointer();
+            _nativeCallbackId = SDL.AddTimer(interval, fPtr, null);
         }
     }
 

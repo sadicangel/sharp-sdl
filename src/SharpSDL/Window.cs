@@ -359,12 +359,8 @@ public sealed class Window : IDisposable
         return mode;
     }
 
-    // Make this more managed-like.
-    public unsafe void SetHitTest(delegate* unmanaged[Cdecl]<nint, Point*, void*, HitTestResult> callback, void* state)
-    {
-        if (SDL.SetWindowHitTest(_window, (delegate* unmanaged[Cdecl]<nint, SDL_Point*, void*, SDL_HitTestResult>)callback, state) != 0)
-            SdlException.ThrowLastError();
-    }
+    public IDisposable SetHitTest<TState>(Func<Window, Point, TState, HitTestResult> hitTest, TState state) =>
+        new WindowHitTest<TState>(this, hitTest, state);
 
     public void Dispose()
     {
@@ -499,4 +495,38 @@ public readonly struct WindowShapeMode
 {
     public readonly WindowShapeModeName Mode;
     public readonly WindowShapeModeParams Parameters;
+}
+
+internal sealed class WindowHitTest<TState> : IDisposable
+{
+    private readonly Window _window;
+    private readonly Func<Window, Point, TState, HitTestResult> _callback;
+    private readonly TState _callbackState;
+    private readonly HitTestCallbackUnmanaged _nativeCallback;
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private unsafe delegate HitTestResult HitTestCallbackUnmanaged(nint window, Point* point, void* data);
+
+    public WindowHitTest(Window window, Func<Window, Point, TState, HitTestResult> hitTest, TState state)
+    {
+        _window = window;
+        _callback = hitTest;
+        _callbackState = state;
+
+        unsafe
+        {
+            _nativeCallback = new HitTestCallbackUnmanaged((_, point, _) => _callback.Invoke(_window, *point, _callbackState));
+            var fPtr = (delegate* unmanaged[Cdecl]<nint, SDL_Point*, void*, SDL_HitTestResult>)Marshal.GetFunctionPointerForDelegate(_nativeCallback).ToPointer();
+            if (SDL.SetWindowHitTest(_window._window, fPtr, null) != 0)
+                SdlException.ThrowLastError();
+        }
+    }
+
+    public void Dispose()
+    {
+        unsafe
+        {
+            _ = SDL.SetWindowHitTest(_window._window, null, null);
+        }
+    }
 }
