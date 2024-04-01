@@ -141,6 +141,24 @@ public sealed class PixelFormat : IDisposable
     public static PixelFormatEnum RgbaMaskToPixelFormatEnum(RgbaMask mask)
         => (PixelFormatEnum)SDL.MasksToPixelFormatEnum(mask.BitsPerPixel, mask.RMask, mask.GMask, mask.BMask, mask.AMask);
 
+    public static void ConvertPixels(Size size, nint src, PixelFormatEnum srcFormat, int srcPitch, nint dst, PixelFormatEnum dstFormat, int dstPitch)
+    {
+        unsafe
+        {
+            if (SDL.ConvertPixels(size.Width, size.Height, (uint)srcFormat, (void*)src, srcPitch, (uint)dstFormat, (void*)dst, dstPitch) != 0)
+                SdlException.ThrowLastError();
+        }
+    }
+
+    public static void PreMultiplyAlpha(Size size, nint src, PixelFormatEnum srcFormat, int srcPitch, nint dst, PixelFormatEnum dstFormat, int dstPitch)
+    {
+        unsafe
+        {
+            if (SDL.PremultiplyAlpha(size.Width, size.Height, (uint)srcFormat, (void*)src, srcPitch, (uint)dstFormat, (void*)dst, dstPitch) != 0)
+                SdlException.ThrowLastError();
+        }
+    }
+
     public void Dispose()
     {
         if (_owned)

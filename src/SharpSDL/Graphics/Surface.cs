@@ -245,6 +245,27 @@ public sealed class Surface : IDisposable
         }
     }
 
+    public void FillRect(Rect rect, ColorRgba color)
+    {
+        unsafe
+        {
+            if (SDL.FillRect(_surface, (SDL_Rect*)&rect, color.Rgba) != 0)
+                SdlException.ThrowLastError();
+        }
+    }
+
+    public void FillRects(ReadOnlySpan<Rect> rects, ColorRgba color)
+    {
+        unsafe
+        {
+            fixed (Rect* ptr = rects)
+            {
+                if (SDL.FillRects(_surface, (SDL_Rect*)ptr, rects.Length, color.Rgba) != 0)
+                    SdlException.ThrowLastError();
+            }
+        }
+    }
+
     public static Surface LoadBmp(RwStream stream)
     {
         unsafe
@@ -313,6 +334,35 @@ public sealed class Surface : IDisposable
         }
     }
 
+    public static void Blit(Surface src, Rect srcRect, Surface dst, Rect dstRect)
+    {
+        unsafe
+        {
+            var sr = srcRect.IsEmpty ? null : (SDL_Rect*)&srcRect;
+            var dr = dstRect.IsEmpty ? null : (SDL_Rect*)&dstRect;
+            if (SDL.UpperBlit(src._surface, sr, dst._surface, dr) != 0)
+                SdlException.ThrowLastError();
+        };
+    }
+
+    public static void BlitScaled(Surface src, Rect srcRect, Surface dst, Rect dstRect)
+    {
+        unsafe
+        {
+            var sr = srcRect.IsEmpty ? null : (SDL_Rect*)&srcRect;
+            var dr = dstRect.IsEmpty ? null : (SDL_Rect*)&dstRect;
+            if (SDL.UpperBlitScaled(src._surface, sr, dst._surface, dr) != 0)
+                SdlException.ThrowLastError();
+        };
+    }
+
+    public static YuvConversionMode GetYuvConversionMode() =>
+        (YuvConversionMode)SDL.GetYUVConversionMode();
+    public static YuvConversionMode GetYuvConversionMode(Size size) =>
+        (YuvConversionMode)SDL.GetYUVConversionModeForResolution(size.Width, size.Height);
+    public static void SetYuvConversionMode(YuvConversionMode mode) =>
+        SDL.SetYUVConversionMode((SDL_YUV_CONVERSION_MODE)mode);
+
     public void Dispose()
     {
         if (_owned)
@@ -339,4 +389,12 @@ public enum SurfaceFlags : uint
     RunLengthEncoded = SDL.SDL_RLEACCEL,
     InternalReference = SDL.SDL_DONTFREE,
     SimdAligned = SDL.SDL_SIMD_ALIGNED,
+}
+
+public enum YuvConversionMode
+{
+    Jpeg = SDL_YUV_CONVERSION_MODE.SDL_YUV_CONVERSION_JPEG,
+    Bt601 = SDL_YUV_CONVERSION_MODE.SDL_YUV_CONVERSION_BT601,
+    Bt709 = SDL_YUV_CONVERSION_MODE.SDL_YUV_CONVERSION_BT709,
+    Automatic = SDL_YUV_CONVERSION_MODE.SDL_YUV_CONVERSION_AUTOMATIC,
 }
