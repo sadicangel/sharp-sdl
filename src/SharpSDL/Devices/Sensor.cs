@@ -7,13 +7,6 @@ public sealed class Sensor : IDisposable
 
     internal Sensor(nint sensor) => _sensor = sensor;
 
-    public Sensor(int sensorIndex)
-    {
-        _sensor = SDL.SensorOpen(sensorIndex);
-        if (_sensor is 0)
-            throw new SdlException("Invalid sensor index");
-    }
-
     public int Id { get => SDL.SensorGetInstanceID(_sensor); }
 
     public ReadOnlySpan<byte> Name
@@ -72,7 +65,15 @@ public sealed class Sensor : IDisposable
         }
     }
 
-    public static Sensor CreateFromInstanceId(int instanceId)
+    public static Sensor FromDeviceIndex(int sensorIndex)
+    {
+        var sensor = SDL.SensorOpen(sensorIndex);
+        if (sensor is 0)
+            throw new SdlException("Invalid sensor index");
+        return new Sensor(sensor);
+    }
+
+    public static Sensor FromInstanceId(int instanceId)
     {
         var sensor = SDL.SensorFromInstanceID(instanceId);
         if (sensor is 0)

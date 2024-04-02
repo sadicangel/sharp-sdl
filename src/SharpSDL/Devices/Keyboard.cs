@@ -4,7 +4,7 @@ namespace SharpSDL.Devices;
 
 public sealed class Keyboard
 {
-    private unsafe readonly KeyState* _keyStates;
+    private unsafe readonly ButtonState* _keyStates;
     private readonly int _keyStatesCount;
 
     public Keyboard()
@@ -12,12 +12,12 @@ public sealed class Keyboard
         unsafe
         {
             int keyboardStateLength;
-            _keyStates = (KeyState*)SDL.GetKeyboardState(&keyboardStateLength);
+            _keyStates = (ButtonState*)SDL.GetKeyboardState(&keyboardStateLength);
             _keyStatesCount = keyboardStateLength;
         }
     }
 
-    public ReadOnlySpan<KeyState> State
+    public ReadOnlySpan<ButtonState> State
     {
         get
         {
@@ -28,13 +28,13 @@ public sealed class Keyboard
         }
     }
 
-    public KeyModifiers Modifiers { get => (KeyModifiers)SDL.GetModState(); set => SDL.SetModState((SDL_Keymod)value); }
+    public KeyModifier Modifiers { get => (KeyModifier)SDL.GetModState(); set => SDL.SetModState((SDL_Keymod)value); }
 
     public bool IsTextInputActive { get => SDL.IsTextInputActive(); }
 
     public bool IsTextInputVisible { get => SDL.IsTextInputShown(); }
 
-    public bool IsKeyPressed(ScanCode code) { unsafe { return _keyStates[(int)code] is KeyState.Pressed; } }
+    public bool IsKeyPressed(ScanCode code) { unsafe { return _keyStates[(int)code] is ButtonState.Pressed; } }
 
     public void ResetState() => SDL.ResetKeyboard();
 
@@ -57,13 +57,11 @@ public sealed class Keyboard
     public void StopTextInput() => SDL.StopTextInput();
 }
 
-public enum KeyState : byte { NotPressed, Pressed }
-
 public readonly struct KeySym
 {
     public readonly ScanCode ScanCode;
     public readonly KeyCode KeyCode;
-    public readonly KeyModifiers KeyModifier;
+    public readonly KeyModifier KeyModifier;
     public readonly uint Unused;
 }
 
@@ -567,7 +565,7 @@ public enum KeyCode
 }
 
 [Flags]
-public enum KeyModifiers
+public enum KeyModifier
 {
     None = SDL_Keymod.KMOD_NONE,
     LShift = SDL_Keymod.KMOD_LSHIFT,

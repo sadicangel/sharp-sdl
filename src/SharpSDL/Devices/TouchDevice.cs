@@ -48,7 +48,7 @@ public sealed class TouchDevice
 
     public static int GetTouchDeviceCount() => SDL.GetNumTouchDevices();
 
-    public static TouchDevice GetTouchDevice(int deviceIndex)
+    public static TouchDevice ForDeviceIndex(int deviceIndex)
     {
         var id = SDL.GetTouchDevice(deviceIndex);
         if (id == 0)
@@ -60,7 +60,7 @@ public sealed class TouchDevice
     {
         var devices = new TouchDevice[GetTouchDeviceCount()];
         for (int i = 0; i < devices.Length; ++i)
-            devices[i] = GetTouchDevice(i);
+            devices[i] = ForDeviceIndex(i);
         return devices;
     }
 }
