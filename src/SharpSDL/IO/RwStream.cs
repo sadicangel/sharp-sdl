@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Text;
 
 namespace SharpSDL.IO;
 public sealed class RwStream : IDisposable
@@ -104,7 +103,7 @@ public sealed class RwStream : IDisposable
             if (_stream is not null)
             {
                 var result = SDL.RWclose(_stream);
-                Debug.Assert(result == 0, Encoding.UTF8.GetString(MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.GetError())));
+                Debug.Assert(result == 0, StringHelper.ToUtf16(SDL.GetError()));
                 fixed (SDL_RWops** ptr = &_stream)
                     *ptr = null;
             }

@@ -29,8 +29,7 @@ public sealed class Window : IDisposable
         {
             unsafe
             {
-                return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.GetWindowTitle(_window))
-                    .AsUtf16(utf16 => new string(utf16));
+                return StringHelper.ToUtf16(SDL.GetWindowTitle(_window));
             }
         }
         set

@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace SharpSDL;
+﻿namespace SharpSDL;
 
 public sealed class SdlException(string? message) : Exception(message)
 {
@@ -10,9 +8,7 @@ public sealed class SdlException(string? message) : Exception(message)
     {
         unsafe
         {
-            var bytes = MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.GetError());
-            var chars = Encoding.UTF8.GetString(bytes);
-            throw new SdlException(chars);
+            throw new SdlException(StringHelper.ToUtf16(SDL.GetError()));
         }
     }
 }

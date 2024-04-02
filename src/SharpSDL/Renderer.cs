@@ -1,6 +1,5 @@
 ﻿using SharpSDL.Graphics;
 using SharpSDL.Objects;
-using System.Text;
 
 namespace SharpSDL;
 
@@ -654,7 +653,7 @@ public readonly struct DriverInfo
         {
             unsafe
             {
-                return Encoding.UTF8.GetString(MemoryMarshal.CreateReadOnlySpanFromNullTerminated(NameUtf8));
+                return StringHelper.ToUtf16(NameUtf8);
             }
         }
     }

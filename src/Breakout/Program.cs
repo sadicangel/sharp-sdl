@@ -4,6 +4,7 @@ using SharpSDL.Objects;
 using Version = SharpSDL.Version;
 
 Logger.LogInformation($"{Version.GetVersion()} for {Version.GetPlatform()}");
+Logger.LogInformation($"Locale: {(Locale.GetPreferredLocales() is [var locale, ..] ? locale.ToString() : "unknown")}");
 
 var breakout = new Game(new GameSettings(
     Fps: 60,
