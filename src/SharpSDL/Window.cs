@@ -251,7 +251,11 @@ public sealed class Window : IDisposable
 
     public bool IsShapedWindow { get => SDL.IsShapedWindow(_window); }
 
+    public bool IsScreenKeyboardVisible { get => SDL.IsScreenKeyboardShown(_window); }
+
     public static bool IsScreenSaverEnabled { get => SDL.IsScreenSaverEnabled(); set { if (value) SDL.EnableScreenSaver(); else SDL.DisableScreenSaver(); } }
+
+    public static bool HasScreenKeyboardSupport { get => SDL.HasScreenKeyboardSupport(); }
 
     // Display related.
 
@@ -400,6 +404,9 @@ public sealed class Window : IDisposable
 
     public static Window? GetWindowWithMouseFocus() =>
         SDL.GetMouseFocus() is var window and not 0 ? new Window(window) : null;
+
+    public static Window? GetWindowWithKeyboardFocus() =>
+        SDL.GetKeyboardFocus() is var window and not 0 ? new Window(window) : null;
 }
 
 

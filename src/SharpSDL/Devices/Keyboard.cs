@@ -1,28 +1,69 @@
-﻿namespace SharpSDL.Devices;
+﻿using SharpSDL.Objects;
+
+namespace SharpSDL.Devices;
 
 public sealed class Keyboard
 {
-    private unsafe readonly byte* _keyboardState;
-    private readonly int _keyboardStateLength;
+    private unsafe readonly KeyState* _keyStates;
+    private readonly int _keyStatesCount;
 
     public Keyboard()
     {
         unsafe
         {
             int keyboardStateLength;
-            _keyboardState = SDL.GetKeyboardState(&keyboardStateLength);
-            _keyboardStateLength = keyboardStateLength;
+            _keyStates = (KeyState*)SDL.GetKeyboardState(&keyboardStateLength);
+            _keyStatesCount = keyboardStateLength;
         }
     }
 
-    public bool IsKeyPressed(ScanCode code) { unsafe { return _keyboardState[(int)code] != 0; } }
+    public ReadOnlySpan<KeyState> State
+    {
+        get
+        {
+            unsafe
+            {
+                return new(_keyStates, _keyStatesCount);
+            }
+        }
+    }
+
+    public KeyModifiers Modifiers { get => (KeyModifiers)SDL.GetModState(); set => SDL.SetModState((SDL_Keymod)value); }
+
+    public bool IsTextInputActive { get => SDL.IsTextInputActive(); }
+
+    public bool IsTextInputVisible { get => SDL.IsTextInputShown(); }
+
+    public bool IsKeyPressed(ScanCode code) { unsafe { return _keyStates[(int)code] is KeyState.Pressed; } }
+
+    public void ResetState() => SDL.ResetKeyboard();
+
+    public void ClearComposition() => SDL.ClearComposition();
+
+    public void StartTextInput() => SDL.StartTextInput();
+
+    public void StartTextInput(Rect rect)
+    {
+        if (!rect.IsEmpty)
+        {
+            unsafe
+            {
+                SDL.SetTextInputRect((SDL_Rect*)&rect);
+            }
+        }
+        SDL.StartTextInput();
+    }
+
+    public void StopTextInput() => SDL.StopTextInput();
 }
+
+public enum KeyState : byte { NotPressed, Pressed }
 
 public readonly struct KeySym
 {
     public readonly ScanCode ScanCode;
     public readonly KeyCode KeyCode;
-    public readonly KeyModifier KeyModifier;
+    public readonly KeyModifiers KeyModifier;
     public readonly uint Unused;
 }
 
@@ -525,7 +566,8 @@ public enum KeyCode
     EndCall = SDL_KeyCode.SDLK_ENDCALL,
 }
 
-public enum KeyModifier
+[Flags]
+public enum KeyModifiers
 {
     None = SDL_Keymod.KMOD_NONE,
     LShift = SDL_Keymod.KMOD_LSHIFT,
@@ -549,4 +591,40 @@ public enum KeyModifier
 public static class KeyboardExtensions
 {
     public static KeyCode ToKeyCode(this ScanCode scanCode) => (KeyCode)((int)scanCode | SDL.SDLK_SCANCODE_MASK);
+
+    public static ScanCode GetScanCode(this KeyCode keyCode) => (ScanCode)SDL.GetScancodeFromKey((int)keyCode);
+
+    public static string GetName(this KeyCode keyCode)
+    {
+        unsafe
+        {
+            return StringHelper.ToUtf16(SDL.GetKeyName((int)keyCode));
+        }
+    }
+
+    public static KeyCode GetKeyCode(this string name)
+    {
+        unsafe
+        {
+            return (KeyCode)name.AsUtf8(SDL.GetKeyFromName);
+        }
+    }
+
+    public static KeyCode GetKeyCode(this ScanCode scanCode) => (KeyCode)SDL.GetKeyFromScancode((SDL_Scancode)scanCode);
+
+    public static string GetName(this ScanCode scanCode)
+    {
+        unsafe
+        {
+            return StringHelper.ToUtf16(SDL.GetScancodeName((SDL_Scancode)scanCode));
+        }
+    }
+
+    public static ScanCode GetScanCode(this string name)
+    {
+        unsafe
+        {
+            return (ScanCode)name.AsUtf8(SDL.GetScancodeFromName);
+        }
+    }
 }
