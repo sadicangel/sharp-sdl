@@ -1,8 +1,9 @@
 ﻿using Breakout;
+using SharpSDL.IO;
 using SharpSDL.Objects;
 using Version = SharpSDL.Version;
 
-Console.WriteLine($"{Version.GetVersion()} for {Version.GetPlatform()}");
+Logger.LogInformation($"{Version.GetVersion()} for {Version.GetPlatform()}");
 
 var breakout = new Game(new GameSettings(
     Fps: 60,
