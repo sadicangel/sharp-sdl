@@ -544,5 +544,9 @@ public enum KeyModifier
     Shift = SDL_Keymod.KMOD_SHIFT,
     Alt = SDL_Keymod.KMOD_ALT,
     Gui = SDL_Keymod.KMOD_GUI,
-    Reserved = SDL_Keymod.KMOD_RESERVED,
+}
+
+public static class KeyboardExtensions
+{
+    public static KeyCode ToKeyCode(this ScanCode scanCode) => (KeyCode)((int)scanCode | SDL.SDLK_SCANCODE_MASK);
 }
