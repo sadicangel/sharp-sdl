@@ -1,12 +1,12 @@
 ﻿using System.Text;
 
 namespace SharpSDL.Devices;
-public sealed class TouchDevice
+public sealed class Touch
 {
     private readonly long _touchId;
     private readonly int _touchIndex;
 
-    internal TouchDevice(long id, int index)
+    internal Touch(long id, int index)
     {
         _touchId = id;
         _touchIndex = index;
@@ -48,17 +48,17 @@ public sealed class TouchDevice
 
     public static int GetTouchDeviceCount() => SDL.GetNumTouchDevices();
 
-    public static TouchDevice ForDeviceIndex(int deviceIndex)
+    public static Touch ForDeviceIndex(int deviceIndex)
     {
         var id = SDL.GetTouchDevice(deviceIndex);
         if (id == 0)
             SdlException.ThrowLastError();
-        return new TouchDevice(id, deviceIndex);
+        return new Touch(id, deviceIndex);
     }
 
-    public static IReadOnlyList<TouchDevice> GetTouchDevices()
+    public static IReadOnlyList<Touch> GetTouchDevices()
     {
-        var devices = new TouchDevice[GetTouchDeviceCount()];
+        var devices = new Touch[GetTouchDeviceCount()];
         for (int i = 0; i < devices.Length; ++i)
             devices[i] = ForDeviceIndex(i);
         return devices;
