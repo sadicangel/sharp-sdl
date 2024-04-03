@@ -25,6 +25,8 @@ public sealed class Mouse
         }
     }
 
+    public static bool IsHaptic { get => SDL.MouseIsHaptic() == 1; }
+
     private void Update()
     {
         unsafe

@@ -6,7 +6,7 @@ namespace SharpSDL.Devices;
 
 public sealed class Joystick : IDisposable
 {
-    private readonly nint _joystick;
+    internal readonly nint _joystick;
     private readonly int _virtualIndex;
 
     internal Joystick(nint joystick, int virtualIndex = -1)
@@ -102,6 +102,8 @@ public sealed class Joystick : IDisposable
     public bool HasLed { get => SDL.JoystickHasLED(_joystick); }
 
     public bool IsVirtual { get => _virtualIndex != -1; }
+
+    public bool IsHaptic { get => SDL.JoystickIsHaptic(_joystick) == 1; }
 
     public JoystickPowerLevel PowerLevel { get => (JoystickPowerLevel)SDL.JoystickCurrentPowerLevel(_joystick); }
 
