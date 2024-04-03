@@ -46,6 +46,10 @@ public sealed class Touch
         }
     }
 
+    public bool RecordGesture() => SDL.RecordGesture(_touchId) == 1;
+
+    public static void RecordGestureOnAllDevices() => _ = SDL.RecordGesture(-1);
+
     public static int GetTouchDeviceCount() => SDL.GetNumTouchDevices();
 
     public static Touch ForDeviceIndex(int deviceIndex)
