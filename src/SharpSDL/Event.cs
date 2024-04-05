@@ -8,95 +8,102 @@ public readonly struct Event
     [FieldOffset(0)]
     public readonly EventType Type;
 
-    [FieldOffset(sizeof(EventType))]
+    [FieldOffset(4)]
     public readonly uint Timestamp;
 
     [FieldOffset(0)]
-    public readonly DisplayEvent Display;
+    public readonly EventUnion As;
+}
+
+[StructLayout(LayoutKind.Explicit, Size = 56)]
+public readonly struct EventUnion
+{
+    [FieldOffset(0)]
+    public readonly DisplayEvent DisplayEvent;
 
     [FieldOffset(0)]
-    public readonly WindowEvent Window;
+    public readonly WindowEvent WindowEvent;
 
     [FieldOffset(0)]
-    public readonly KeyboardEvent Key;
+    public readonly KeyboardEvent KeyEvent;
 
     [FieldOffset(0)]
-    public readonly TextEditingEvent Edit;
+    public readonly TextEditingEvent EditEvent;
 
     [FieldOffset(0)]
-    public readonly TextEditingExtEvent EditExt;
+    public readonly TextEditingExtEvent EditExtEvent;
 
     [FieldOffset(0)]
-    public readonly TextInputEvent Text;
+    public readonly TextInputEvent TextEvent;
 
     [FieldOffset(0)]
-    public readonly MouseMotionEvent Motion;
+    public readonly MouseMotionEvent MotionEvent;
 
     [FieldOffset(0)]
-    public readonly MouseButtonEvent Button;
+    public readonly MouseButtonEvent ButtonEvent;
 
     [FieldOffset(0)]
-    public readonly MouseWheelEvent Wheel;
+    public readonly MouseWheelEvent WheelEvent;
 
     [FieldOffset(0)]
-    public readonly JoyAxisEvent JoyAxis;
+    public readonly JoyAxisEvent JoyAxisEvent;
 
     [FieldOffset(0)]
-    public readonly JoyBallEvent JoyBall;
+    public readonly JoyBallEvent JoyBallEvent;
 
     [FieldOffset(0)]
-    public readonly JoyHatEvent JoyHat;
+    public readonly JoyHatEvent JoyHatEvent;
 
     [FieldOffset(0)]
-    public readonly JoyButtonEvent JoyButton;
+    public readonly JoyButtonEvent JoyButtonEvent;
 
     [FieldOffset(0)]
-    public readonly JoyDeviceEvent JoyDevice;
+    public readonly JoyDeviceEvent JoyDeviceEvent;
 
     [FieldOffset(0)]
-    public readonly JoyBatteryEvent JoyBattery;
+    public readonly JoyBatteryEvent JoyBatteryEvent;
 
     [FieldOffset(0)]
-    public readonly ControllerAxisEvent ControllerAxis;
+    public readonly ControllerAxisEvent ControllerAxisEvent;
 
     [FieldOffset(0)]
-    public readonly ControllerButtonEvent ControllerButton;
+    public readonly ControllerButtonEvent ControllerButtonEvent;
 
     [FieldOffset(0)]
-    public readonly ControllerDeviceEvent ControllerDevice;
+    public readonly ControllerDeviceEvent ControllerDeviceEvent;
 
     [FieldOffset(0)]
-    public readonly ControllerTouchpadEvent ControllerTouchpad;
+    public readonly ControllerTouchpadEvent ControllerTouchpadEvent;
 
     [FieldOffset(0)]
-    public readonly ControllerSensorEvent ControllerSensor;
+    public readonly ControllerSensorEvent ControllerSensorEvent;
 
     [FieldOffset(0)]
-    public readonly AudioDeviceEvent AudioDevice;
+    public readonly AudioDeviceEvent AudioDeviceEvent;
 
     [FieldOffset(0)]
-    public readonly SensorEvent Sensor;
+    public readonly SensorEvent SensorEvent;
 
     [FieldOffset(0)]
-    public readonly QuitEvent Quit;
+    public readonly QuitEvent QuitEvent;
 
     [FieldOffset(0)]
-    public readonly UserEvent User;
+    public readonly UserEvent UserEvent;
 
     [FieldOffset(0)]
-    public readonly SysWmEvent SysWm;
+    public readonly SysWmEvent SysWmEvent;
 
     [FieldOffset(0)]
-    public readonly TouchFingerEvent TouchFinger;
+    public readonly TouchFingerEvent TouchFingerEvent;
 
     [FieldOffset(0)]
-    public readonly MultiGestureEvent MultiGesture;
+    public readonly MultiGestureEvent MultiGestureEvent;
 
     [FieldOffset(0)]
-    public readonly DollarGestureEvent DollerGesture;
+    public readonly DollarGestureEvent DollerGestureEvent;
 
     [FieldOffset(0)]
-    public readonly DropEvent Drop;
+    public readonly DropEvent DropEvent;
 }
 
 public enum EventType : uint

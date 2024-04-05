@@ -64,5 +64,6 @@ internal static class StringHelper
     public static T AsUtf8<T>(this string chars, Utf8Func<T> func) => AsUtf8(chars.AsSpan(), func);
     public static void AsUtf8(this string chars, Utf8Action action) => AsUtf8(chars.AsSpan(), action);
 
+    public static string ToUtf16(ReadOnlySpan<byte> span) => Encoding.UTF8.GetString(span);
     public static unsafe string ToUtf16(byte* ptr) => Encoding.UTF8.GetString(MemoryMarshal.CreateReadOnlySpanFromNullTerminated(ptr));
 }

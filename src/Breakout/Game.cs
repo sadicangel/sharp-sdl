@@ -1,4 +1,5 @@
 ﻿using SharpSDL.Devices;
+using SharpSDL.IO;
 using SharpSDL.Objects;
 using Timer = SharpSDL.Timer;
 
@@ -54,6 +55,11 @@ public sealed class Game
         }
     }
 
+    private sealed record class UserData
+    {
+        public int Counter { get; set; }
+    }
+
     public void Run()
     {
         using var system = SubSystem.Init(SubSystemName.Video);
@@ -62,10 +68,36 @@ public sealed class Game
 
         var keyboard = new Keyboard();
 
+        EventQueue.AddEventFilter((ref readonly Event e, object? d) =>
+        {
+            Logger.LogInformation($"Event filter works! Got {nameof(EventType)} '{e.Type}'. UserData: {d}.");
+            if (d is UserData data)
+            {
+                if (data.Counter >= 1)
+                {
+                    Logger.LogInformation("UserData.Counter is 3. Removing filter.");
+                    EventQueue.RemoveEventFilter();
+                }
+                data.Counter++;
+            }
+            return true;
+        }, new UserData());
+
+        var watcher = new EventWatcher((ref readonly Event e, object? d) =>
+        {
+            Logger.LogInformation($"Event watcher works! Got {nameof(EventType)} '{e.Type}'. UserData: {d}.");
+            if (d is EventWatcher w)
+            {
+                Logger.LogInformation("Removing watcher.");
+                EventQueue.RemoveEventWatcher(w);
+            }
+        });
+        EventQueue.AddEventWatcher(watcher, watcher);
+
         while (!_quit)
         {
             // Events
-            while (Events.PollEvent(out var @event))
+            while (EventQueue.PollEvent(out var @event))
             {
                 switch (@event.Type)
                 {
@@ -74,7 +106,7 @@ public sealed class Game
                         break;
 
                     case EventType.KeyDown:
-                        switch (@event.Key.KeySym.KeyCode)
+                        switch (@event.As.KeyEvent.KeySym.KeyCode)
                         {
                             case KeyCode.Space:
                                 _pause = !_pause;

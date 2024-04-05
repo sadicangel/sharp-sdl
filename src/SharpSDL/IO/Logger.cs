@@ -14,7 +14,7 @@ public sealed class Logger
 
     public static void Log(LogCategory category, LogLevel level, string format, params object?[] args)
     {
-        var message = string.Format(format, args);
+        var message = args is [] ? format : string.Format(format, args);
         var utf8Array = ArrayPool<byte>.Shared.Rent(Encoding.UTF8.GetMaxByteCount(message.Length));
         try
         {
@@ -27,7 +27,7 @@ public sealed class Logger
         }
         finally
         {
-            ArrayPool<byte>.Shared.Return(utf8Array);
+            ArrayPool<byte>.Shared.Return(utf8Array, clearArray: true);
         }
     }
     public static void LogCritical(LogCategory category, string format, params object?[] args) => Log(category, LogLevel.Critical, format, args);

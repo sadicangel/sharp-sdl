@@ -522,7 +522,7 @@ internal sealed class WindowHitTest<TState> : IDisposable
         unsafe
         {
             _nativeCallback = new HitTestCallbackUnmanaged((_, point, _) => _callback.Invoke(_window, *point, _callbackState));
-            var fPtr = (delegate* unmanaged[Cdecl]<nint, SDL_Point*, void*, SDL_HitTestResult>)Marshal.GetFunctionPointerForDelegate(_nativeCallback).ToPointer();
+            var fPtr = (delegate* unmanaged[Cdecl]<nint, SDL_Point*, void*, SDL_HitTestResult>)Marshal.GetFunctionPointerForDelegate(_nativeCallback);
             if (SDL.SetWindowHitTest(_window._window, fPtr, null) != 0)
                 SdlException.ThrowLastError();
         }
