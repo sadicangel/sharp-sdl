@@ -7,7 +7,7 @@ public static class FileSystem
     {
         unsafe
         {
-            using var path = SdlFree.Defer(SDL.GetBasePath());
+            using var path = SdlPointer.Defer(SDL.GetBasePath());
             if (path.IsNull)
                 SdlException.ThrowLastError();
             return Encoding.UTF8.GetString(MemoryMarshal.CreateReadOnlySpanFromNullTerminated(path));
@@ -16,7 +16,7 @@ public static class FileSystem
 
     private static unsafe string GetPrefPath(byte* org, byte* app)
     {
-        using var path = SdlFree.Defer(SDL.GetPrefPath(org, app));
+        using var path = SdlPointer.Defer(SDL.GetPrefPath(org, app));
         if (path.IsNull)
             SdlException.ThrowLastError();
         return Encoding.UTF8.GetString(MemoryMarshal.CreateReadOnlySpanFromNullTerminated(path));

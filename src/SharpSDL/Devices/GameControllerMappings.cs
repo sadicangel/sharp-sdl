@@ -52,7 +52,7 @@ public static class GameControllerMappings
     {
         unsafe
         {
-            using var mapping = SdlFree.Defer(SDL.GameControllerMappingForGUID(Unsafe.BitCast<Guid, SDL_GUID>(guid)));
+            using var mapping = SdlPointer.Defer(SDL.GameControllerMappingForGUID(Unsafe.BitCast<Guid, SDL_GUID>(guid)));
             if (mapping.IsNull)
                 SdlException.ThrowLastError();
             return Encoding.UTF8.GetString(MemoryMarshal.CreateReadOnlySpanFromNullTerminated(mapping));
@@ -63,7 +63,7 @@ public static class GameControllerMappings
     {
         unsafe
         {
-            using var mapping = SdlFree.Defer(SDL.GameControllerMapping(controller._controller));
+            using var mapping = SdlPointer.Defer(SDL.GameControllerMapping(controller._controller));
             if (mapping.IsNull)
                 SdlException.ThrowLastError();
             return Encoding.UTF8.GetString(MemoryMarshal.CreateReadOnlySpanFromNullTerminated(mapping));
@@ -74,7 +74,7 @@ public static class GameControllerMappings
     {
         unsafe
         {
-            using var mapping = SdlFree.Defer(SDL.GameControllerMappingForIndex(mappingIndex));
+            using var mapping = SdlPointer.Defer(SDL.GameControllerMappingForIndex(mappingIndex));
             if (mapping.IsNull)
                 SdlException.ThrowLastError();
             return Encoding.UTF8.GetString(MemoryMarshal.CreateReadOnlySpanFromNullTerminated(mapping));
