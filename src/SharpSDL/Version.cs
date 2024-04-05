@@ -20,7 +20,7 @@ public readonly record struct Version(byte Major, byte Minor, byte Patch)
     {
         unsafe
         {
-            return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.GetPlatform()).AsUtf16(utf16 => new string(utf16));
+            return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.GetPlatform()).AsUtf16((p, _) => new string(p));
         }
     }
 }

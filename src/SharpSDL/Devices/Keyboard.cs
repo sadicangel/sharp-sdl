@@ -604,7 +604,7 @@ public static class KeyboardExtensions
     {
         unsafe
         {
-            return (KeyCode)name.AsUtf8(SDL.GetKeyFromName);
+            return (KeyCode)name.AsUtf8((p, _) => SDL.GetKeyFromName(p));
         }
     }
 
@@ -622,7 +622,7 @@ public static class KeyboardExtensions
     {
         unsafe
         {
-            return (ScanCode)name.AsUtf8(SDL.GetScancodeFromName);
+            return (ScanCode)name.AsUtf8((p, _) => SDL.GetScancodeFromName(p));
         }
     }
 }

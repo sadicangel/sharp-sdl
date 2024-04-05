@@ -27,10 +27,10 @@ public sealed class RwFile : IDisposable
         unsafe
         {
             void* data = null;
-            fileName.AsUtf8(f =>
+            fileName.AsUtf8((p, l) =>
             {
                 nuint size = 0;
-                data = SDL.LoadFile(f, &size);
+                data = SDL.LoadFile(p, &size);
             });
             _data = data;
             if (_data is null)

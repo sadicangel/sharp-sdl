@@ -13,7 +13,7 @@ public sealed class Window : IDisposable
     {
         unsafe
         {
-            _window = title.AsUtf8(title => SDL.CreateWindow(title, position.X, position.Y, size.Width, size.Height, (uint)flags));
+            _window = title.AsUtf8((p, _) => SDL.CreateWindow(p, position.X, position.Y, size.Width, size.Height, (uint)flags));
         }
         if (_window == 0)
             SdlException.ThrowLastError();
@@ -36,7 +36,7 @@ public sealed class Window : IDisposable
         {
             unsafe
             {
-                value.AsUtf8(utf8 => SDL.SetWindowTitle(_window, utf8));
+                value.AsUtf8((p, _) => SDL.SetWindowTitle(_window, p));
             }
         }
     }
@@ -379,7 +379,7 @@ public sealed class Window : IDisposable
     {
         unsafe
         {
-            var window = title.AsUtf8(title => SDL.CreateWindow(title, position.X, position.Y, size.Width, size.Height, (uint)flags));
+            var window = title.AsUtf8((p, _) => SDL.CreateWindow(p, position.X, position.Y, size.Width, size.Height, (uint)flags));
             if (window == 0)
                 SdlException.ThrowLastError();
             return new Window(window);

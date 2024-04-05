@@ -43,11 +43,10 @@ public sealed class Sensor : IDisposable
         unsafe
         {
             fixed (float* ptr = data)
+            fixed (ulong* tmp = &timestamp)
             {
-                ulong ts = 0;
-                if (SDL.SensorGetDataWithTimestamp(_sensor, &ts, ptr, data.Length) != 0)
+                if (SDL.SensorGetDataWithTimestamp(_sensor, tmp, ptr, data.Length) != 0)
                     throw new SdlException($"Error retrieving data for sensor '{NameUtf16}'");
-                timestamp = ts;
             }
         }
     }

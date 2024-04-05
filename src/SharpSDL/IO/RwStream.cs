@@ -25,7 +25,7 @@ public sealed class RwStream : IDisposable
         unsafe
         {
             SDL_RWops* stream = null;
-            fileName.AsUtf8(f => fileMode.AsUtf8(m => stream = SDL.RWFromFile(f, m)));
+            fileName.AsUtf8((f, _) => fileMode.AsUtf8((m, l) => stream = SDL.RWFromFile(f, m)));
             if (stream is null)
                 SdlException.ThrowLastError();
         }

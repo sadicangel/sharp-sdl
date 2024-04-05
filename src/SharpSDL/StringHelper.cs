@@ -5,10 +5,10 @@ namespace SharpSDL;
 
 internal static class StringHelper
 {
-    public unsafe delegate T Utf8Func<T>(byte* str);
-    public unsafe delegate void Utf8Action(byte* str);
-    public unsafe delegate T Utf16Func<T>(char* str);
-    public unsafe delegate void Utf16Action(char* str);
+    public unsafe delegate T Utf8Func<T>(byte* str, int len);
+    public unsafe delegate void Utf8Action(byte* str, int len);
+    public unsafe delegate T Utf16Func<T>(char* str, int len);
+    public unsafe delegate void Utf16Action(char* str, int len);
 
     public static T AsUtf16<T>(this ReadOnlySpan<byte> bytes, Utf16Func<T> func)
     {
@@ -19,7 +19,7 @@ internal static class StringHelper
         unsafe
         {
             fixed (char* ptr = chars)
-                return func(ptr);
+                return func(ptr, bytes.Length);
         }
     }
     public static void AsUtf16(this ReadOnlySpan<byte> bytes, Utf16Action action)
@@ -31,7 +31,7 @@ internal static class StringHelper
         unsafe
         {
             fixed (char* ptr = chars)
-                action(ptr);
+                action(ptr, bytes.Length);
         }
     }
 
@@ -44,7 +44,7 @@ internal static class StringHelper
         unsafe
         {
             fixed (byte* ptr = bytes)
-                return func(ptr);
+                return func(ptr, chars.Length);
         }
     }
 
@@ -57,7 +57,7 @@ internal static class StringHelper
         unsafe
         {
             fixed (byte* ptr = bytes)
-                action(ptr);
+                action(ptr, chars.Length);
         }
     }
 

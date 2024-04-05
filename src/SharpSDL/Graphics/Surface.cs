@@ -298,7 +298,7 @@ public sealed class Surface : IDisposable
     {
         unsafe
         {
-            return fileName.AsUtf8(utf8 => LoadBmp(new ReadOnlySpan<byte>(utf8, fileName.Length)));
+            return fileName.AsUtf8((p, l) => LoadBmp(new ReadOnlySpan<byte>(p, l)));
         }
     }
 
@@ -330,7 +330,7 @@ public sealed class Surface : IDisposable
     {
         unsafe
         {
-            fileName.AsUtf8(utf8 => SaveBmp(new ReadOnlySpan<byte>(utf8, fileName.Length)));
+            fileName.AsUtf8((p, l) => SaveBmp(new ReadOnlySpan<byte>(p, l)));
         }
     }
 
