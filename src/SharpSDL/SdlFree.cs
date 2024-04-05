@@ -23,5 +23,5 @@ internal readonly unsafe ref struct SdlFree<T>(T* pointer) where T : unmanaged
     }
 
     public static unsafe implicit operator T*(SdlFree<T> value) => value.Pointer;
-    public static unsafe implicit operator SdlFree<T>(T* value) => new SdlFree<T>(value);
+    public static unsafe implicit operator SdlFree<T>(T* value) => new(value);
 }
