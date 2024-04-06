@@ -207,16 +207,6 @@ public enum TextureAccess
     Target = SDL_TextureAccess.SDL_TEXTUREACCESS_TARGET,
 }
 
-public enum BlendMode
-{
-    None = SDL_BlendMode.SDL_BLENDMODE_NONE,
-    Blend = SDL_BlendMode.SDL_BLENDMODE_BLEND,
-    Add = SDL_BlendMode.SDL_BLENDMODE_ADD,
-    Mod = SDL_BlendMode.SDL_BLENDMODE_MOD,
-    Mul = SDL_BlendMode.SDL_BLENDMODE_MUL,
-    Invalid = SDL_BlendMode.SDL_BLENDMODE_INVALID,
-}
-
 public enum ScaleMode
 {
     Nearest = SDL_ScaleMode.SDL_ScaleModeNearest,
