@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpSDL", "..\src\SharpSDL\SharpSDL.csproj", "{FEE382B1-F9DA-4B10-B0E6-F848A14D966B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "F1Race", "F1Race\F1Race.csproj", "{94545E67-D146-4343-8A84-350FE154C47C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +38,14 @@ Global
 		{FEE382B1-F9DA-4B10-B0E6-F848A14D966B}.Release|Any CPU.Build.0 = Release|x64
 		{FEE382B1-F9DA-4B10-B0E6-F848A14D966B}.Release|x64.ActiveCfg = Release|x64
 		{FEE382B1-F9DA-4B10-B0E6-F848A14D966B}.Release|x64.Build.0 = Release|x64
+		{94545E67-D146-4343-8A84-350FE154C47C}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{94545E67-D146-4343-8A84-350FE154C47C}.Debug|Any CPU.Build.0 = Debug|x64
+		{94545E67-D146-4343-8A84-350FE154C47C}.Debug|x64.ActiveCfg = Debug|x64
+		{94545E67-D146-4343-8A84-350FE154C47C}.Debug|x64.Build.0 = Debug|x64
+		{94545E67-D146-4343-8A84-350FE154C47C}.Release|Any CPU.ActiveCfg = Release|x64
+		{94545E67-D146-4343-8A84-350FE154C47C}.Release|Any CPU.Build.0 = Release|x64
+		{94545E67-D146-4343-8A84-350FE154C47C}.Release|x64.ActiveCfg = Release|x64
+		{94545E67-D146-4343-8A84-350FE154C47C}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
