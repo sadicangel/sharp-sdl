@@ -1,11 +1,37 @@
 ﻿namespace SharpSDL.Objects;
 
-public record struct RectF(float X, float Y, float Width, float Height)
+[StructLayout(LayoutKind.Explicit)]
+public record struct RectF
 {
-    public float X = X;
-    public float Y = Y;
-    public float Width = Width;
-    public float Height = Height;
+    public static readonly RectF Empty = default;
+
+    public RectF(int x, int y, int width, int height)
+    {
+        X = x;
+        Y = y;
+        Width = width;
+        Height = height;
+    }
+
+    public RectF(PointF point, SizeF size)
+    {
+        Point = point;
+        Size = size;
+    }
+
+    [FieldOffset(0)]
+    public int X;
+    [FieldOffset(4)]
+    public int Y;
+    [FieldOffset(8)]
+    public int Width;
+    [FieldOffset(12)]
+    public int Height;
+
+    [FieldOffset(0)]
+    public PointF Point;
+    [FieldOffset(8)]
+    public SizeF Size;
 
     public readonly bool IsEmpty { get => Width <= 0 || Height <= 0; }
 

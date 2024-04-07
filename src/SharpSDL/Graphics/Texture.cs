@@ -2,9 +2,16 @@
 
 namespace SharpSDL.Graphics;
 
-public sealed class Texture(nint texture) : IDisposable
+public sealed class Texture : IDisposable
 {
-    internal readonly nint _texture = texture;
+    internal readonly nint _texture;
+    private readonly bool _owned;
+
+    internal Texture(nint texture, bool owned)
+    {
+        _texture = texture;
+        _owned = owned;
+    }
 
     public PixelFormatEnum Format
     {
@@ -191,11 +198,14 @@ public sealed class Texture(nint texture) : IDisposable
 
     public void Dispose()
     {
-        if (_texture != 0)
+        if (_owned)
         {
-            SDL.DestroyTexture(_texture);
-            ref var ptr = ref Unsafe.AsRef(in _texture);
-            ptr = 0;
+            if (_texture != 0)
+            {
+                SDL.DestroyTexture(_texture);
+                ref var ptr = ref Unsafe.AsRef(in _texture);
+                ptr = 0;
+            }
         }
     }
 }

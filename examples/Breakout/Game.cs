@@ -1,7 +1,7 @@
 ﻿using SharpSDL.Devices;
 using SharpSDL.IO;
 using SharpSDL.Objects;
-using Timer = SharpSDL.Timer;
+using SdlTimer = SharpSDL.SdlTimer;
 
 namespace Breakout;
 
@@ -26,13 +26,13 @@ public sealed class Game
         _settings = settings;
 
         _bar = new Bar(new Rect(
-            X: (int)(settings.WindowSize.Width / 2f - settings.ObjectSize.Width / 2f),
+            x: (int)(settings.WindowSize.Width / 2f - settings.ObjectSize.Width / 2f),
             Y: (int)((settings.WindowSize.Height - settings.ObjectSize.Width - 50) - settings.ObjectSize.Height / 2f),
             Width: settings.ObjectSize.Width,
             Height: settings.ObjectSize.Height));
 
         _prj = new Projectile(new Rect(
-            X: (int)(settings.WindowSize.Width / 2f - settings.ObjectSize.Width / 2f),
+            x: (int)(settings.WindowSize.Width / 2f - settings.ObjectSize.Width / 2f),
             Y: (int)(_bar.Rect.Y - settings.ObjectSize.Height / 2f - settings.ObjectSize.Width),
             Width: 20,
             Height: settings.ObjectSize.Height));
@@ -47,7 +47,7 @@ public sealed class Game
             {
                 _targets[row * mat.Cols + col] = new Target(
                     Rect: new Rect(
-                        X: (int)(grd.X + (settings.ObjectSize.Width + pad.X) * col),
+                        x: (int)(grd.X + (settings.ObjectSize.Width + pad.X) * col),
                         Y: (int)(grd.Y + pad.Y * (float)row),
                         Width: settings.ObjectSize.Width,
                         Height: settings.ObjectSize.Height));
@@ -62,7 +62,7 @@ public sealed class Game
 
     public void Run()
     {
-        using var system = SubSystem.Init(SubSystemName.Video);
+        using var context = new SdlContext(SubSystem.Video);
         using var window = new Window("Breakout", new Point(100, 100), _settings.WindowSize, 0);
         using var renderer = new Renderer(window, -1, RendererFlags.Accelerated);
 
@@ -165,7 +165,7 @@ public sealed class Game
 
             renderer.Present();
 
-            Timer.Delay((uint)(1000 / _settings.Fps));
+            SdlTimer.Delay((uint)(1000 / _settings.Fps));
         }
     }
 

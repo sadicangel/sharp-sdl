@@ -1,6 +1,6 @@
 ﻿namespace SharpSDL;
 
-public sealed class Timer : IDisposable
+public sealed class SdlTimer : IDisposable
 {
     private readonly uint _interval;
     private readonly TimerCallbackUnmanaged _nativeCallback;
@@ -12,7 +12,7 @@ public sealed class Timer : IDisposable
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private unsafe delegate uint TimerCallbackUnmanaged(uint interval, void* state);
 
-    public Timer(uint interval, Func<uint, object?, uint> callback, object? callbackState)
+    public SdlTimer(uint interval, Func<uint, object?, uint> callback, object? callbackState)
     {
         _interval = interval;
         _callback = callback;
@@ -41,5 +41,5 @@ public sealed class Timer : IDisposable
 
     public static ulong GetPerformanceFrequency() => SDL.GetPerformanceFrequency();
 
-    public static void Delay(uint milliseconds) => SDL.Delay(milliseconds);
+    public static void Delay(TimeSpan delay) => SDL.Delay((uint)delay.TotalMilliseconds);
 }

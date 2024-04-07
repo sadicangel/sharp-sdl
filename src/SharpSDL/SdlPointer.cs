@@ -18,7 +18,6 @@ internal readonly unsafe ref struct SdlPointer<T>(T* pointer) where T : unmanage
             SDL.free(Pointer);
             fixed (T** ptr = &Pointer)
                 *ptr = null;
-
         }
     }
 

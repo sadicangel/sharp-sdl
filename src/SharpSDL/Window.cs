@@ -259,6 +259,14 @@ public sealed class Window : IDisposable
 
     // Display related.
 
+    public void SetIcon(Surface icon)
+    {
+        unsafe
+        {
+            SDL.SetWindowIcon(_window, icon._surface);
+        }
+    }
+
     public unsafe void* SetData(byte* name, void* data) => SDL.SetWindowData(_window, name, data);
 
     public unsafe void* GetData(byte* name) => SDL.GetWindowData(_window, name);

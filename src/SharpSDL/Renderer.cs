@@ -116,7 +116,7 @@ public sealed class Renderer : IDisposable
 
     public Texture? RenderTarget
     {
-        get => SDL.GetRenderTarget(_renderer) is var t && t != 0 ? new Texture(t) : null;
+        get => SDL.GetRenderTarget(_renderer) is var t && t != 0 ? new Texture(t, owned: false) : null;
         set
         {
             if (SDL.SetRenderTarget(_renderer, value?._texture ?? 0) != 0)
@@ -147,7 +147,7 @@ public sealed class Renderer : IDisposable
         var texture = SDL.CreateTexture(_renderer, (uint)format, (int)access, size.Width, size.Height);
         if (texture == 0)
             SdlException.ThrowLastError();
-        return new Texture(texture);
+        return new Texture(texture, owned: true);
     }
 
     public bool IsIntegerScale
@@ -248,14 +248,14 @@ public sealed class Renderer : IDisposable
             SdlException.ThrowLastError();
     }
 
-    public Texture CreateTextureFromSurface(Surface surface)
+    public Texture CreateTexture(Surface surface)
     {
         unsafe
         {
             var texture = SDL.CreateTextureFromSurface(_renderer, surface._surface);
             if (texture == 0)
                 SdlException.ThrowLastError();
-            return new Texture(texture);
+            return new Texture(texture, owned: true);
         }
     }
 
@@ -445,8 +445,8 @@ public sealed class Renderer : IDisposable
     {
         unsafe
         {
-            var src = srcRect == default ? null : (SDL_Rect*)&srcRect;
-            var dst = dstRect == default ? null : (SDL_Rect*)&dstRect;
+            var src = srcRect.IsEmpty ? null : (SDL_Rect*)&srcRect;
+            var dst = dstRect.IsEmpty ? null : (SDL_Rect*)&dstRect;
             if (SDL.RenderCopy(_renderer, texture._texture, src, dst) != 0)
                 SdlException.ThrowLastError();
         }
@@ -456,8 +456,8 @@ public sealed class Renderer : IDisposable
     {
         unsafe
         {
-            var src = srcRect == default ? null : (SDL_Rect*)&srcRect;
-            var dst = dstRect == default ? null : (SDL_FRect*)&dstRect;
+            var src = srcRect.IsEmpty ? null : (SDL_Rect*)&srcRect;
+            var dst = dstRect.IsEmpty ? null : (SDL_FRect*)&dstRect;
             if (SDL.RenderCopyF(_renderer, texture._texture, src, dst) != 0)
                 SdlException.ThrowLastError();
         }
@@ -467,9 +467,9 @@ public sealed class Renderer : IDisposable
     {
         unsafe
         {
-            var src = srcRect == default ? null : (SDL_Rect*)&srcRect;
-            var dst = dstRect == default ? null : (SDL_Rect*)&dstRect;
-            var cpt = center == default ? null : (SDL_Point*)&center;
+            var src = srcRect.IsEmpty ? null : (SDL_Rect*)&srcRect;
+            var dst = dstRect.IsEmpty ? null : (SDL_Rect*)&dstRect;
+            var cpt = center.IsEmpty ? null : (SDL_Point*)&center;
             if (SDL.RenderCopyEx(_renderer, texture._texture, src, dst, angle, cpt, (SDL_RendererFlip)flip) != 0)
                 SdlException.ThrowLastError();
         }
@@ -479,9 +479,9 @@ public sealed class Renderer : IDisposable
     {
         unsafe
         {
-            var src = srcRect == default ? null : (SDL_Rect*)&srcRect;
-            var dst = dstRect == default ? null : (SDL_FRect*)&dstRect;
-            var cpt = center == default ? null : (SDL_FPoint*)&center;
+            var src = srcRect.IsEmpty ? null : (SDL_Rect*)&srcRect;
+            var dst = dstRect.IsEmpty ? null : (SDL_FRect*)&dstRect;
+            var cpt = center.IsEmpty ? null : (SDL_FPoint*)&center;
             if (SDL.RenderCopyExF(_renderer, texture._texture, src, dst, angle, cpt, (SDL_RendererFlip)flip) != 0)
                 SdlException.ThrowLastError();
         }

@@ -1,13 +1,40 @@
 ﻿namespace SharpSDL.Objects;
 
-public record struct Rect(int X, int Y, int Width, int Height)
+[StructLayout(LayoutKind.Explicit)]
+public record struct Rect
 {
-    public int X = X;
-    public int Y = Y;
-    public int Width = Width;
-    public int Height = Height;
+    public static readonly Rect Empty = default;
+
+    public Rect(int x, int y, int width, int height)
+    {
+        X = x;
+        Y = y;
+        Width = width;
+        Height = height;
+    }
+
+    public Rect(Point point, Size size)
+    {
+        Point = point;
+        Size = size;
+    }
+
+    [FieldOffset(0)]
+    public int X;
+    [FieldOffset(4)]
+    public int Y;
+    [FieldOffset(8)]
+    public int Width;
+    [FieldOffset(12)]
+    public int Height;
+
+    [FieldOffset(0)]
+    public Point Point;
+    [FieldOffset(8)]
+    public Size Size;
 
     public readonly bool IsEmpty { get => Width <= 0 || Height <= 0; }
+
 
     public readonly bool Contains(Point point)
     {

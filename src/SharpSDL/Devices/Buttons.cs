@@ -1,6 +1,6 @@
 ﻿namespace SharpSDL.Devices;
 
-public enum ButtonState : byte { NotPressed, Pressed }
+public enum ButtonState : byte { Released, Pressed }
 
 [Flags]
 public enum ButtonMask : uint
