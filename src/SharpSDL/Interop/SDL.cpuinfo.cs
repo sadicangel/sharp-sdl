@@ -5,6 +5,9 @@ namespace SharpSDL.Interop
 {
     internal static unsafe partial class SDL2
     {
+        [LibraryImport("SDL2")]
+        [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+        public static partial void __builtin_prefetch([NativeTypeName("const void *")] void* param0);
 
         [LibraryImport("SDL2", EntryPoint = "SDL_GetCPUCount")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

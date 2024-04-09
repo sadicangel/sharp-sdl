@@ -549,6 +549,16 @@ namespace SharpSDL.Interop
         [return: NativeTypeName("char *")]
         public static partial byte* iconv_string([NativeTypeName("const char *")] byte* tocode, [NativeTypeName("const char *")] byte* fromcode, [NativeTypeName("const char *")] byte* inbuf, [NativeTypeName("size_t")] nuint inbytesleft);
 
+        [LibraryImport("SDL2")]
+        [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+        [return: NativeTypeName("_Bool")]
+        public static partial byte __builtin_mul_overflow();
+
+        [LibraryImport("SDL2")]
+        [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+        [return: NativeTypeName("_Bool")]
+        public static partial byte __builtin_add_overflow();
+
         [NativeTypeName("#define SDL_SIZE_MAX SIZE_MAX")]
         public const ulong SDL_SIZE_MAX = 0xffffffffffffffffUL;
 
