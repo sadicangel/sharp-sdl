@@ -1,5 +1,4 @@
 ﻿using SharpSDL.Objects;
-using System.Text;
 
 namespace SharpSDL.Graphics;
 
@@ -88,8 +87,6 @@ public sealed class PixelFormat : IDisposable
             }
         }
     }
-
-    public string NameUtf16 { get => Encoding.UTF8.GetString(Name); }
 
     public uint RgbToPixel(ColorRgb color)
     {

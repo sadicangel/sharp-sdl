@@ -20,8 +20,6 @@ public sealed class GameController : IDisposable
         }
     }
 
-    public string NameUtf16 { get => Encoding.UTF8.GetString(Name); }
-
     public ReadOnlySpan<byte> Path
     {
         get
@@ -32,8 +30,6 @@ public sealed class GameController : IDisposable
             }
         }
     }
-
-    public string PathUtf16 { get => Encoding.UTF8.GetString(Path); }
 
     public GameControllerType Type { get => (GameControllerType)SDL2.GameControllerGetType(_controller); }
 
@@ -57,8 +53,6 @@ public sealed class GameController : IDisposable
             }
         }
     }
-
-    public string SerialNumberUtf16 { get => Encoding.UTF8.GetString(SerialNumber); }
 
     public ulong SteamHandle { get => SDL2.GameControllerGetSteamHandle(_controller); }
 
@@ -146,7 +140,7 @@ public sealed class GameController : IDisposable
             fixed (float* ptr = data)
             {
                 if (SDL2.GameControllerGetSensorData(_controller, (SDL_SensorType)type, ptr, data.Length) != 0)
-                    throw new SdlException($"Error retrieving data for sensor '{NameUtf16}'");
+                    throw new SdlException($"Error retrieving data for sensor '{Name.ToStringUtf16()}'");
             }
         }
     }
@@ -159,7 +153,7 @@ public sealed class GameController : IDisposable
             fixed (ulong* tmp = &timestamp)
             {
                 if (SDL2.GameControllerGetSensorDataWithTimestamp(_controller, (SDL_SensorType)type, tmp, ptr, data.Length) != 0)
-                    throw new SdlException($"Error retrieving data for sensor '{NameUtf16}'");
+                    throw new SdlException($"Error retrieving data for sensor '{Name.ToStringUtf16()}'");
             }
         }
     }

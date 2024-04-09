@@ -124,6 +124,10 @@ public enum AudioFormat : ushort
     F32LSB = SDL2.AUDIO_F32LSB,
     F32MSB = SDL2.AUDIO_F32MSB,
     F32 = SDL2.AUDIO_F32,
+    // TODO: fix these 3 below
+    S16SYS = SDL2.AUDIO_S16SYS,
+    S32SYS = SDL2.AUDIO_S32SYS,
+    F32SYS = SDL2.AUDIO_F32SYS,
 }
 
 [Flags]

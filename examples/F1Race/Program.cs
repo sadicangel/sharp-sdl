@@ -2,6 +2,7 @@
 using SharpSDL;
 using SharpSDL.Devices;
 using SharpSDL.Graphics;
+using SharpSDL.IO;
 using SharpSDL.Objects;
 
 using var context = new SdlContext(SubSystem.Video | SubSystem.Audio);
@@ -20,18 +21,8 @@ using var renderer = new Renderer(window, index: -1, RendererFlags.Accelerated |
 
 using var textures = new GameTextures(renderer);
 
-//int result = Mix_Init(MIX_INIT_OGG);
-//if (result != MIX_INIT_OGG)
-//{
-//    fprintf(stderr, "Mix_Init Error: %s.\n", Mix_GetError());
-//    return EXIT_FAILURE;
-//}
-//if (Mix_OpenAudio(44100, AUDIO_S16SYS, 1, 4096) == -1)
-//{
-//    fprintf(stderr, "Mix_OpenAudio Error: %s.\n", Mix_GetError());
-//    return EXIT_FAILURE;
-//}
-
+using var mixer = new Mixer(MixerFlags.Ogg);
+mixer.OpenAudio(44100, AudioFormat.S16SYS, 1, 4096);
 //Music_Load();
 
 
@@ -69,6 +60,3 @@ while (!exitMainLoop)
     renderer.Present();
     SdlTimer.Delay(TimeSpan.FromMilliseconds(100)); // 10 FPS.
 }
-
-//Mix_CloseAudio();
-//Music_Unload();

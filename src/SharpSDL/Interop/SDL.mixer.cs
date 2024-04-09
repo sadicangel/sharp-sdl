@@ -53,406 +53,406 @@ namespace SharpSDL.Interop
 
     internal static unsafe partial class SDL2
     {
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         [return: NativeTypeName("const SDL_version *")]
         public static partial SDL_version* Mix_Linked_Version();
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_Init(int flags);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial void Mix_Quit();
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_OpenAudio(int frequency, ushort format, int channels, int chunksize);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_OpenAudioDevice(int frequency, ushort format, int channels, int chunksize, [NativeTypeName("const char *")] byte* device, int allowed_changes);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial void Mix_PauseAudio(int pause_on);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_QuerySpec(int* frequency, [NativeTypeName(" *")] ushort* format, int* channels);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_AllocateChannels(int numchans);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial Mix_Chunk* Mix_LoadWAV_RW(SDL_RWops* src, int freesrc);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial Mix_Chunk* Mix_LoadWAV([NativeTypeName("const char *")] byte* file);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         [return: NativeTypeName("Mix_Music *")]
         public static partial nint Mix_LoadMUS([NativeTypeName("const char *")] byte* file);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         [return: NativeTypeName("Mix_Music *")]
         public static partial nint Mix_LoadMUS_RW(SDL_RWops* src, int freesrc);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         [return: NativeTypeName("Mix_Music *")]
         public static partial nint Mix_LoadMUSType_RW(SDL_RWops* src, Mix_MusicType type, int freesrc);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial Mix_Chunk* Mix_QuickLoad_WAV([NativeTypeName(" *")] byte* mem);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial Mix_Chunk* Mix_QuickLoad_RAW([NativeTypeName(" *")] byte* mem, uint len);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial void Mix_FreeChunk(Mix_Chunk* chunk);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial void Mix_FreeMusic([NativeTypeName("Mix_Music *")] nint music);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_GetNumChunkDecoders();
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         [return: NativeTypeName("const char *")]
         public static partial byte* Mix_GetChunkDecoder(int index);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         [return: NativeTypeName("SDL_bool")]
         public static partial CBool Mix_HasChunkDecoder([NativeTypeName("const char *")] byte* name);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_GetNumMusicDecoders();
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         [return: NativeTypeName("const char *")]
         public static partial byte* Mix_GetMusicDecoder(int index);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         [return: NativeTypeName("SDL_bool")]
         public static partial CBool Mix_HasMusicDecoder([NativeTypeName("const char *")] byte* name);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial Mix_MusicType Mix_GetMusicType([NativeTypeName("const Mix_Music *")] nint music);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         [return: NativeTypeName("const char *")]
         public static partial byte* Mix_GetMusicTitle([NativeTypeName("const Mix_Music *")] nint music);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         [return: NativeTypeName("const char *")]
         public static partial byte* Mix_GetMusicTitleTag([NativeTypeName("const Mix_Music *")] nint music);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         [return: NativeTypeName("const char *")]
         public static partial byte* Mix_GetMusicArtistTag([NativeTypeName("const Mix_Music *")] nint music);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         [return: NativeTypeName("const char *")]
         public static partial byte* Mix_GetMusicAlbumTag([NativeTypeName("const Mix_Music *")] nint music);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         [return: NativeTypeName("const char *")]
         public static partial byte* Mix_GetMusicCopyrightTag([NativeTypeName("const Mix_Music *")] nint music);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial void Mix_SetPostMix([NativeTypeName("void (*)(void *,  *, int) __attribute__((cdecl))")] delegate* unmanaged[Cdecl]<void*, byte*, int, void> mix_func, void* arg);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial void Mix_HookMusic([NativeTypeName("void (*)(void *,  *, int) __attribute__((cdecl))")] delegate* unmanaged[Cdecl]<void*, byte*, int, void> mix_func, void* arg);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial void Mix_HookMusicFinished([NativeTypeName("void (*)(void) __attribute__((cdecl))")] delegate* unmanaged[Cdecl]<void> music_finished);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial void* Mix_GetMusicHookData();
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial void Mix_ChannelFinished([NativeTypeName("void (*)(int) __attribute__((cdecl))")] delegate* unmanaged[Cdecl]<int, void> channel_finished);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_RegisterEffect(int chan, [NativeTypeName("Mix_EffectFunc_t")] delegate* unmanaged[Cdecl]<int, void*, int, void*, void> f, [NativeTypeName("Mix_EffectDone_t")] delegate* unmanaged[Cdecl]<int, void*, void> d, void* arg);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_UnregisterEffect(int channel, [NativeTypeName("Mix_EffectFunc_t")] delegate* unmanaged[Cdecl]<int, void*, int, void*, void> f);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_UnregisterAllEffects(int channel);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_SetPanning(int channel, byte left, byte right);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_SetPosition(int channel, short angle, byte distance);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_SetDistance(int channel, byte distance);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_SetReverseStereo(int channel, int flip);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_ReserveChannels(int num);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_GroupChannel(int which, int tag);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_GroupChannels(int from, int to, int tag);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_GroupAvailable(int tag);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_GroupCount(int tag);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_GroupOldest(int tag);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_GroupNewer(int tag);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_PlayChannel(int channel, Mix_Chunk* chunk, int loops);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_PlayChannelTimed(int channel, Mix_Chunk* chunk, int loops, int ticks);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_PlayMusic([NativeTypeName("Mix_Music *")] nint music, int loops);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_FadeInMusic([NativeTypeName("Mix_Music *")] nint music, int loops, int ms);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_FadeInMusicPos([NativeTypeName("Mix_Music *")] nint music, int loops, int ms, double position);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_FadeInChannel(int channel, Mix_Chunk* chunk, int loops, int ms);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_FadeInChannelTimed(int channel, Mix_Chunk* chunk, int loops, int ms, int ticks);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_Volume(int channel, int volume);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_VolumeChunk(Mix_Chunk* chunk, int volume);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_VolumeMusic(int volume);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_GetMusicVolume([NativeTypeName("Mix_Music *")] nint music);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_MasterVolume(int volume);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_HaltChannel(int channel);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_HaltGroup(int tag);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_HaltMusic();
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_ExpireChannel(int channel, int ticks);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_FadeOutChannel(int which, int ms);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_FadeOutGroup(int tag, int ms);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_FadeOutMusic(int ms);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial Mix_Fading Mix_FadingMusic();
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial Mix_Fading Mix_FadingChannel(int which);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial void Mix_Pause(int channel);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial void Mix_Resume(int channel);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_Paused(int channel);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial void Mix_PauseMusic();
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial void Mix_ResumeMusic();
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial void Mix_RewindMusic();
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_PausedMusic();
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_ModMusicJumpToOrder(int order);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_StartTrack([NativeTypeName("Mix_Music *")] nint music, int track);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_GetNumTracks([NativeTypeName("Mix_Music *")] nint music);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_SetMusicPosition(double position);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial double Mix_GetMusicPosition([NativeTypeName("Mix_Music *")] nint music);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial double Mix_MusicDuration([NativeTypeName("Mix_Music *")] nint music);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial double Mix_GetMusicLoopStartTime([NativeTypeName("Mix_Music *")] nint music);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial double Mix_GetMusicLoopEndTime([NativeTypeName("Mix_Music *")] nint music);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial double Mix_GetMusicLoopLengthTime([NativeTypeName("Mix_Music *")] nint music);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_Playing(int channel);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_PlayingMusic();
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_SetMusicCMD([NativeTypeName("const char *")] byte* command);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_SetSynchroValue(int value);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_GetSynchroValue();
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_SetSoundFonts([NativeTypeName("const char *")] byte* paths);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         [return: NativeTypeName("const char *")]
         public static partial byte* Mix_GetSoundFonts();
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_EachSoundFont([NativeTypeName("int (*)(const char *, void *) __attribute__((cdecl))")] delegate* unmanaged[Cdecl]<byte*, void*, int> function, void* data);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial int Mix_SetTimidityCfg([NativeTypeName("const char *")] byte* path);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         [return: NativeTypeName("const char *")]
         public static partial byte* Mix_GetTimidityCfg();
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial Mix_Chunk* Mix_GetChunk(int channel);
 
-        [LibraryImport("SDL2")]
+        [LibraryImport("SDL2_mixer")]
         [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
         public static partial void Mix_CloseAudio();
 

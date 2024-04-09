@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace SharpSDL.Devices;
+﻿namespace SharpSDL.Devices;
 public sealed class Sensor : IDisposable
 {
     private readonly nint _sensor;
@@ -20,8 +18,6 @@ public sealed class Sensor : IDisposable
         }
     }
 
-    public string NameUtf16 { get => Encoding.UTF8.GetString(Name); }
-
     public SensorType Type { get => (SensorType)SDL2.SensorGetType(_sensor); }
 
     public int TypeNonPortable { get => SDL2.SensorGetNonPortableType(_sensor); }
@@ -33,7 +29,7 @@ public sealed class Sensor : IDisposable
             fixed (float* ptr = data)
             {
                 if (SDL2.SensorGetData(_sensor, ptr, data.Length) != 0)
-                    throw new SdlException($"Error retrieving data for sensor '{NameUtf16}'");
+                    throw new SdlException($"Error retrieving data for sensor '{Name.ToStringUtf16()}'");
             }
         }
     }
@@ -46,7 +42,7 @@ public sealed class Sensor : IDisposable
             fixed (ulong* tmp = &timestamp)
             {
                 if (SDL2.SensorGetDataWithTimestamp(_sensor, tmp, ptr, data.Length) != 0)
-                    throw new SdlException($"Error retrieving data for sensor '{NameUtf16}'");
+                    throw new SdlException($"Error retrieving data for sensor '{Name.ToStringUtf16()}'");
             }
         }
     }

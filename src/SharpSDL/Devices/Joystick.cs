@@ -36,8 +36,6 @@ public sealed class Joystick : IDisposable
         }
     }
 
-    public string NameUtf16 { get => Encoding.UTF8.GetString(Name); }
-
     public ReadOnlySpan<byte> Path
     {
         get
@@ -51,8 +49,6 @@ public sealed class Joystick : IDisposable
             }
         }
     }
-
-    public string PathUtf16 { get => Encoding.UTF8.GetString(Path); }
 
     public int PlayerIndex { get => SDL2.JoystickGetPlayerIndex(_joystick); set => SDL2.JoystickSetPlayerIndex(_joystick, value); }
 
@@ -85,8 +81,6 @@ public sealed class Joystick : IDisposable
             }
         }
     }
-
-    public string SerialNumberUtf16 { get => Encoding.UTF8.GetString(SerialNumber); }
 
     public JoystickType Type { get => (JoystickType)SDL2.JoystickGetType(_joystick); }
 
@@ -243,7 +237,7 @@ public sealed class Joystick : IDisposable
             SdlException.ThrowLastError();
         var deviceIndex = FindDeviceIndex(SDL2.JoystickInstanceID(joystick), SDL2.JoystickGetDeviceInstanceID);
         if (deviceIndex < 0)
-            throw new SdlException($"Invalid joystick for '{gameController.NameUtf16}'");
+            throw new SdlException($"Invalid joystick for '{gameController.Name.ToStringUtf16()}'");
         return new Joystick(joystick, deviceIndex, owned: false, isVirtual: false);
     }
 

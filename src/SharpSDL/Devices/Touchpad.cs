@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace SharpSDL.Devices;
+﻿namespace SharpSDL.Devices;
 public sealed class Touchpad
 {
     private readonly long _touchpadId;
@@ -22,8 +20,6 @@ public sealed class Touchpad
             }
         }
     }
-
-    public string NameUtf16 { get => Encoding.UTF8.GetString(Name); }
 
     public TouchpadType Type { get => (TouchpadType)SDL2.GetTouchDeviceType(_touchpadId); }
 

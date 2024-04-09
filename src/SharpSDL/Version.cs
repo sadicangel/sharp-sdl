@@ -16,11 +16,21 @@ public readonly record struct Version(byte Major, byte Minor, byte Patch)
             return version;
         }
     }
+
     public static string GetPlatform()
     {
         unsafe
         {
-            return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL2.GetPlatform()).AsUtf16((p, _) => new string(p));
+            return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL2.GetPlatform()).ToStringUtf16();
+        }
+    }
+
+    public static Version GetMixerVersion()
+    {
+        unsafe
+        {
+            var version = (Version*)SDL2.Mix_Linked_Version();
+            return *version;
         }
     }
 }

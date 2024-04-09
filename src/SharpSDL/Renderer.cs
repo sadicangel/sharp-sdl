@@ -646,17 +646,6 @@ public readonly struct DriverInfo
     public readonly TextureFormats TextureFormats;
     public readonly int MaxTextureWidth;
     public readonly int MaxTextureHeight;
-
-    public string NameUtf16
-    {
-        get
-        {
-            unsafe
-            {
-                return StringHelper.ToUtf16(NameUtf8);
-            }
-        }
-    }
 }
 
 [InlineArray(16)]
