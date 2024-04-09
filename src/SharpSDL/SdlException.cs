@@ -8,7 +8,7 @@ public sealed class SdlException(string? message) : Exception(message)
     {
         unsafe
         {
-            throw new SdlException(StringHelper.ToUtf16(SDL.GetError()));
+            throw new SdlException(StringHelper.ToUtf16(SDL2.GetError()));
         }
     }
 
@@ -16,9 +16,9 @@ public sealed class SdlException(string? message) : Exception(message)
     {
         unsafe
         {
-            SDL.ClearError();
+            SDL2.ClearError();
             action();
-            var _error = MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.GetError());
+            var _error = MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL2.GetError());
             if (_error.Length > 0)
                 throw new SdlException(StringHelper.ToUtf16(_error));
         }
@@ -28,9 +28,9 @@ public sealed class SdlException(string? message) : Exception(message)
     {
         unsafe
         {
-            SDL.ClearError();
+            SDL2.ClearError();
             var result = func();
-            var _error = MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.GetError());
+            var _error = MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL2.GetError());
             if (_error.Length > 0)
                 throw new SdlException(StringHelper.ToUtf16(_error));
             return result;

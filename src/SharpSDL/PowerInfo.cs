@@ -10,7 +10,7 @@ public readonly struct PowerInfo(PowerState PowerState, int BatterySecondsLeft, 
         unsafe
         {
             int s = 0; int p = 0;
-            var e = SDL.GetPowerInfo(&s, &p);
+            var e = SDL2.GetPowerInfo(&s, &p);
             return new PowerInfo((PowerState)e, s, p);
         }
     }

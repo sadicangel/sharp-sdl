@@ -12,7 +12,7 @@ public sealed class RwStream : IDisposable
         {
             fixed (byte* f = fileName, m = fileMode)
             {
-                _stream = SDL.RWFromFile(f, m);
+                _stream = SDL2.RWFromFile(f, m);
                 if (_stream is null)
                     SdlException.ThrowLastError();
             }
@@ -25,7 +25,7 @@ public sealed class RwStream : IDisposable
         unsafe
         {
             SDL_RWops* stream = null;
-            fileName.AsUtf8((f, _) => fileMode.AsUtf8((m, l) => stream = SDL.RWFromFile(f, m)));
+            fileName.AsUtf8((f, _) => fileMode.AsUtf8((m, l) => stream = SDL2.RWFromFile(f, m)));
             if (stream is null)
                 SdlException.ThrowLastError();
         }
@@ -37,7 +37,7 @@ public sealed class RwStream : IDisposable
         {
             unsafe
             {
-                return SDL.RWsize(_stream) is var length and >= -1 ? length : SdlException.ThrowLastError<long>();
+                return SDL2.RWsize(_stream) is var length and >= -1 ? length : SdlException.ThrowLastError<long>();
             }
         }
     }
@@ -46,7 +46,7 @@ public sealed class RwStream : IDisposable
     {
         unsafe
         {
-            return SDL.RWseek(_stream, offset, (int)origin) is var result and >= 0 ? result : SdlException.ThrowLastError<long>();
+            return SDL2.RWseek(_stream, offset, (int)origin) is var result and >= 0 ? result : SdlException.ThrowLastError<long>();
         }
     }
 
@@ -54,7 +54,7 @@ public sealed class RwStream : IDisposable
     {
         unsafe
         {
-            return SDL.RWtell(_stream);
+            return SDL2.RWtell(_stream);
         }
     }
 
@@ -63,7 +63,7 @@ public sealed class RwStream : IDisposable
         unsafe
         {
             nuint size = 0;
-            void* data = SDL.LoadFile_RW(_stream, &size, freesrc: 0);
+            void* data = SDL2.LoadFile_RW(_stream, &size, freesrc: 0);
             return new RwFile(data, size);
         }
     }
@@ -73,11 +73,11 @@ public sealed class RwStream : IDisposable
         unsafe
         {
             nuint read = 0;
-            SDL.ClearError();
+            SDL2.ClearError();
             fixed (T* ptr = buffer)
-                read = SDL.RWread(_stream, ptr, (nuint)sizeof(T), (nuint)buffer.Length);
+                read = SDL2.RWread(_stream, ptr, (nuint)sizeof(T), (nuint)buffer.Length);
 
-            if (read == 0 && MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.GetError()).Length > 0)
+            if (read == 0 && MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL2.GetError()).Length > 0)
                 SdlException.ThrowLastError();
 
             return read;
@@ -90,7 +90,7 @@ public sealed class RwStream : IDisposable
         {
             nuint written = 0;
             fixed (T* ptr = buffer)
-                written = SDL.RWwrite(_stream, ptr, (nuint)sizeof(T), (nuint)buffer.Length);
+                written = SDL2.RWwrite(_stream, ptr, (nuint)sizeof(T), (nuint)buffer.Length);
             if (written != (nuint)buffer.Length)
                 SdlException.ThrowLastError();
         }
@@ -102,8 +102,8 @@ public sealed class RwStream : IDisposable
         {
             if (_stream is not null)
             {
-                var result = SDL.RWclose(_stream);
-                Debug.Assert(result == 0, StringHelper.ToUtf16(SDL.GetError()));
+                var result = SDL2.RWclose(_stream);
+                Debug.Assert(result == 0, StringHelper.ToUtf16(SDL2.GetError()));
                 fixed (SDL_RWops** ptr = &_stream)
                     *ptr = null;
             }

@@ -5,13 +5,13 @@ namespace SharpSDL;
 
 public static class EventQueue
 {
-    public static bool HasEvents(EventType type) => SDL.HasEvent((uint)type);
+    public static bool HasEvents(EventType type) => SDL2.HasEvent((uint)type);
 
-    public static bool HasEvents(EventType minType, EventType maxType) => SDL.HasEvents((uint)minType, (uint)maxType);
+    public static bool HasEvents(EventType minType, EventType maxType) => SDL2.HasEvents((uint)minType, (uint)maxType);
 
-    public static void FlushEvents(EventType type) => SDL.FlushEvent((uint)type);
+    public static void FlushEvents(EventType type) => SDL2.FlushEvent((uint)type);
 
-    public static void FlushEvents(EventType minType, EventType maxType) => SDL.FlushEvents((uint)minType, (uint)maxType);
+    public static void FlushEvents(EventType minType, EventType maxType) => SDL2.FlushEvents((uint)minType, (uint)maxType);
 
     public static bool PeekEvent(out Event @event)
     {
@@ -19,7 +19,7 @@ public static class EventQueue
         {
             fixed (Event* e = &@event)
             {
-                var result = SDL.PeepEvents(
+                var result = SDL2.PeepEvents(
                     (SDL_Event*)e,
                     numevents: 1,
                     SDL_eventaction.SDL_PEEKEVENT,
@@ -42,7 +42,7 @@ public static class EventQueue
         {
             fixed (Event* e = events)
             {
-                var result = SDL.PeepEvents(
+                var result = SDL2.PeepEvents(
                     (SDL_Event*)e,
                     events.Length,
                     SDL_eventaction.SDL_PEEKEVENT,
@@ -60,7 +60,7 @@ public static class EventQueue
         {
             fixed (Event* ptr = &@event)
             {
-                return SDL.PollEvent((SDL_Event*)ptr) != 0;
+                return SDL2.PollEvent((SDL_Event*)ptr) != 0;
             }
         }
     }
@@ -71,7 +71,7 @@ public static class EventQueue
         {
             fixed (Event* e = events)
             {
-                var result = SDL.PeepEvents(
+                var result = SDL2.PeepEvents(
                     (SDL_Event*)e,
                     events.Length,
                     SDL_eventaction.SDL_GETEVENT,
@@ -89,7 +89,7 @@ public static class EventQueue
         {
             fixed (Event* ptr = &@event)
             {
-                if (SDL.WaitEvent((SDL_Event*)ptr) == 0)
+                if (SDL2.WaitEvent((SDL_Event*)ptr) == 0)
                     SdlException.ThrowLastError();
             }
         }
@@ -101,7 +101,7 @@ public static class EventQueue
         {
             Event* e = null;
             var hasEvent = SdlException.WatchError(() =>
-                SDL.WaitEventTimeout((SDL_Event*)e, (int)timeout.TotalMilliseconds) == 1);
+                SDL2.WaitEventTimeout((SDL_Event*)e, (int)timeout.TotalMilliseconds) == 1);
             @event = hasEvent ? *e : default;
             return hasEvent;
         }
@@ -113,7 +113,7 @@ public static class EventQueue
         {
             fixed (Event* ptr = &@event)
             {
-                return SDL.PushEvent((SDL_Event*)ptr) switch
+                return SDL2.PushEvent((SDL_Event*)ptr) switch
                 {
                     0 => false,
                     1 => true,
@@ -129,7 +129,7 @@ public static class EventQueue
         {
             fixed (Event* e = events)
             {
-                var result = SDL.PeepEvents(
+                var result = SDL2.PeepEvents(
                     (SDL_Event*)e,
                     events.Length,
                     SDL_eventaction.SDL_ADDEVENT,
@@ -142,17 +142,17 @@ public static class EventQueue
     }
 
     public static bool IsEventTypeEnabled(EventType type) =>
-        SDL.EventState((uint)type, SDL.SDL_QUERY) == SDL.SDL_ENABLE;
+        SDL2.EventState((uint)type, SDL2.SDL_QUERY) == SDL2.SDL_ENABLE;
 
     public static void EnableEventType(EventType type) =>
-        SDL.EventState((uint)type, SDL.SDL_ENABLE);
+        SDL2.EventState((uint)type, SDL2.SDL_ENABLE);
 
     public static void DisableEventType(EventType type) =>
-        SDL.EventState((uint)type, SDL.SDL_DISABLE);
+        SDL2.EventState((uint)type, SDL2.SDL_DISABLE);
 
     public static EventType RegisterEvents(int count)
     {
-        var result = SDL.RegisterEvents(count);
+        var result = SDL2.RegisterEvents(count);
         return result is uint.MaxValue
             ? throw new SdlException("Unable to register new user-defined events")
             : (EventType)result;
@@ -165,7 +165,7 @@ public static class EventQueue
             var native = new EventWatcherUnmanaged((e, _) =>
                 filter.Invoke(ref Unsafe.AsRef<Event>(e), userData) ? 1 : 0);
             var fPtr = Marshal.GetFunctionPointerForDelegate(native);
-            SDL.FilterEvents((delegate* unmanaged[Cdecl]<void*, SDL_Event*, int>)fPtr, null);
+            SDL2.FilterEvents((delegate* unmanaged[Cdecl]<void*, SDL_Event*, int>)fPtr, null);
         }
     }
 
@@ -234,12 +234,12 @@ internal sealed class EventFilterWrapper
                         return _callback.Invoke(ref Unsafe.AsRef<Event>(e), CallbackState) ? 1 : 0;
                     });
                     var fPtr = Marshal.GetFunctionPointerForDelegate(_nativeCallback);
-                    SDL.SetEventFilter((delegate* unmanaged[Cdecl]<void*, SDL_Event*, int>)fPtr, null);
+                    SDL2.SetEventFilter((delegate* unmanaged[Cdecl]<void*, SDL_Event*, int>)fPtr, null);
                 }
                 else
                 {
                     _nativeCallback = null;
-                    SDL.SetEventFilter(null, null);
+                    SDL2.SetEventFilter(null, null);
                 }
             }
         }
@@ -271,7 +271,7 @@ internal sealed class EventWatcherWrapper : IDisposable
                 return 0;
             });
             _nativeCallbackPointer = Marshal.GetFunctionPointerForDelegate(_nativeCallback);
-            SDL.AddEventWatch((delegate* unmanaged[Cdecl]<void*, SDL_Event*, int>)_nativeCallbackPointer, null);
+            SDL2.AddEventWatch((delegate* unmanaged[Cdecl]<void*, SDL_Event*, int>)_nativeCallbackPointer, null);
         }
     }
 
@@ -282,7 +282,7 @@ internal sealed class EventWatcherWrapper : IDisposable
     {
         unsafe
         {
-            SDL.DelEventWatch((delegate* unmanaged[Cdecl]<void*, SDL_Event*, int>)_nativeCallbackPointer, null);
+            SDL2.DelEventWatch((delegate* unmanaged[Cdecl]<void*, SDL_Event*, int>)_nativeCallbackPointer, null);
         }
     }
 }

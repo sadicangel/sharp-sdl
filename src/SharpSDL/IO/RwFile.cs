@@ -16,7 +16,7 @@ public sealed class RwFile : IDisposable
         {
             fixed (byte* f = fileName)
             fixed (nuint* s = &_size)
-                _data = SDL.LoadFile(f, s);
+                _data = SDL2.LoadFile(f, s);
             if (_data is null)
                 SdlException.ThrowLastError();
         }
@@ -30,7 +30,7 @@ public sealed class RwFile : IDisposable
             fileName.AsUtf8((p, l) =>
             {
                 nuint size = 0;
-                data = SDL.LoadFile(p, &size);
+                data = SDL2.LoadFile(p, &size);
             });
             _data = data;
             if (_data is null)
@@ -46,7 +46,7 @@ public sealed class RwFile : IDisposable
         {
             if (_data is not null)
             {
-                SDL.free(_data);
+                SDL2.free(_data);
                 fixed (void** ptr1 = &_data)
                     *ptr1 = null;
                 fixed (nuint* ptr2 = &_size)

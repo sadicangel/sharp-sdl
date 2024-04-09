@@ -7,7 +7,7 @@ public sealed class Sensor : IDisposable
 
     internal Sensor(nint sensor) => _sensor = sensor;
 
-    public int Id { get => SDL.SensorGetInstanceID(_sensor); }
+    public int Id { get => SDL2.SensorGetInstanceID(_sensor); }
 
     public ReadOnlySpan<byte> Name
     {
@@ -15,16 +15,16 @@ public sealed class Sensor : IDisposable
         {
             unsafe
             {
-                return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.SensorGetName(_sensor));
+                return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL2.SensorGetName(_sensor));
             }
         }
     }
 
     public string NameUtf16 { get => Encoding.UTF8.GetString(Name); }
 
-    public SensorType Type { get => (SensorType)SDL.SensorGetType(_sensor); }
+    public SensorType Type { get => (SensorType)SDL2.SensorGetType(_sensor); }
 
-    public int TypeNonPortable { get => SDL.SensorGetNonPortableType(_sensor); }
+    public int TypeNonPortable { get => SDL2.SensorGetNonPortableType(_sensor); }
 
     public void GetData(Span<float> data)
     {
@@ -32,7 +32,7 @@ public sealed class Sensor : IDisposable
         {
             fixed (float* ptr = data)
             {
-                if (SDL.SensorGetData(_sensor, ptr, data.Length) != 0)
+                if (SDL2.SensorGetData(_sensor, ptr, data.Length) != 0)
                     throw new SdlException($"Error retrieving data for sensor '{NameUtf16}'");
             }
         }
@@ -45,7 +45,7 @@ public sealed class Sensor : IDisposable
             fixed (float* ptr = data)
             fixed (ulong* tmp = &timestamp)
             {
-                if (SDL.SensorGetDataWithTimestamp(_sensor, tmp, ptr, data.Length) != 0)
+                if (SDL2.SensorGetDataWithTimestamp(_sensor, tmp, ptr, data.Length) != 0)
                     throw new SdlException($"Error retrieving data for sensor '{NameUtf16}'");
             }
         }
@@ -57,7 +57,7 @@ public sealed class Sensor : IDisposable
         {
             unsafe
             {
-                SDL.SensorClose(_sensor);
+                SDL2.SensorClose(_sensor);
                 ref var ptr = ref Unsafe.AsRef(in _sensor);
                 ptr = 0;
             }
@@ -66,7 +66,7 @@ public sealed class Sensor : IDisposable
 
     public static Sensor FromDeviceIndex(int sensorIndex)
     {
-        var sensor = SDL.SensorOpen(sensorIndex);
+        var sensor = SDL2.SensorOpen(sensorIndex);
         if (sensor is 0)
             throw new SdlException("Invalid sensor index");
         return new Sensor(sensor);
@@ -74,15 +74,15 @@ public sealed class Sensor : IDisposable
 
     public static Sensor FromInstanceId(int instanceId)
     {
-        var sensor = SDL.SensorFromInstanceID(instanceId);
+        var sensor = SDL2.SensorFromInstanceID(instanceId);
         if (sensor is 0)
             throw new SdlException("Invalid sensor instance ID");
         return new Sensor(sensor);
     }
 
-    public static int GetSensorDeviceCount() => SDL.NumSensors();
+    public static int GetSensorDeviceCount() => SDL2.NumSensors();
 
-    public static void UpdateSensors() => SDL.SensorUpdate();
+    public static void UpdateSensors() => SDL2.SensorUpdate();
 }
 
 public enum SensorType

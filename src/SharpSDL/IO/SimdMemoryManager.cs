@@ -4,7 +4,7 @@ namespace SharpSDL.IO;
 
 public sealed class SimdMemoryManager(nuint length) : SimdMemoryManager<byte>(length)
 {
-    public static nuint Alignment { get => SDL.SIMDGetAlignment(); }
+    public static nuint Alignment { get => SDL2.SIMDGetAlignment(); }
 }
 
 public class SimdMemoryManager<T> : MemoryManager<T> where T : unmanaged
@@ -16,7 +16,7 @@ public class SimdMemoryManager<T> : MemoryManager<T> where T : unmanaged
     {
         unsafe
         {
-            _pointer = (T*)SDL.SIMDAlloc(length * (nuint)sizeof(T));
+            _pointer = (T*)SDL2.SIMDAlloc(length * (nuint)sizeof(T));
             if (_pointer is null)
                 throw new SdlException("Out of memory");
             _length = length;
@@ -27,7 +27,7 @@ public class SimdMemoryManager<T> : MemoryManager<T> where T : unmanaged
     {
         unsafe
         {
-            var realloc = (T*)SDL.SIMDRealloc(_pointer, length * (nuint)sizeof(T));
+            var realloc = (T*)SDL2.SIMDRealloc(_pointer, length * (nuint)sizeof(T));
             if (realloc is null)
                 throw new SdlException("Out of memory");
 
@@ -59,7 +59,7 @@ public class SimdMemoryManager<T> : MemoryManager<T> where T : unmanaged
     {
         if (_pointer is not null)
         {
-            SDL.SIMDFree(_pointer);
+            SDL2.SIMDFree(_pointer);
             fixed (T** ptr = &_pointer)
                 *ptr = null;
         }

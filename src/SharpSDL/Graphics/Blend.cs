@@ -8,7 +8,7 @@ public static class Blend
         BlendFactor srcAlphaFactor,
         BlendFactor dstAlphaFactor,
         BlendOperation alphaOperation) =>
-        (BlendMode)SDL.ComposeCustomBlendMode(
+        (BlendMode)SDL2.ComposeCustomBlendMode(
             (SDL_BlendFactor)srcColorFactor,
             (SDL_BlendFactor)dstColorFactor,
             (SDL_BlendOperation)colorOperation,

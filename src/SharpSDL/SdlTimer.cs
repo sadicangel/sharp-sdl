@@ -21,7 +21,7 @@ public sealed class SdlTimer : IDisposable
         {
             _nativeCallback = new TimerCallbackUnmanaged((interval, _) => _callback.Invoke(interval, _callbackState));
             var fPtr = (delegate* unmanaged[Cdecl]<uint, void*, uint>)Marshal.GetFunctionPointerForDelegate(_nativeCallback).ToPointer();
-            _nativeCallbackId = SDL.AddTimer(interval, fPtr, null);
+            _nativeCallbackId = SDL2.AddTimer(interval, fPtr, null);
         }
     }
 
@@ -29,17 +29,17 @@ public sealed class SdlTimer : IDisposable
     {
         if (_nativeCallbackId != 0)
         {
-            SDL.RemoveTimer(_nativeCallbackId);
+            SDL2.RemoveTimer(_nativeCallbackId);
             ref var id = ref Unsafe.AsRef(in _nativeCallbackId);
             id = 0;
         }
     }
 
-    public static ulong GetTicks() => SDL.GetTicks64();
+    public static ulong GetTicks() => SDL2.GetTicks64();
 
-    public static ulong GetPerformanceCounter() => SDL.GetPerformanceCounter();
+    public static ulong GetPerformanceCounter() => SDL2.GetPerformanceCounter();
 
-    public static ulong GetPerformanceFrequency() => SDL.GetPerformanceFrequency();
+    public static ulong GetPerformanceFrequency() => SDL2.GetPerformanceFrequency();
 
-    public static void Delay(TimeSpan delay) => SDL.Delay((uint)delay.TotalMilliseconds);
+    public static void Delay(TimeSpan delay) => SDL2.Delay((uint)delay.TotalMilliseconds);
 }

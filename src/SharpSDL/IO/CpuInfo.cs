@@ -1,41 +1,41 @@
 ﻿namespace SharpSDL.IO;
 public static class CpuInfo
 {
-    public static int Cores { get => SDL.GetCPUCount(); }
+    public static int Cores { get => SDL2.GetCPUCount(); }
 
-    public static int L1CacheSize { get => SDL.GetCPUCacheLineSize(); }
+    public static int L1CacheSize { get => SDL2.GetCPUCacheLineSize(); }
 
-    public static bool HasRDTSC { get => SDL.HasRDTSC(); }
+    public static bool HasRDTSC { get => SDL2.HasRDTSC(); }
 
-    public static bool HasAltiVec { get => SDL.HasAltiVec(); }
+    public static bool HasAltiVec { get => SDL2.HasAltiVec(); }
 
-    public static bool HasMMX { get => SDL.HasMMX(); }
+    public static bool HasMMX { get => SDL2.HasMMX(); }
 
-    public static bool Has3DNow { get => SDL.Has3DNow(); }
+    public static bool Has3DNow { get => SDL2.Has3DNow(); }
 
-    public static bool HasSSE { get => SDL.HasSSE(); }
+    public static bool HasSSE { get => SDL2.HasSSE(); }
 
-    public static bool HasSSE2 { get => SDL.HasSSE2(); }
+    public static bool HasSSE2 { get => SDL2.HasSSE2(); }
 
-    public static bool HasSSE3 { get => SDL.HasSSE3(); }
+    public static bool HasSSE3 { get => SDL2.HasSSE3(); }
 
-    public static bool HasSSE41 { get => SDL.HasSSE41(); }
+    public static bool HasSSE41 { get => SDL2.HasSSE41(); }
 
-    public static bool HasSSE42 { get => SDL.HasSSE42(); }
+    public static bool HasSSE42 { get => SDL2.HasSSE42(); }
 
-    public static bool HasAVX { get => SDL.HasAVX(); }
+    public static bool HasAVX { get => SDL2.HasAVX(); }
 
-    public static bool HasAVX2 { get => SDL.HasAVX2(); }
+    public static bool HasAVX2 { get => SDL2.HasAVX2(); }
 
-    public static bool HasAVX512F { get => SDL.HasAVX512F(); }
+    public static bool HasAVX512F { get => SDL2.HasAVX512F(); }
 
-    public static bool HasARMSIMD { get => SDL.HasARMSIMD(); }
+    public static bool HasARMSIMD { get => SDL2.HasARMSIMD(); }
 
-    public static bool HasNEON { get => SDL.HasNEON(); }
+    public static bool HasNEON { get => SDL2.HasNEON(); }
 
-    public static bool HasLSX { get => SDL.HasLSX(); }
+    public static bool HasLSX { get => SDL2.HasLSX(); }
 
-    public static bool HasLASX { get => SDL.HasLASX(); }
+    public static bool HasLASX { get => SDL2.HasLASX(); }
 
-    public static int SystemRamMiB { get => SDL.GetSystemRAM(); }
+    public static int SystemRamMiB { get => SDL2.GetSystemRAM(); }
 }

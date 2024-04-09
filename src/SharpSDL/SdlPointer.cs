@@ -15,7 +15,7 @@ internal readonly unsafe ref struct SdlPointer<T>(T* pointer) where T : unmanage
     {
         if (Pointer is not null)
         {
-            SDL.free(Pointer);
+            SDL2.free(Pointer);
             fixed (T** ptr = &Pointer)
                 *ptr = null;
         }

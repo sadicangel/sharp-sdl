@@ -15,7 +15,7 @@ public sealed class GameController : IDisposable
         {
             unsafe
             {
-                return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.GameControllerName(_controller));
+                return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL2.GameControllerName(_controller));
             }
         }
     }
@@ -28,24 +28,24 @@ public sealed class GameController : IDisposable
         {
             unsafe
             {
-                return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.GameControllerPath(_controller));
+                return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL2.GameControllerPath(_controller));
             }
         }
     }
 
     public string PathUtf16 { get => Encoding.UTF8.GetString(Path); }
 
-    public GameControllerType Type { get => (GameControllerType)SDL.GameControllerGetType(_controller); }
+    public GameControllerType Type { get => (GameControllerType)SDL2.GameControllerGetType(_controller); }
 
-    public int PlayerIndex { get => SDL.GameControllerGetPlayerIndex(_controller); set => SDL.GameControllerSetPlayerIndex(_controller, value); }
+    public int PlayerIndex { get => SDL2.GameControllerGetPlayerIndex(_controller); set => SDL2.GameControllerSetPlayerIndex(_controller, value); }
 
-    public ushort Vendor { get => SDL.GameControllerGetVendor(_controller); }
+    public ushort Vendor { get => SDL2.GameControllerGetVendor(_controller); }
 
-    public ushort Product { get => SDL.GameControllerGetProduct(_controller); }
+    public ushort Product { get => SDL2.GameControllerGetProduct(_controller); }
 
-    public ushort ProductVersion { get => SDL.GameControllerGetProductVersion(_controller); }
+    public ushort ProductVersion { get => SDL2.GameControllerGetProductVersion(_controller); }
 
-    public ushort FirmwareVersion { get => SDL.GameControllerGetProductVersion(_controller); }
+    public ushort FirmwareVersion { get => SDL2.GameControllerGetProductVersion(_controller); }
 
     public ReadOnlySpan<byte> SerialNumber
     {
@@ -53,31 +53,31 @@ public sealed class GameController : IDisposable
         {
             unsafe
             {
-                return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.JoystickGetSerial(_controller));
+                return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL2.JoystickGetSerial(_controller));
             }
         }
     }
 
     public string SerialNumberUtf16 { get => Encoding.UTF8.GetString(SerialNumber); }
 
-    public ulong SteamHandle { get => SDL.GameControllerGetSteamHandle(_controller); }
+    public ulong SteamHandle { get => SDL2.GameControllerGetSteamHandle(_controller); }
 
-    public bool IsAttached { get => SDL.GameControllerGetAttached(_controller); }
+    public bool IsAttached { get => SDL2.GameControllerGetAttached(_controller); }
 
     public Joystick Joystick { get => _joystick ??= Joystick.FromGameController(this); }
 
-    public int TouchpadCount { get => SDL.GameControllerGetNumTouchpads(_controller); }
+    public int TouchpadCount { get => SDL2.GameControllerGetNumTouchpads(_controller); }
 
-    public bool HasRumble { get => SDL.GameControllerHasRumble(_controller); }
+    public bool HasRumble { get => SDL2.GameControllerHasRumble(_controller); }
 
-    public bool HasRumbleTriggers { get => SDL.GameControllerHasRumbleTriggers(_controller); }
+    public bool HasRumbleTriggers { get => SDL2.GameControllerHasRumbleTriggers(_controller); }
 
-    public bool HasLed { get => SDL.GameControllerHasLED(_controller); }
+    public bool HasLed { get => SDL2.GameControllerHasLED(_controller); }
 
     public static bool EnableEvents
     {
-        get => SDL.GameControllerEventState(SDL.SDL_QUERY) == SDL.SDL_ENABLE;
-        set => _ = SDL.GameControllerEventState(value ? SDL.SDL_ENABLE : SDL.SDL_DISABLE);
+        get => SDL2.GameControllerEventState(SDL2.SDL_QUERY) == SDL2.SDL_ENABLE;
+        set => _ = SDL2.GameControllerEventState(value ? SDL2.SDL_ENABLE : SDL2.SDL_DISABLE);
     }
 
     public void Dispose()
@@ -86,7 +86,7 @@ public sealed class GameController : IDisposable
         {
             unsafe
             {
-                SDL.JoystickClose(_controller);
+                SDL2.JoystickClose(_controller);
                 ref var ptr = ref Unsafe.AsRef(in _controller);
                 ptr = 0;
             }
@@ -94,24 +94,24 @@ public sealed class GameController : IDisposable
     }
 
     public bool HasAxis(GameControllerAxis axis) =>
-        SDL.GameControllerHasAxis(_controller, (SDL_GameControllerAxis)axis);
+        SDL2.GameControllerHasAxis(_controller, (SDL_GameControllerAxis)axis);
 
     public short GetAxis(GameControllerAxis axis) =>
-        SDL.GameControllerGetAxis(_controller, (SDL_GameControllerAxis)axis);
+        SDL2.GameControllerGetAxis(_controller, (SDL_GameControllerAxis)axis);
 
     public bool HasButton(GameControllerButton button) =>
-        SDL.GameControllerHasButton(_controller, (SDL_GameControllerButton)button);
+        SDL2.GameControllerHasButton(_controller, (SDL_GameControllerButton)button);
 
     public short GetButton(GameControllerButton button) =>
-        SDL.GameControllerGetButton(_controller, (SDL_GameControllerButton)button);
+        SDL2.GameControllerGetButton(_controller, (SDL_GameControllerButton)button);
 
     public GameControllerBind GetBind(GameControllerAxis axis) =>
-        Unsafe.BitCast<SDL_GameControllerButtonBind, GameControllerBind>(SDL.GameControllerGetBindForAxis(_controller, (SDL_GameControllerAxis)axis));
+        Unsafe.BitCast<SDL_GameControllerButtonBind, GameControllerBind>(SDL2.GameControllerGetBindForAxis(_controller, (SDL_GameControllerAxis)axis));
 
     public GameControllerBind GetBind(GameControllerButton button) =>
-        Unsafe.BitCast<SDL_GameControllerButtonBind, GameControllerBind>(SDL.GameControllerGetBindForButton(_controller, (SDL_GameControllerButton)button));
+        Unsafe.BitCast<SDL_GameControllerButtonBind, GameControllerBind>(SDL2.GameControllerGetBindForButton(_controller, (SDL_GameControllerButton)button));
 
-    public int GetTouchpadFingerCount(int touchpadIndex) => SDL.GameControllerGetNumTouchpadFingers(_controller, touchpadIndex);
+    public int GetTouchpadFingerCount(int touchpadIndex) => SDL2.GameControllerGetNumTouchpadFingers(_controller, touchpadIndex);
 
     public TouchpadFingerValues GetTouchpadFinger(int touchpadIndex, int fingerIndex, out bool isEnabled)
     {
@@ -119,24 +119,24 @@ public sealed class GameController : IDisposable
         {
             var finger = new TouchpadFingerValues();
             byte state;
-            if (SDL.GameControllerGetTouchpadFinger(_controller, touchpadIndex, fingerIndex, &state, &finger.X, &finger.Y, &finger.Pressure) != 0)
+            if (SDL2.GameControllerGetTouchpadFinger(_controller, touchpadIndex, fingerIndex, &state, &finger.X, &finger.Y, &finger.Pressure) != 0)
                 SdlException.ThrowLastError();
-            isEnabled = state is SDL.SDL_ENABLE;
+            isEnabled = state is SDL2.SDL_ENABLE;
             return finger;
         }
     }
 
     public bool HasSensor(SensorType sensor) =>
-        SDL.GameControllerHasSensor(_controller, (SDL_SensorType)sensor);
+        SDL2.GameControllerHasSensor(_controller, (SDL_SensorType)sensor);
 
     public void ToggleSensor(SensorType sensor, bool enable) =>
-        _ = SDL.GameControllerSetSensorEnabled(_controller, (SDL_SensorType)sensor, enable) is 0 ? 0 : SdlException.ThrowLastError<int>();
+        _ = SDL2.GameControllerSetSensorEnabled(_controller, (SDL_SensorType)sensor, enable) is 0 ? 0 : SdlException.ThrowLastError<int>();
 
     public void EnableSensor(SensorType sensor) => ToggleSensor(sensor, enable: true);
 
     public void DisableSensor(SensorType sensor) => ToggleSensor(sensor, enable: false);
 
-    public float GetSensorDataRate(SensorType sensor) => SDL.GameControllerGetSensorDataRate(_controller, (SDL_SensorType)sensor);
+    public float GetSensorDataRate(SensorType sensor) => SDL2.GameControllerGetSensorDataRate(_controller, (SDL_SensorType)sensor);
 
 
     public void GetData(SensorType type, Span<float> data)
@@ -145,7 +145,7 @@ public sealed class GameController : IDisposable
         {
             fixed (float* ptr = data)
             {
-                if (SDL.GameControllerGetSensorData(_controller, (SDL_SensorType)type, ptr, data.Length) != 0)
+                if (SDL2.GameControllerGetSensorData(_controller, (SDL_SensorType)type, ptr, data.Length) != 0)
                     throw new SdlException($"Error retrieving data for sensor '{NameUtf16}'");
             }
         }
@@ -158,19 +158,19 @@ public sealed class GameController : IDisposable
             fixed (float* ptr = data)
             fixed (ulong* tmp = &timestamp)
             {
-                if (SDL.GameControllerGetSensorDataWithTimestamp(_controller, (SDL_SensorType)type, tmp, ptr, data.Length) != 0)
+                if (SDL2.GameControllerGetSensorDataWithTimestamp(_controller, (SDL_SensorType)type, tmp, ptr, data.Length) != 0)
                     throw new SdlException($"Error retrieving data for sensor '{NameUtf16}'");
             }
         }
     }
 
     public bool Rumble(ushort lowFrequency, ushort highFrequency, TimeSpan duration) =>
-        SDL.GameControllerRumble(_controller, lowFrequency, highFrequency, (uint)duration.TotalMilliseconds) is 0;
+        SDL2.GameControllerRumble(_controller, lowFrequency, highFrequency, (uint)duration.TotalMilliseconds) is 0;
 
     public bool RumbleTriggers(ushort leftRumble, ushort rightRumble, TimeSpan duration) =>
-        SDL.GameControllerRumbleTriggers(_controller, leftRumble, rightRumble, (uint)duration.TotalMilliseconds) is 0;
+        SDL2.GameControllerRumbleTriggers(_controller, leftRumble, rightRumble, (uint)duration.TotalMilliseconds) is 0;
 
-    public bool SetLed(ColorRgb color) => SDL.GameControllerSetLED(_controller, color.R, color.G, color.B) == 0;
+    public bool SetLed(ColorRgb color) => SDL2.GameControllerSetLED(_controller, color.R, color.G, color.B) == 0;
 
     public bool SendEffect(ReadOnlySpan<byte> data)
     {
@@ -178,18 +178,18 @@ public sealed class GameController : IDisposable
         {
             fixed (byte* ptr = data)
             {
-                return SDL.GameControllerSendEffect(_controller, ptr, data.Length) == 0;
+                return SDL2.GameControllerSendEffect(_controller, ptr, data.Length) == 0;
             }
         }
     }
 
-    public static void Update() => SDL.GameControllerUpdate();
+    public static void Update() => SDL2.GameControllerUpdate();
 
     public static GameController FromJoystick(Joystick joystick) => FromJoystickDeviceIndex(joystick._deviceIndex);
 
     public static GameController FromJoystickDeviceIndex(int deviceIndex)
     {
-        var controller = SDL.GameControllerOpen(deviceIndex);
+        var controller = SDL2.GameControllerOpen(deviceIndex);
         if (controller is 0)
             SdlException.ThrowLastError();
         return new GameController(controller);
@@ -197,7 +197,7 @@ public sealed class GameController : IDisposable
 
     public static GameController FromJoystickInstanceId(int instanceId)
     {
-        var controller = SDL.GameControllerFromInstanceID(instanceId);
+        var controller = SDL2.GameControllerFromInstanceID(instanceId);
         if (controller is 0)
             SdlException.ThrowLastError();
         return new GameController(controller);
@@ -205,7 +205,7 @@ public sealed class GameController : IDisposable
 
     public static GameController FromJoystickPlayerIndex(int playerIndex)
     {
-        var controller = SDL.GameControllerFromPlayerIndex(playerIndex);
+        var controller = SDL2.GameControllerFromPlayerIndex(playerIndex);
         if (controller is 0)
             SdlException.ThrowLastError();
         return new GameController(controller);
@@ -317,14 +317,14 @@ public static class GameControllerExtensions
     {
         unsafe
         {
-            return Encoding.UTF8.GetString(MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.GameControllerGetStringForAxis((SDL_GameControllerAxis)axis)));
+            return Encoding.UTF8.GetString(MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL2.GameControllerGetStringForAxis((SDL_GameControllerAxis)axis)));
         }
     }
     public static string GetAxisAppleSFSymbolsName(this GameController controller, GameControllerAxis axis)
     {
         unsafe
         {
-            return Encoding.UTF8.GetString(MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.GameControllerGetAppleSFSymbolsNameForAxis(controller._controller, (SDL_GameControllerAxis)axis)));
+            return Encoding.UTF8.GetString(MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL2.GameControllerGetAppleSFSymbolsNameForAxis(controller._controller, (SDL_GameControllerAxis)axis)));
         }
     }
 
@@ -332,7 +332,7 @@ public static class GameControllerExtensions
     {
         unsafe
         {
-            return (GameControllerAxis)axis.AsUtf8((p, _) => SDL.GameControllerGetAxisFromString(p));
+            return (GameControllerAxis)axis.AsUtf8((p, _) => SDL2.GameControllerGetAxisFromString(p));
         }
     }
 
@@ -340,7 +340,7 @@ public static class GameControllerExtensions
     {
         unsafe
         {
-            return Encoding.UTF8.GetString(MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.GameControllerGetStringForButton((SDL_GameControllerButton)axis)));
+            return Encoding.UTF8.GetString(MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL2.GameControllerGetStringForButton((SDL_GameControllerButton)axis)));
         }
     }
 
@@ -348,7 +348,7 @@ public static class GameControllerExtensions
     {
         unsafe
         {
-            return Encoding.UTF8.GetString(MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.GameControllerGetAppleSFSymbolsNameForButton(controller._controller, (SDL_GameControllerButton)button)));
+            return Encoding.UTF8.GetString(MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL2.GameControllerGetAppleSFSymbolsNameForButton(controller._controller, (SDL_GameControllerButton)button)));
         }
     }
 
@@ -356,7 +356,7 @@ public static class GameControllerExtensions
     {
         unsafe
         {
-            return (GameControllerButton)axis.AsUtf8((p, _) => SDL.GameControllerGetButtonFromString(p));
+            return (GameControllerButton)axis.AsUtf8((p, _) => SDL2.GameControllerGetButtonFromString(p));
         }
     }
 }

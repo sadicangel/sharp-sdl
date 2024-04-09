@@ -17,22 +17,22 @@ public sealed class Mouse
 
     public static bool IsRelativeModeEnabled
     {
-        get => SDL.GetRelativeMouseMode();
+        get => SDL2.GetRelativeMouseMode();
         set
         {
-            if (SDL.SetRelativeMouseMode(value) != 0)
+            if (SDL2.SetRelativeMouseMode(value) != 0)
                 SdlException.ThrowLastError();
         }
     }
 
-    public static bool IsHaptic { get => SDL.MouseIsHaptic() == 1; }
+    public static bool IsHaptic { get => SDL2.MouseIsHaptic() == 1; }
 
     private void Update()
     {
         unsafe
         {
             var point = new Point();
-            var state = (MouseState)SDL.GetMouseState(&point.X, &point.Y);
+            var state = (MouseState)SDL2.GetMouseState(&point.X, &point.Y);
             _location = point;
             _state = state;
         }
@@ -43,7 +43,7 @@ public sealed class Mouse
         unsafe
         {
             var point = new Point();
-            var state = (MouseState)SDL.GetGlobalMouseState(&point.X, &point.Y);
+            var state = (MouseState)SDL2.GetGlobalMouseState(&point.X, &point.Y);
             _globalLocation = point;
             _state = state;
         }
@@ -54,24 +54,24 @@ public sealed class Mouse
         unsafe
         {
             var point = new Point();
-            var state = (MouseState)SDL.GetRelativeMouseState(&point.X, &point.Y);
+            var state = (MouseState)SDL2.GetRelativeMouseState(&point.X, &point.Y);
             _relativeLocation = point;
             _state = state;
         }
     }
 
     public static void WarpInWindow(Point point, Window? window = null) =>
-        SDL.WarpMouseInWindow(window?._window ?? 0, point.X, point.Y);
+        SDL2.WarpMouseInWindow(window?._window ?? 0, point.X, point.Y);
 
     public static void WarpGlobal(Point point)
     {
-        if (SDL.WarpMouseGlobal(point.X, point.Y) != 0)
+        if (SDL2.WarpMouseGlobal(point.X, point.Y) != 0)
             SdlException.ThrowLastError();
     }
 
     public static void Capture(bool enable)
     {
-        if (SDL.CaptureMouse(enable) != 0)
+        if (SDL2.CaptureMouse(enable) != 0)
             SdlException.ThrowLastError();
     }
 }

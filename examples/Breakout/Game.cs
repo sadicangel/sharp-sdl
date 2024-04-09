@@ -27,15 +27,15 @@ public sealed class Game
 
         _bar = new Bar(new Rect(
             x: (int)(settings.WindowSize.Width / 2f - settings.ObjectSize.Width / 2f),
-            Y: (int)((settings.WindowSize.Height - settings.ObjectSize.Width - 50) - settings.ObjectSize.Height / 2f),
-            Width: settings.ObjectSize.Width,
-            Height: settings.ObjectSize.Height));
+            y: (int)((settings.WindowSize.Height - settings.ObjectSize.Width - 50) - settings.ObjectSize.Height / 2f),
+            width: settings.ObjectSize.Width,
+            height: settings.ObjectSize.Height));
 
         _prj = new Projectile(new Rect(
             x: (int)(settings.WindowSize.Width / 2f - settings.ObjectSize.Width / 2f),
-            Y: (int)(_bar.Rect.Y - settings.ObjectSize.Height / 2f - settings.ObjectSize.Width),
-            Width: 20,
-            Height: settings.ObjectSize.Height));
+            y: (int)(_bar.Rect.Y - settings.ObjectSize.Height / 2f - settings.ObjectSize.Width),
+            width: 20,
+            height: settings.ObjectSize.Height));
 
         var mat = (Rows: 4, Cols: 5);
         var pad = new Point(20, 50);
@@ -48,9 +48,9 @@ public sealed class Game
                 _targets[row * mat.Cols + col] = new Target(
                     Rect: new Rect(
                         x: (int)(grd.X + (settings.ObjectSize.Width + pad.X) * col),
-                        Y: (int)(grd.Y + pad.Y * (float)row),
-                        Width: settings.ObjectSize.Width,
-                        Height: settings.ObjectSize.Height));
+                        y: (int)(grd.Y + pad.Y * (float)row),
+                        width: settings.ObjectSize.Width,
+                        height: settings.ObjectSize.Height));
             }
         }
     }
@@ -165,7 +165,7 @@ public sealed class Game
 
             renderer.Present();
 
-            SdlTimer.Delay((uint)(1000 / _settings.Fps));
+            SdlTimer.Delay(TimeSpan.FromMilliseconds(1000 / _settings.Fps));
         }
     }
 

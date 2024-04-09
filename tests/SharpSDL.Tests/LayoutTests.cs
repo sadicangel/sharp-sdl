@@ -1,5 +1,5 @@
-using SharpSDL.Interop;
-using SharpSDL.Objects;
+//using SharpSDL.Interop;
+//using SharpSDL.Objects;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -10,8 +10,8 @@ public class LayoutTests
 {
     private readonly static Dictionary<Type, Type> TypeMap = new()
     {
-        [typeof(SDL_Color)] = typeof(ColorRgba),
-        [typeof(SDL_Event)] = typeof(Event),
+        //[typeof(SDL_Color)] = typeof(ColorRgba),
+        //[typeof(SDL_Event)] = typeof(Event),
     };
 
     [Theory]

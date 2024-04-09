@@ -5,19 +5,19 @@ public sealed class Haptic : IDisposable
 
     internal Haptic(nint haptic) => _haptic = haptic;
 
-    public int DeviceIndex { get => SDL.HapticIndex(_haptic) is var i and >= 0 ? i : SdlException.ThrowLastError<int>(); }
+    public int DeviceIndex { get => SDL2.HapticIndex(_haptic) is var i and >= 0 ? i : SdlException.ThrowLastError<int>(); }
 
-    public int EffectStoreCount { get => SDL.HapticNumEffects(_haptic) is var i and >= 0 ? i : SdlException.ThrowLastError<int>(); }
+    public int EffectStoreCount { get => SDL2.HapticNumEffects(_haptic) is var i and >= 0 ? i : SdlException.ThrowLastError<int>(); }
 
-    public int EffectPlayCount { get => SDL.HapticNumEffectsPlaying(_haptic) is var i and >= 0 ? i : SdlException.ThrowLastError<int>(); }
+    public int EffectPlayCount { get => SDL2.HapticNumEffectsPlaying(_haptic) is var i and >= 0 ? i : SdlException.ThrowLastError<int>(); }
 
-    public HapticFeature Features { get => SDL.HapticQuery(_haptic) is var f and > 0 ? (HapticFeature)f : SdlException.ThrowLastError<HapticFeature>(); }
+    public HapticFeature Features { get => SDL2.HapticQuery(_haptic) is var f and > 0 ? (HapticFeature)f : SdlException.ThrowLastError<HapticFeature>(); }
 
-    public int AxisCount { get => SDL.HapticNumAxes(_haptic) is var c and >= 0 ? c : SdlException.ThrowLastError<int>(); }
+    public int AxisCount { get => SDL2.HapticNumAxes(_haptic) is var c and >= 0 ? c : SdlException.ThrowLastError<int>(); }
 
     public bool IsRumbleSupported
     {
-        get => SDL.HapticRumbleSupported(_haptic) switch
+        get => SDL2.HapticRumbleSupported(_haptic) switch
         {
             0 => false,
             1 => true,
@@ -26,22 +26,22 @@ public sealed class Haptic : IDisposable
     }
 
     public void SetGain(int value) =>
-        _ = SDL.HapticSetGain(_haptic, value) is 0 ? 0 : SdlException.ThrowLastError<int>();
+        _ = SDL2.HapticSetGain(_haptic, value) is 0 ? 0 : SdlException.ThrowLastError<int>();
 
     public void SetAutoCenter(int value) =>
-        _ = SDL.HapticSetAutocenter(_haptic, value) is 0 ? 0 : SdlException.ThrowLastError<int>();
+        _ = SDL2.HapticSetAutocenter(_haptic, value) is 0 ? 0 : SdlException.ThrowLastError<int>();
 
-    public void Pause() => _ = SDL.HapticPause(_haptic) is 0 ? 0 : SdlException.ThrowLastError<int>();
+    public void Pause() => _ = SDL2.HapticPause(_haptic) is 0 ? 0 : SdlException.ThrowLastError<int>();
 
-    public void Resume() => _ = SDL.HapticUnpause(_haptic) is 0 ? 0 : SdlException.ThrowLastError<int>();
+    public void Resume() => _ = SDL2.HapticUnpause(_haptic) is 0 ? 0 : SdlException.ThrowLastError<int>();
 
-    public void StopAllEffects() => _ = SDL.HapticStopAll(_haptic) is 0 ? 0 : SdlException.ThrowLastError<int>();
+    public void StopAllEffects() => _ = SDL2.HapticStopAll(_haptic) is 0 ? 0 : SdlException.ThrowLastError<int>();
 
-    public void RumbleInit() => _ = SDL.HapticRumbleInit(_haptic) is 0 ? 0 : SdlException.ThrowLastError<int>();
+    public void RumbleInit() => _ = SDL2.HapticRumbleInit(_haptic) is 0 ? 0 : SdlException.ThrowLastError<int>();
 
-    public void RumblePlay(float strength, TimeSpan duration) => _ = SDL.HapticRumblePlay(_haptic, strength, (uint)duration.TotalMilliseconds) is 0 ? 0 : SdlException.ThrowLastError<int>();
+    public void RumblePlay(float strength, TimeSpan duration) => _ = SDL2.HapticRumblePlay(_haptic, strength, (uint)duration.TotalMilliseconds) is 0 ? 0 : SdlException.ThrowLastError<int>();
 
-    public void RumbleStop() => _ = SDL.HapticRumbleStop(_haptic) is 0 ? 0 : SdlException.ThrowLastError<int>();
+    public void RumbleStop() => _ = SDL2.HapticRumbleStop(_haptic) is 0 ? 0 : SdlException.ThrowLastError<int>();
 
     public bool SupportsEffect(ref readonly HapticEffect effect)
     {
@@ -49,7 +49,7 @@ public sealed class Haptic : IDisposable
         {
             fixed (HapticEffect* ptr = &effect)
             {
-                return SDL.HapticEffectSupported(_haptic, (SDL_HapticEffect*)ptr) switch
+                return SDL2.HapticEffectSupported(_haptic, (SDL_HapticEffect*)ptr) switch
                 {
                     0 => false,
                     1 => true,
@@ -65,7 +65,7 @@ public sealed class Haptic : IDisposable
         {
             fixed (HapticEffect* ptr = &effect)
             {
-                var effectId = SDL.HapticNewEffect(_haptic, (SDL_HapticEffect*)ptr);
+                var effectId = SDL2.HapticNewEffect(_haptic, (SDL_HapticEffect*)ptr);
                 return effectId >= 0 ? new HapticEffectId(effectId) : SdlException.ThrowLastError<HapticEffectId>();
             }
         }
@@ -77,7 +77,7 @@ public sealed class Haptic : IDisposable
         {
             fixed (HapticEffect* ptr = &effect)
             {
-                _ = SDL.HapticUpdateEffect(_haptic, effectId._effectId, (SDL_HapticEffect*)ptr) is 0
+                _ = SDL2.HapticUpdateEffect(_haptic, effectId._effectId, (SDL_HapticEffect*)ptr) is 0
                     ? 0
                     : SdlException.ThrowLastError<int>();
             }
@@ -85,13 +85,13 @@ public sealed class Haptic : IDisposable
     }
 
     public void RunEffect(HapticEffectId effectId, uint iterations) =>
-        _ = SDL.HapticRunEffect(_haptic, effectId._effectId, iterations) is 0 ? 0 : SdlException.ThrowLastError<int>();
+        _ = SDL2.HapticRunEffect(_haptic, effectId._effectId, iterations) is 0 ? 0 : SdlException.ThrowLastError<int>();
 
     public void StopEffect(HapticEffectId effectId) =>
-        _ = SDL.HapticStopEffect(_haptic, effectId._effectId) is 0 ? 0 : SdlException.ThrowLastError<int>();
+        _ = SDL2.HapticStopEffect(_haptic, effectId._effectId) is 0 ? 0 : SdlException.ThrowLastError<int>();
 
     public void DestroyEffect(HapticEffectId effectId) =>
-        SDL.HapticDestroyEffect(_haptic, effectId._effectId);
+        SDL2.HapticDestroyEffect(_haptic, effectId._effectId);
 
     public void Dispose()
     {
@@ -99,18 +99,18 @@ public sealed class Haptic : IDisposable
         {
             unsafe
             {
-                SDL.HapticClose(_haptic);
+                SDL2.HapticClose(_haptic);
                 ref var ptr = ref Unsafe.AsRef(in _haptic);
                 ptr = 0;
             }
         }
     }
 
-    public static int HapticDeviceCount() => SDL.NumHaptics() is var n and >= 0 ? n : SdlException.ThrowLastError<int>();
+    public static int HapticDeviceCount() => SDL2.NumHaptics() is var n and >= 0 ? n : SdlException.ThrowLastError<int>();
 
     public static Haptic FromMouse()
     {
-        var haptic = SDL.HapticOpenFromMouse();
+        var haptic = SDL2.HapticOpenFromMouse();
         if (haptic is 0)
             SdlException.ThrowLastError();
         return new Haptic(haptic);
@@ -118,7 +118,7 @@ public sealed class Haptic : IDisposable
 
     public static Haptic FromJoystick(Joystick joystick)
     {
-        var haptic = SDL.HapticOpenFromJoystick(joystick._joystick);
+        var haptic = SDL2.HapticOpenFromJoystick(joystick._joystick);
         if (haptic is 0)
             SdlException.ThrowLastError();
         return new Haptic(haptic);
@@ -127,18 +127,18 @@ public sealed class Haptic : IDisposable
 
 public enum HapticEffectType : ushort
 {
-    Constant = (ushort)SDL.SDL_HAPTIC_CONSTANT,
-    Sine = (ushort)SDL.SDL_HAPTIC_SINE,
-    LeftRight = (ushort)SDL.SDL_HAPTIC_LEFTRIGHT,
-    Triangle = (ushort)SDL.SDL_HAPTIC_TRIANGLE,
-    SawtoothUp = (ushort)SDL.SDL_HAPTIC_SAWTOOTHUP,
-    SawtoothDown = (ushort)SDL.SDL_HAPTIC_SAWTOOTHDOWN,
-    Ramp = (ushort)SDL.SDL_HAPTIC_RAMP,
-    Spring = (ushort)SDL.SDL_HAPTIC_SPRING,
-    Damper = (ushort)SDL.SDL_HAPTIC_DAMPER,
-    Inertia = (ushort)SDL.SDL_HAPTIC_INERTIA,
-    Friction = (ushort)SDL.SDL_HAPTIC_FRICTION,
-    Custom = (ushort)SDL.SDL_HAPTIC_CUSTOM,
+    Constant = (ushort)SDL2.SDL_HAPTIC_CONSTANT,
+    Sine = (ushort)SDL2.SDL_HAPTIC_SINE,
+    LeftRight = (ushort)SDL2.SDL_HAPTIC_LEFTRIGHT,
+    Triangle = (ushort)SDL2.SDL_HAPTIC_TRIANGLE,
+    SawtoothUp = (ushort)SDL2.SDL_HAPTIC_SAWTOOTHUP,
+    SawtoothDown = (ushort)SDL2.SDL_HAPTIC_SAWTOOTHDOWN,
+    Ramp = (ushort)SDL2.SDL_HAPTIC_RAMP,
+    Spring = (ushort)SDL2.SDL_HAPTIC_SPRING,
+    Damper = (ushort)SDL2.SDL_HAPTIC_DAMPER,
+    Inertia = (ushort)SDL2.SDL_HAPTIC_INERTIA,
+    Friction = (ushort)SDL2.SDL_HAPTIC_FRICTION,
+    Custom = (ushort)SDL2.SDL_HAPTIC_CUSTOM,
 }
 
 public enum HapticEffectStatus
@@ -150,18 +150,18 @@ public enum HapticEffectStatus
 [Flags]
 public enum HapticFeature : uint
 {
-    Gain = SDL.SDL_HAPTIC_GAIN,
-    AutoCenter = SDL.SDL_HAPTIC_AUTOCENTER,
-    Status = SDL.SDL_HAPTIC_STATUS,
-    Pause = SDL.SDL_HAPTIC_PAUSE,
+    Gain = SDL2.SDL_HAPTIC_GAIN,
+    AutoCenter = SDL2.SDL_HAPTIC_AUTOCENTER,
+    Status = SDL2.SDL_HAPTIC_STATUS,
+    Pause = SDL2.SDL_HAPTIC_PAUSE,
 }
 
 public enum HapticCoordinateSystem : byte
 {
-    Polar = SDL.SDL_HAPTIC_POLAR,
-    Cartesian = SDL.SDL_HAPTIC_CARTESIAN,
-    Spherical = SDL.SDL_HAPTIC_SPHERICAL,
-    SteeringAxis = SDL.SDL_HAPTIC_STEERING_AXIS
+    Polar = SDL2.SDL_HAPTIC_POLAR,
+    Cartesian = SDL2.SDL_HAPTIC_CARTESIAN,
+    Spherical = SDL2.SDL_HAPTIC_SPHERICAL,
+    SteeringAxis = SDL2.SDL_HAPTIC_STEERING_AXIS
 }
 
 [StructLayout(LayoutKind.Explicit, Size = 16, Pack = 4)]

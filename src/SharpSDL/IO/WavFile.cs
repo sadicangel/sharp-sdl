@@ -16,7 +16,7 @@ public sealed class WavFile : IDisposable
             fixed (uint* size = &_size)
             {
                 var desired = spec.ToNative();
-                _spec = AudioSpec.FromNative(SDL.LoadWAV_RW(stream._stream, freesrc: 0, &desired, data, size));
+                _spec = AudioSpec.FromNative(SDL2.LoadWAV_RW(stream._stream, freesrc: 0, &desired, data, size));
             }
         }
     }
@@ -30,7 +30,7 @@ public sealed class WavFile : IDisposable
             fixed (uint* size = &_size)
             {
                 var desired = spec.ToNative();
-                _spec = AudioSpec.FromNative(SDL.LoadWAV_RW(stream._stream, freesrc: 0, &desired, data, size));
+                _spec = AudioSpec.FromNative(SDL2.LoadWAV_RW(stream._stream, freesrc: 0, &desired, data, size));
             }
         }
     }
@@ -44,7 +44,7 @@ public sealed class WavFile : IDisposable
             fixed (uint* size = &_size)
             {
                 var desired = spec.ToNative();
-                _spec = AudioSpec.FromNative(SDL.LoadWAV_RW(stream._stream, freesrc: 0, &desired, data, size));
+                _spec = AudioSpec.FromNative(SDL2.LoadWAV_RW(stream._stream, freesrc: 0, &desired, data, size));
             }
         }
     }
@@ -57,7 +57,7 @@ public sealed class WavFile : IDisposable
         {
             if (_data is not null)
             {
-                SDL.FreeWAV(_data);
+                SDL2.FreeWAV(_data);
                 fixed (byte** ptr1 = &_data)
                     *ptr1 = null;
                 fixed (uint* ptr2 = &_size)

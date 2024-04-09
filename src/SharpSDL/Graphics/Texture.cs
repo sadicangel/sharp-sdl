@@ -20,7 +20,7 @@ public sealed class Texture : IDisposable
             unsafe
             {
                 PixelFormatEnum format = default;
-                if (SDL.QueryTexture(_texture, (uint*)&format, null, null, null) != 0)
+                if (SDL2.QueryTexture(_texture, (uint*)&format, null, null, null) != 0)
                     SdlException.ThrowLastError();
                 return format;
             }
@@ -34,7 +34,7 @@ public sealed class Texture : IDisposable
             unsafe
             {
                 TextureAccess access = default;
-                if (SDL.QueryTexture(_texture, null, (int*)&access, null, null) != 0)
+                if (SDL2.QueryTexture(_texture, null, (int*)&access, null, null) != 0)
                     SdlException.ThrowLastError();
                 return access;
             }
@@ -48,7 +48,7 @@ public sealed class Texture : IDisposable
             unsafe
             {
                 Size size = default;
-                if (SDL.QueryTexture(_texture, null, null, &size.Width, &size.Height) != 0)
+                if (SDL2.QueryTexture(_texture, null, null, &size.Width, &size.Height) != 0)
                     SdlException.ThrowLastError();
                 return size;
             }
@@ -62,14 +62,14 @@ public sealed class Texture : IDisposable
             unsafe
             {
                 ColorRgb color = default;
-                if (SDL.GetTextureColorMod(_texture, &color.R, &color.G, &color.B) != 0)
+                if (SDL2.GetTextureColorMod(_texture, &color.R, &color.G, &color.B) != 0)
                     SdlException.ThrowLastError();
                 return color;
             }
         }
         set
         {
-            if (SDL.SetTextureColorMod(_texture, value.R, value.G, value.B) != 0)
+            if (SDL2.SetTextureColorMod(_texture, value.R, value.G, value.B) != 0)
                 SdlException.ThrowLastError();
         }
     }
@@ -81,14 +81,14 @@ public sealed class Texture : IDisposable
             unsafe
             {
                 byte a = default;
-                if (SDL.GetTextureAlphaMod(_texture, &a) != 0)
+                if (SDL2.GetTextureAlphaMod(_texture, &a) != 0)
                     SdlException.ThrowLastError();
                 return a;
             }
         }
         set
         {
-            if (SDL.SetTextureAlphaMod(_texture, value) != 0)
+            if (SDL2.SetTextureAlphaMod(_texture, value) != 0)
                 SdlException.ThrowLastError();
         }
     }
@@ -100,14 +100,14 @@ public sealed class Texture : IDisposable
             unsafe
             {
                 BlendMode blendMode = default;
-                if (SDL.GetTextureBlendMode(_texture, (SDL_BlendMode*)&blendMode) != 0)
+                if (SDL2.GetTextureBlendMode(_texture, (SDL_BlendMode*)&blendMode) != 0)
                     SdlException.ThrowLastError();
                 return blendMode;
             }
         }
         set
         {
-            if (SDL.SetTextureBlendMode(_texture, (SDL_BlendMode)value) != 0)
+            if (SDL2.SetTextureBlendMode(_texture, (SDL_BlendMode)value) != 0)
                 SdlException.ThrowLastError();
         }
     }
@@ -119,14 +119,14 @@ public sealed class Texture : IDisposable
             unsafe
             {
                 ScaleMode scaleMode;
-                if (SDL.GetTextureScaleMode(_texture, (SDL_ScaleMode*)&scaleMode) != 0)
+                if (SDL2.GetTextureScaleMode(_texture, (SDL_ScaleMode*)&scaleMode) != 0)
                     SdlException.ThrowLastError();
                 return scaleMode;
             }
         }
         set
         {
-            if (SDL.SetTextureScaleMode(_texture, (SDL_ScaleMode)value) != 0)
+            if (SDL2.SetTextureScaleMode(_texture, (SDL_ScaleMode)value) != 0)
                 SdlException.ThrowLastError();
         }
     }
@@ -137,7 +137,7 @@ public sealed class Texture : IDisposable
         {
             unsafe
             {
-                var data = SDL.GetTextureUserData(_texture);
+                var data = SDL2.GetTextureUserData(_texture);
                 if (data is null)
                     SdlException.ThrowLastError();
                 return (nint)data;
@@ -147,7 +147,7 @@ public sealed class Texture : IDisposable
         {
             unsafe
             {
-                if (SDL.SetTextureUserData(_texture, (void*)value) != 0)
+                if (SDL2.SetTextureUserData(_texture, (void*)value) != 0)
                     SdlException.ThrowLastError();
             }
         }
@@ -157,7 +157,7 @@ public sealed class Texture : IDisposable
     {
         unsafe
         {
-            if (SDL.UpdateTexture(_texture, (SDL_Rect*)&rect, (void*)pixels, pitch) != 0)
+            if (SDL2.UpdateTexture(_texture, (SDL_Rect*)&rect, (void*)pixels, pitch) != 0)
                 SdlException.ThrowLastError();
         }
     }
@@ -166,7 +166,7 @@ public sealed class Texture : IDisposable
     {
         unsafe
         {
-            if (SDL.UpdateYUVTexture(_texture, (SDL_Rect*)&rect, yPlane, yPitch, uPlane, uPitch, vPlane, vPitch) != 0)
+            if (SDL2.UpdateYUVTexture(_texture, (SDL_Rect*)&rect, yPlane, yPitch, uPlane, uPitch, vPlane, vPitch) != 0)
                 SdlException.ThrowLastError();
         }
     }
@@ -175,7 +175,7 @@ public sealed class Texture : IDisposable
     {
         unsafe
         {
-            if (SDL.UpdateNVTexture(_texture, (SDL_Rect*)&rect, yPlane, yPitch, uvPlane, uvPitch) != 0)
+            if (SDL2.UpdateNVTexture(_texture, (SDL_Rect*)&rect, yPlane, yPitch, uvPlane, uvPitch) != 0)
                 SdlException.ThrowLastError();
         }
     }
@@ -187,7 +187,7 @@ public sealed class Texture : IDisposable
             PixelFormatEnum f = default;
             TextureAccess a = default;
             Size s = default;
-            if (SDL.QueryTexture(_texture, (uint*)&f, (int*)&a, &s.Width, &s.Height) != 0)
+            if (SDL2.QueryTexture(_texture, (uint*)&f, (int*)&a, &s.Width, &s.Height) != 0)
                 SdlException.ThrowLastError();
 
             format = f;
@@ -202,7 +202,7 @@ public sealed class Texture : IDisposable
         {
             if (_texture != 0)
             {
-                SDL.DestroyTexture(_texture);
+                SDL2.DestroyTexture(_texture);
                 ref var ptr = ref Unsafe.AsRef(in _texture);
                 ptr = 0;
             }

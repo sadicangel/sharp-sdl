@@ -13,15 +13,15 @@ public sealed class Window : IDisposable
     {
         unsafe
         {
-            _window = title.AsUtf8((p, _) => SDL.CreateWindow(p, position.X, position.Y, size.Width, size.Height, (uint)flags));
+            _window = title.AsUtf8((p, _) => SDL2.CreateWindow(p, position.X, position.Y, size.Width, size.Height, (uint)flags));
         }
         if (_window == 0)
             SdlException.ThrowLastError();
     }
 
-    public uint WindowId { get => SDL.GetWindowID(_window); }
+    public uint WindowId { get => SDL2.GetWindowID(_window); }
 
-    public WindowFlags Flags { get => (WindowFlags)SDL.GetWindowFlags(_window); }
+    public WindowFlags Flags { get => (WindowFlags)SDL2.GetWindowFlags(_window); }
 
     public string Title
     {
@@ -29,14 +29,14 @@ public sealed class Window : IDisposable
         {
             unsafe
             {
-                return StringHelper.ToUtf16(SDL.GetWindowTitle(_window));
+                return StringHelper.ToUtf16(SDL2.GetWindowTitle(_window));
             }
         }
         set
         {
             unsafe
             {
-                value.AsUtf8((p, _) => SDL.SetWindowTitle(_window, p));
+                value.AsUtf8((p, _) => SDL2.SetWindowTitle(_window, p));
             }
         }
     }
@@ -48,7 +48,7 @@ public sealed class Window : IDisposable
             unsafe
             {
                 Unsafe.SkipInit(out Point pos);
-                SDL.GetWindowPosition(_window, &pos.X, &pos.Y);
+                SDL2.GetWindowPosition(_window, &pos.X, &pos.Y);
                 return pos;
             }
         }
@@ -56,12 +56,12 @@ public sealed class Window : IDisposable
         {
             unsafe
             {
-                SDL.SetWindowPosition(_window, value.X, value.Y);
+                SDL2.SetWindowPosition(_window, value.X, value.Y);
             }
         }
     }
 
-    public bool IsResizable { get => Flags.HasFlag(WindowFlags.Resizable); set => SDL.SetWindowResizable(_window, value); }
+    public bool IsResizable { get => Flags.HasFlag(WindowFlags.Resizable); set => SDL2.SetWindowResizable(_window, value); }
 
     public Size Size
     {
@@ -70,7 +70,7 @@ public sealed class Window : IDisposable
             unsafe
             {
                 Unsafe.SkipInit(out Size pos);
-                SDL.GetWindowSize(_window, &pos.Width, &pos.Height);
+                SDL2.GetWindowSize(_window, &pos.Width, &pos.Height);
                 return pos;
             }
         }
@@ -78,7 +78,7 @@ public sealed class Window : IDisposable
         {
             unsafe
             {
-                SDL.SetWindowSize(_window, value.Width, value.Height);
+                SDL2.SetWindowSize(_window, value.Width, value.Height);
             }
         }
     }
@@ -90,7 +90,7 @@ public sealed class Window : IDisposable
             unsafe
             {
                 Unsafe.SkipInit(out Size pos);
-                SDL.GetWindowSizeInPixels(_window, &pos.Width, &pos.Height);
+                SDL2.GetWindowSizeInPixels(_window, &pos.Width, &pos.Height);
                 return pos;
             }
         }
@@ -103,7 +103,7 @@ public sealed class Window : IDisposable
             unsafe
             {
                 Unsafe.SkipInit(out Size pos);
-                SDL.GetWindowMinimumSize(_window, &pos.Width, &pos.Height);
+                SDL2.GetWindowMinimumSize(_window, &pos.Width, &pos.Height);
                 return pos;
             }
         }
@@ -111,7 +111,7 @@ public sealed class Window : IDisposable
         {
             unsafe
             {
-                SDL.SetWindowMinimumSize(_window, value.Width, value.Height);
+                SDL2.SetWindowMinimumSize(_window, value.Width, value.Height);
             }
         }
     }
@@ -123,7 +123,7 @@ public sealed class Window : IDisposable
             unsafe
             {
                 Unsafe.SkipInit(out Size pos);
-                SDL.GetWindowMaximumSize(_window, &pos.Width, &pos.Height);
+                SDL2.GetWindowMaximumSize(_window, &pos.Width, &pos.Height);
                 return pos;
             }
         }
@@ -131,12 +131,12 @@ public sealed class Window : IDisposable
         {
             unsafe
             {
-                SDL.SetWindowMaximumSize(_window, value.Width, value.Height);
+                SDL2.SetWindowMaximumSize(_window, value.Width, value.Height);
             }
         }
     }
 
-    public bool IsBordered { get => !Flags.HasFlag(WindowFlags.Borderless); set => SDL.SetWindowBordered(_window, value); }
+    public bool IsBordered { get => !Flags.HasFlag(WindowFlags.Borderless); set => SDL2.SetWindowBordered(_window, value); }
 
     public Thickness BorderSize
     {
@@ -145,22 +145,22 @@ public sealed class Window : IDisposable
             unsafe
             {
                 Unsafe.SkipInit(out Thickness t);
-                if (SDL.GetWindowBordersSize(_window, &t.Top, &t.Left, &t.Bottom, &t.Right) == -1)
+                if (SDL2.GetWindowBordersSize(_window, &t.Top, &t.Left, &t.Bottom, &t.Right) == -1)
                     throw new SdlException("Window has not been initialized yet");
                 return t;
             }
         }
     }
 
-    public bool IsAlwaysOnTop { get => Flags.HasFlag(WindowFlags.AlwaysOnTop); set => SDL.SetWindowAlwaysOnTop(_window, value); }
+    public bool IsAlwaysOnTop { get => Flags.HasFlag(WindowFlags.AlwaysOnTop); set => SDL2.SetWindowAlwaysOnTop(_window, value); }
 
-    public bool HasSurface { get => SDL.HasWindowSurface(_window); }
+    public bool HasSurface { get => SDL2.HasWindowSurface(_window); }
 
-    public bool IsInputGrabbed { get => SDL.GetWindowGrab(_window); set => SDL.SetWindowGrab(_window, value); }
+    public bool IsInputGrabbed { get => SDL2.GetWindowGrab(_window); set => SDL2.SetWindowGrab(_window, value); }
 
-    public bool IsMouseGrabbed { get => SDL.GetWindowMouseGrab(_window); set => SDL.SetWindowMouseGrab(_window, value); }
+    public bool IsMouseGrabbed { get => SDL2.GetWindowMouseGrab(_window); set => SDL2.SetWindowMouseGrab(_window, value); }
 
-    public bool IsKeyboardGrabbed { get => SDL.GetWindowKeyboardGrab(_window); set => SDL.SetWindowKeyboardGrab(_window, value); }
+    public bool IsKeyboardGrabbed { get => SDL2.GetWindowKeyboardGrab(_window); set => SDL2.SetWindowKeyboardGrab(_window, value); }
 
     public Rect? MouseRect
     {
@@ -168,7 +168,7 @@ public sealed class Window : IDisposable
         {
             unsafe
             {
-                var rect = (Rect*)SDL.GetWindowMouseRect(_window);
+                var rect = (Rect*)SDL2.GetWindowMouseRect(_window);
                 return rect is null ? null : *rect;
             }
         }
@@ -185,7 +185,7 @@ public sealed class Window : IDisposable
                     rect = (SDL_Rect*)&temp;
                 }
 
-                if (SDL.SetWindowMouseRect(_window, rect) != 0)
+                if (SDL2.SetWindowMouseRect(_window, rect) != 0)
                     SdlException.ThrowLastError();
             }
         }
@@ -193,10 +193,10 @@ public sealed class Window : IDisposable
 
     public float Brightness
     {
-        get => SDL.GetWindowBrightness(_window);
+        get => SDL2.GetWindowBrightness(_window);
         set
         {
-            if (SDL.SetWindowBrightness(_window, value) != 0)
+            if (SDL2.SetWindowBrightness(_window, value) != 0)
                 SdlException.ThrowLastError();
         }
     }
@@ -208,14 +208,14 @@ public sealed class Window : IDisposable
             unsafe
             {
                 float opacity;
-                if (SDL.GetWindowOpacity(_window, &opacity) != 0)
+                if (SDL2.GetWindowOpacity(_window, &opacity) != 0)
                     SdlException.ThrowLastError();
                 return opacity;
             }
         }
         set
         {
-            if (SDL.SetWindowOpacity(_window, value) != 0)
+            if (SDL2.SetWindowOpacity(_window, value) != 0)
                 SdlException.ThrowLastError();
         }
     }
@@ -231,7 +231,7 @@ public sealed class Window : IDisposable
                 var r = new GammaRampArray();
                 var g = new GammaRampArray();
                 var b = new GammaRampArray();
-                if (SDL.GetWindowGammaRamp(_window, (ushort*)&r, (ushort*)&g, (ushort*)&b) != 0)
+                if (SDL2.GetWindowGammaRamp(_window, (ushort*)&r, (ushort*)&g, (ushort*)&b) != 0)
                     SdlException.ThrowLastError();
                 return new GammaRamp(r, g, b);
             }
@@ -242,20 +242,20 @@ public sealed class Window : IDisposable
             {
                 fixed (GammaRampArray* r = &value.Red, g = &value.Green, b = &value.Blue)
                 {
-                    if (SDL.SetWindowGammaRamp(_window, (ushort*)r, (ushort*)g, (ushort*)b) != 0)
+                    if (SDL2.SetWindowGammaRamp(_window, (ushort*)r, (ushort*)g, (ushort*)b) != 0)
                         SdlException.ThrowLastError();
                 }
             }
         }
     }
 
-    public bool IsShapedWindow { get => SDL.IsShapedWindow(_window); }
+    public bool IsShapedWindow { get => SDL2.IsShapedWindow(_window); }
 
-    public bool IsScreenKeyboardVisible { get => SDL.IsScreenKeyboardShown(_window); }
+    public bool IsScreenKeyboardVisible { get => SDL2.IsScreenKeyboardShown(_window); }
 
-    public static bool IsScreenSaverEnabled { get => SDL.IsScreenSaverEnabled(); set { if (value) SDL.EnableScreenSaver(); else SDL.DisableScreenSaver(); } }
+    public static bool IsScreenSaverEnabled { get => SDL2.IsScreenSaverEnabled(); set { if (value) SDL2.EnableScreenSaver(); else SDL2.DisableScreenSaver(); } }
 
-    public static bool HasScreenKeyboardSupport { get => SDL.HasScreenKeyboardSupport(); }
+    public static bool HasScreenKeyboardSupport { get => SDL2.HasScreenKeyboardSupport(); }
 
     // Display related.
 
@@ -263,17 +263,17 @@ public sealed class Window : IDisposable
     {
         unsafe
         {
-            SDL.SetWindowIcon(_window, icon._surface);
+            SDL2.SetWindowIcon(_window, icon._surface);
         }
     }
 
-    public unsafe void* SetData(byte* name, void* data) => SDL.SetWindowData(_window, name, data);
+    public unsafe void* SetData(byte* name, void* data) => SDL2.SetWindowData(_window, name, data);
 
-    public unsafe void* GetData(byte* name) => SDL.GetWindowData(_window, name);
+    public unsafe void* GetData(byte* name) => SDL2.GetWindowData(_window, name);
 
     public void SetFullscreenMode(FullscreenMode mode)
     {
-        if (SDL.SetWindowFullscreen(_window, (uint)mode) != 0)
+        if (SDL2.SetWindowFullscreen(_window, (uint)mode) != 0)
             SdlException.ThrowLastError();
     }
 
@@ -281,7 +281,7 @@ public sealed class Window : IDisposable
     {
         unsafe
         {
-            var ptr = SDL.GetWindowSurface(_window);
+            var ptr = SDL2.GetWindowSurface(_window);
             if (ptr is null)
                 SdlException.ThrowLastError();
             return (nint)ptr;
@@ -292,7 +292,7 @@ public sealed class Window : IDisposable
     {
         unsafe
         {
-            if (SDL.UpdateWindowSurface(_window) != 0)
+            if (SDL2.UpdateWindowSurface(_window) != 0)
                 SdlException.ThrowLastError();
         }
     }
@@ -302,38 +302,38 @@ public sealed class Window : IDisposable
         unsafe
         {
             fixed (Rect* ptr = rects)
-                if (SDL.UpdateWindowSurfaceRects(_window, (SDL_Rect*)ptr, rects.Length) != 0)
+                if (SDL2.UpdateWindowSurfaceRects(_window, (SDL_Rect*)ptr, rects.Length) != 0)
                     SdlException.ThrowLastError();
         }
     }
 
     public void DestroySurface()
     {
-        if (SDL.DestroyWindowSurface(_window) != 0)
+        if (SDL2.DestroyWindowSurface(_window) != 0)
             SdlException.ThrowLastError();
     }
 
-    public void Show() => SDL.ShowWindow(_window);
-    public void Hide() => SDL.HideWindow(_window);
-    public void Raise() => SDL.RaiseWindow(_window);
-    public void Maximize() => SDL.MaximizeWindow(_window);
-    public void Minimize() => SDL.MinimizeWindow(_window);
-    public void Restore() => SDL.RestoreWindow(_window);
+    public void Show() => SDL2.ShowWindow(_window);
+    public void Hide() => SDL2.HideWindow(_window);
+    public void Raise() => SDL2.RaiseWindow(_window);
+    public void Maximize() => SDL2.MaximizeWindow(_window);
+    public void Minimize() => SDL2.MinimizeWindow(_window);
+    public void Restore() => SDL2.RestoreWindow(_window);
     public void Flash(FlashOperation operation)
     {
-        if (SDL.FlashWindow(_window, (SDL_FlashOperation)operation) != 0)
+        if (SDL2.FlashWindow(_window, (SDL_FlashOperation)operation) != 0)
             SdlException.ThrowLastError();
     }
 
     public void SetModalFor(Window parent)
     {
-        if (SDL.SetWindowModalFor(_window, parent._window) != 0)
+        if (SDL2.SetWindowModalFor(_window, parent._window) != 0)
             SdlException.ThrowLastError();
     }
 
     public void SetInputFocus()
     {
-        if (SDL.SetWindowInputFocus(_window) != 0)
+        if (SDL2.SetWindowInputFocus(_window) != 0)
             SdlException.ThrowLastError();
     }
 
@@ -341,13 +341,13 @@ public sealed class Window : IDisposable
     {
         unsafe
         {
-            var result = SDL.SetWindowShape(_window, shape._surface, (SDL_WindowShapeMode*)Unsafe.AsPointer(ref mode));
+            var result = SDL2.SetWindowShape(_window, shape._surface, (SDL_WindowShapeMode*)Unsafe.AsPointer(ref mode));
 
             switch (result)
             {
-                case SDL.SDL_NONSHAPEABLE_WINDOW:
+                case SDL2.SDL_NONSHAPEABLE_WINDOW:
                     throw new SdlException("Window is not a valid shaped window");
-                case SDL.SDL_INVALID_SHAPE_ARGUMENT:
+                case SDL2.SDL_INVALID_SHAPE_ARGUMENT:
                     throw new SdlException("Invalid shape argument");
             }
         }
@@ -358,12 +358,12 @@ public sealed class Window : IDisposable
         Unsafe.SkipInit(out WindowShapeMode mode);
         unsafe
         {
-            var result = SDL.GetShapedWindowMode(_window, (SDL_WindowShapeMode*)&mode);
+            var result = SDL2.GetShapedWindowMode(_window, (SDL_WindowShapeMode*)&mode);
             switch (result)
             {
-                case SDL.SDL_NONSHAPEABLE_WINDOW:
+                case SDL2.SDL_NONSHAPEABLE_WINDOW:
                     throw new SdlException("Window is not a valid shaped window");
-                case SDL.SDL_WINDOW_LACKS_SHAPE:
+                case SDL2.SDL_WINDOW_LACKS_SHAPE:
                     throw new SdlException("Window does not have a shape");
             }
         }
@@ -377,7 +377,7 @@ public sealed class Window : IDisposable
     {
         if (_window != 0)
         {
-            SDL.DestroyWindow(_window);
+            SDL2.DestroyWindow(_window);
             ref var ptr = ref Unsafe.AsRef(in _window);
             ptr = 0;
         }
@@ -387,7 +387,7 @@ public sealed class Window : IDisposable
     {
         unsafe
         {
-            var window = title.AsUtf8((p, _) => SDL.CreateWindow(p, position.X, position.Y, size.Width, size.Height, (uint)flags));
+            var window = title.AsUtf8((p, _) => SDL2.CreateWindow(p, position.X, position.Y, size.Width, size.Height, (uint)flags));
             if (window == 0)
                 SdlException.ThrowLastError();
             return new Window(window);
@@ -396,7 +396,7 @@ public sealed class Window : IDisposable
 
     public static Window FromWindowId(uint id)
     {
-        var window = SDL.GetWindowFromID(id);
+        var window = SDL2.GetWindowFromID(id);
         if (window == 0)
             SdlException.ThrowLastError();
         return new Window(window);
@@ -404,17 +404,17 @@ public sealed class Window : IDisposable
 
     public static Window? GetWindowWithInputGrabbed()
     {
-        var window = SDL.GetGrabbedWindow();
+        var window = SDL2.GetGrabbedWindow();
         if (window is 0)
             return null;
         return new Window(window);
     }
 
     public static Window? GetWindowWithMouseFocus() =>
-        SDL.GetMouseFocus() is var window and not 0 ? new Window(window) : null;
+        SDL2.GetMouseFocus() is var window and not 0 ? new Window(window) : null;
 
     public static Window? GetWindowWithKeyboardFocus() =>
-        SDL.GetKeyboardFocus() is var window and not 0 ? new Window(window) : null;
+        SDL2.GetKeyboardFocus() is var window and not 0 ? new Window(window) : null;
 }
 
 
@@ -531,7 +531,7 @@ internal sealed class WindowHitTest<TState> : IDisposable
         {
             _nativeCallback = new HitTestCallbackUnmanaged((_, point, _) => _callback.Invoke(_window, *point, _callbackState));
             var fPtr = (delegate* unmanaged[Cdecl]<nint, SDL_Point*, void*, SDL_HitTestResult>)Marshal.GetFunctionPointerForDelegate(_nativeCallback);
-            if (SDL.SetWindowHitTest(_window._window, fPtr, null) != 0)
+            if (SDL2.SetWindowHitTest(_window._window, fPtr, null) != 0)
                 SdlException.ThrowLastError();
         }
     }
@@ -540,7 +540,7 @@ internal sealed class WindowHitTest<TState> : IDisposable
     {
         unsafe
         {
-            _ = SDL.SetWindowHitTest(_window._window, null, null);
+            _ = SDL2.SetWindowHitTest(_window._window, null, null);
         }
     }
 }

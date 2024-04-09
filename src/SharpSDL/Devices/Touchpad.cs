@@ -18,20 +18,20 @@ public sealed class Touchpad
         {
             unsafe
             {
-                return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.GetTouchName(_touchpadIndex));
+                return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL2.GetTouchName(_touchpadIndex));
             }
         }
     }
 
     public string NameUtf16 { get => Encoding.UTF8.GetString(Name); }
 
-    public TouchpadType Type { get => (TouchpadType)SDL.GetTouchDeviceType(_touchpadId); }
+    public TouchpadType Type { get => (TouchpadType)SDL2.GetTouchDeviceType(_touchpadId); }
 
     public int FingerCount
     {
         get
         {
-            var result = SDL.GetNumTouchFingers(_touchpadId);
+            var result = SDL2.GetNumTouchFingers(_touchpadId);
             if (result == 0)
                 SdlException.ThrowLastError();
             return result;
@@ -42,19 +42,19 @@ public sealed class Touchpad
     {
         unsafe
         {
-            return ref Unsafe.AsRef<TouchpadFinger>(SDL.GetTouchFinger(_touchpadId, fingerIndex));
+            return ref Unsafe.AsRef<TouchpadFinger>(SDL2.GetTouchFinger(_touchpadId, fingerIndex));
         }
     }
 
-    public bool RecordGesture() => SDL.RecordGesture(_touchpadId) == 1;
+    public bool RecordGesture() => SDL2.RecordGesture(_touchpadId) == 1;
 
-    public static void RecordGestureOnAllDevices() => _ = SDL.RecordGesture(-1);
+    public static void RecordGestureOnAllDevices() => _ = SDL2.RecordGesture(-1);
 
-    public static int GetTouchpadCount() => SDL.GetNumTouchDevices();
+    public static int GetTouchpadCount() => SDL2.GetNumTouchDevices();
 
     public static Touchpad ForDeviceIndex(int deviceIndex)
     {
-        var id = SDL.GetTouchDevice(deviceIndex);
+        var id = SDL2.GetTouchDevice(deviceIndex);
         if (id == 0)
             SdlException.ThrowLastError();
         return new Touchpad(id, deviceIndex);

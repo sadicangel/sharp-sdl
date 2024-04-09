@@ -20,7 +20,7 @@ public sealed class Joystick : IDisposable
 
     public bool IsVirtual { get; }
 
-    public int InstanceId { get => SDL.JoystickInstanceID(_joystick); }
+    public int InstanceId { get => SDL2.JoystickInstanceID(_joystick); }
 
     public ReadOnlySpan<byte> Name
     {
@@ -28,7 +28,7 @@ public sealed class Joystick : IDisposable
         {
             unsafe
             {
-                var name = SDL.JoystickName(_joystick);
+                var name = SDL2.JoystickName(_joystick);
                 if (name is null)
                     SdlException.ThrowLastError();
                 return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(name);
@@ -44,7 +44,7 @@ public sealed class Joystick : IDisposable
         {
             unsafe
             {
-                var path = SDL.JoystickPath(_joystick);
+                var path = SDL2.JoystickPath(_joystick);
                 if (path is null)
                     SdlException.ThrowLastError();
                 return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(path);
@@ -54,26 +54,26 @@ public sealed class Joystick : IDisposable
 
     public string PathUtf16 { get => Encoding.UTF8.GetString(Path); }
 
-    public int PlayerIndex { get => SDL.JoystickGetPlayerIndex(_joystick); set => SDL.JoystickSetPlayerIndex(_joystick, value); }
+    public int PlayerIndex { get => SDL2.JoystickGetPlayerIndex(_joystick); set => SDL2.JoystickSetPlayerIndex(_joystick, value); }
 
     public Guid Guid
     {
         get
         {
-            var guid = Unsafe.BitCast<SDL_GUID, Guid>(SDL.JoystickGetGUID(_joystick));
+            var guid = Unsafe.BitCast<SDL_GUID, Guid>(SDL2.JoystickGetGUID(_joystick));
             if (guid == default)
                 SdlException.ThrowLastError();
             return guid;
         }
     }
 
-    public ushort Vendor { get => SDL.JoystickGetVendor(_joystick); }
+    public ushort Vendor { get => SDL2.JoystickGetVendor(_joystick); }
 
-    public ushort Product { get => SDL.JoystickGetProduct(_joystick); }
+    public ushort Product { get => SDL2.JoystickGetProduct(_joystick); }
 
-    public ushort ProductVersion { get => SDL.JoystickGetProductVersion(_joystick); }
+    public ushort ProductVersion { get => SDL2.JoystickGetProductVersion(_joystick); }
 
-    public ushort FirmwareVersion { get => SDL.JoystickGetFirmwareVersion(_joystick); }
+    public ushort FirmwareVersion { get => SDL2.JoystickGetFirmwareVersion(_joystick); }
 
     public ReadOnlySpan<byte> SerialNumber
     {
@@ -81,38 +81,38 @@ public sealed class Joystick : IDisposable
         {
             unsafe
             {
-                return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.JoystickGetSerial(_joystick));
+                return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL2.JoystickGetSerial(_joystick));
             }
         }
     }
 
     public string SerialNumberUtf16 { get => Encoding.UTF8.GetString(SerialNumber); }
 
-    public JoystickType Type { get => (JoystickType)SDL.JoystickGetType(_joystick); }
+    public JoystickType Type { get => (JoystickType)SDL2.JoystickGetType(_joystick); }
 
-    public bool IsAttached { get => SDL.JoystickGetAttached(_joystick); }
+    public bool IsAttached { get => SDL2.JoystickGetAttached(_joystick); }
 
-    public int AxisCount { get => SDL.JoystickNumAxes(_joystick); }
+    public int AxisCount { get => SDL2.JoystickNumAxes(_joystick); }
 
-    public int TrackBallCount { get => SDL.JoystickNumBalls(_joystick); }
+    public int TrackBallCount { get => SDL2.JoystickNumBalls(_joystick); }
 
-    public int HatCount { get => SDL.JoystickNumHats(_joystick); }
+    public int HatCount { get => SDL2.JoystickNumHats(_joystick); }
 
-    public int ButtonCount { get => SDL.JoystickNumButtons(_joystick); }
+    public int ButtonCount { get => SDL2.JoystickNumButtons(_joystick); }
 
-    public bool HasRumble { get => SDL.JoystickHasRumble(_joystick); }
+    public bool HasRumble { get => SDL2.JoystickHasRumble(_joystick); }
 
-    public bool HasRumbleTriggers { get => SDL.JoystickHasRumbleTriggers(_joystick); }
+    public bool HasRumbleTriggers { get => SDL2.JoystickHasRumbleTriggers(_joystick); }
 
-    public bool HasLed { get => SDL.JoystickHasLED(_joystick); }
+    public bool HasLed { get => SDL2.JoystickHasLED(_joystick); }
 
-    public bool IsHaptic { get => SDL.JoystickIsHaptic(_joystick) == 1; }
+    public bool IsHaptic { get => SDL2.JoystickIsHaptic(_joystick) == 1; }
 
-    public bool IsGameController { get => SDL.IsGameController(_deviceIndex); }
+    public bool IsGameController { get => SDL2.IsGameController(_deviceIndex); }
 
-    public JoystickPowerLevel PowerLevel { get => (JoystickPowerLevel)SDL.JoystickCurrentPowerLevel(_joystick); }
+    public JoystickPowerLevel PowerLevel { get => (JoystickPowerLevel)SDL2.JoystickCurrentPowerLevel(_joystick); }
 
-    public short GetAxisValue(int axis) => SDL.JoystickGetAxis(_joystick, axis);
+    public short GetAxisValue(int axis) => SDL2.JoystickGetAxis(_joystick, axis);
 
     public bool TryGetAxisValue(int axis, out short value)
     {
@@ -121,7 +121,7 @@ public sealed class Joystick : IDisposable
         short state = 0;
         unsafe
         {
-            if (!SDL.JoystickGetAxisInitialState(_joystick, axis, &state))
+            if (!SDL2.JoystickGetAxisInitialState(_joystick, axis, &state))
                 return false;
         }
         value = state;
@@ -129,38 +129,38 @@ public sealed class Joystick : IDisposable
     }
 
     public JoystickHatPosition GetHatPosition(int hat) =>
-        (JoystickHatPosition)SDL.JoystickGetHat(_joystick, hat);
+        (JoystickHatPosition)SDL2.JoystickGetHat(_joystick, hat);
 
     public Point GetTrackballPosition(int trackball)
     {
         var point = new Point();
         unsafe
         {
-            if (SDL.JoystickGetBall(_joystick, trackball, &point.X, &point.Y) != 0)
+            if (SDL2.JoystickGetBall(_joystick, trackball, &point.X, &point.Y) != 0)
                 SdlException.ThrowLastError();
         }
         return point;
     }
 
     public ButtonState GetButtonState(int button) =>
-        (ButtonState)SDL.JoystickGetButton(_joystick, button);
+        (ButtonState)SDL2.JoystickGetButton(_joystick, button);
 
     public bool SetVirtualAxisValue(int axis, short value) =>
-        IsVirtual && SDL.JoystickSetVirtualAxis(_joystick, axis, value) == 0;
+        IsVirtual && SDL2.JoystickSetVirtualAxis(_joystick, axis, value) == 0;
 
     public bool SetVirtualButtonState(int button, ButtonState state) =>
-        IsVirtual && SDL.JoystickSetVirtualButton(_joystick, button, (byte)state) == 0;
+        IsVirtual && SDL2.JoystickSetVirtualButton(_joystick, button, (byte)state) == 0;
 
     public bool SetVirtualHatPosition(int hat, JoystickHatPosition position) =>
-        IsVirtual && SDL.JoystickSetVirtualHat(_joystick, hat, (byte)position) == 0;
+        IsVirtual && SDL2.JoystickSetVirtualHat(_joystick, hat, (byte)position) == 0;
 
     public bool Rumble(ushort lowFrequency, ushort highFrequency, TimeSpan duration) =>
-        SDL.JoystickRumble(_joystick, lowFrequency, highFrequency, (uint)duration.TotalMilliseconds) == 0;
+        SDL2.JoystickRumble(_joystick, lowFrequency, highFrequency, (uint)duration.TotalMilliseconds) == 0;
 
     public bool RumbleTriggers(ushort leftRumble, ushort rightRumble, TimeSpan duration) =>
-        SDL.JoystickRumbleTriggers(_joystick, leftRumble, rightRumble, (uint)duration.TotalMilliseconds) == 0;
+        SDL2.JoystickRumbleTriggers(_joystick, leftRumble, rightRumble, (uint)duration.TotalMilliseconds) == 0;
 
-    public bool SetLed(ColorRgb color) => SDL.JoystickSetLED(_joystick, color.R, color.G, color.B) == 0;
+    public bool SetLed(ColorRgb color) => SDL2.JoystickSetLED(_joystick, color.R, color.G, color.B) == 0;
 
     public bool SendEffect(ReadOnlySpan<byte> data)
     {
@@ -168,7 +168,7 @@ public sealed class Joystick : IDisposable
         {
             fixed (byte* ptr = data)
             {
-                return SDL.JoystickSendEffect(_joystick, ptr, data.Length) == 0;
+                return SDL2.JoystickSendEffect(_joystick, ptr, data.Length) == 0;
             }
         }
     }
@@ -181,10 +181,10 @@ public sealed class Joystick : IDisposable
             {
                 unsafe
                 {
-                    SDL.JoystickClose(_joystick);
+                    SDL2.JoystickClose(_joystick);
                     if (IsVirtual)
                     {
-                        _ = SDL.JoystickDetachVirtual(_deviceIndex);
+                        _ = SDL2.JoystickDetachVirtual(_deviceIndex);
                         _ = VirtualJoystickDescriptorCache.Descriptors.Remove(_deviceIndex, out _);
                     }
                     ref var ptr = ref Unsafe.AsRef(in _joystick);
@@ -196,7 +196,7 @@ public sealed class Joystick : IDisposable
 
     private static Joystick FromDeviceIndex(int deviceIndex, bool isVirtual)
     {
-        var joystick = SDL.JoystickOpen(deviceIndex);
+        var joystick = SDL2.JoystickOpen(deviceIndex);
         if (joystick is 0)
             SdlException.ThrowLastError();
         return new Joystick(joystick, deviceIndex, owned: true, isVirtual);
@@ -216,10 +216,10 @@ public sealed class Joystick : IDisposable
 
     public static Joystick FromInstanceId(int instanceId)
     {
-        var joystick = SDL.JoystickFromInstanceID(instanceId);
+        var joystick = SDL2.JoystickFromInstanceID(instanceId);
         if (joystick is 0)
             SdlException.ThrowLastError();
-        var deviceIndex = FindDeviceIndex(instanceId, SDL.JoystickGetDeviceInstanceID);
+        var deviceIndex = FindDeviceIndex(instanceId, SDL2.JoystickGetDeviceInstanceID);
         if (deviceIndex < 0)
             throw new SdlException($"Invalid joystick instance id '{instanceId}'");
         return new Joystick(joystick, deviceIndex, owned: true, isVirtual: false);
@@ -227,10 +227,10 @@ public sealed class Joystick : IDisposable
 
     public static Joystick FromPlayerIndex(int playerIndex)
     {
-        var joystick = SDL.JoystickFromPlayerIndex(playerIndex);
+        var joystick = SDL2.JoystickFromPlayerIndex(playerIndex);
         if (joystick is 0)
             SdlException.ThrowLastError();
-        var deviceIndex = FindDeviceIndex(playerIndex, SDL.JoystickGetDevicePlayerIndex);
+        var deviceIndex = FindDeviceIndex(playerIndex, SDL2.JoystickGetDevicePlayerIndex);
         if (deviceIndex < 0)
             throw new SdlException($"Invalid joystick player index'{playerIndex}'");
         return new Joystick(joystick, deviceIndex, owned: true, isVirtual: false);
@@ -238,10 +238,10 @@ public sealed class Joystick : IDisposable
 
     public static Joystick FromGameController(GameController gameController)
     {
-        var joystick = SDL.GameControllerGetJoystick(gameController._controller);
+        var joystick = SDL2.GameControllerGetJoystick(gameController._controller);
         if (joystick is 0)
             SdlException.ThrowLastError();
-        var deviceIndex = FindDeviceIndex(SDL.JoystickInstanceID(joystick), SDL.JoystickGetDeviceInstanceID);
+        var deviceIndex = FindDeviceIndex(SDL2.JoystickInstanceID(joystick), SDL2.JoystickGetDeviceInstanceID);
         if (deviceIndex < 0)
             throw new SdlException($"Invalid joystick for '{gameController.NameUtf16}'");
         return new Joystick(joystick, deviceIndex, owned: false, isVirtual: false);
@@ -249,7 +249,7 @@ public sealed class Joystick : IDisposable
 
     public static Joystick CreateVirtual(JoystickType type, int axes, int buttons, int hats)
     {
-        var deviceId = SDL.JoystickAttachVirtual((SDL_JoystickType)type, axes, buttons, hats);
+        var deviceId = SDL2.JoystickAttachVirtual((SDL_JoystickType)type, axes, buttons, hats);
         if (deviceId == -1)
             SdlException.ThrowLastError();
         return FromDeviceIndex(deviceId, isVirtual: true);
@@ -299,7 +299,7 @@ public sealed class Joystick : IDisposable
                     d.SendEffect = (delegate* unmanaged[Cdecl]<void*, void*, int, int>)GetPtr(
                         new JoystickSendEffectNative((_, data, size) => descriptor.SendEffect(descriptor.UserData, new ReadOnlySpan<byte>(data, size))));
 
-                var deviceId = SDL.JoystickAttachVirtualEx(&d);
+                var deviceId = SDL2.JoystickAttachVirtualEx(&d);
                 if (deviceId == -1)
                     SdlException.ThrowLastError();
 
@@ -313,7 +313,7 @@ public sealed class Joystick : IDisposable
         }
     }
 
-    public static int GetJoystickCount() => SDL.NumJoysticks();
+    public static int GetJoystickCount() => SDL2.NumJoysticks();
 
     public static IReadOnlyList<Joystick> GetJoysticks()
     {
@@ -323,14 +323,14 @@ public sealed class Joystick : IDisposable
         return devices;
     }
 
-    public static void UpdateJoysticks() => SDL.JoystickUpdate();
+    public static void UpdateJoysticks() => SDL2.JoystickUpdate();
 
     public static void GetGuidInfo(Guid guid, out ushort vendorId, out ushort productId, out ushort deviceVersion, out ushort crc16)
     {
         ushort vid, pid, dvs, crc;
         unsafe
         {
-            SDL.GetJoystickGUIDInfo(Unsafe.BitCast<Guid, SDL_GUID>(guid), &vid, &pid, &dvs, &crc);
+            SDL2.GetJoystickGUIDInfo(Unsafe.BitCast<Guid, SDL_GUID>(guid), &vid, &pid, &dvs, &crc);
         }
         vendorId = vid;
         productId = pid;
@@ -367,15 +367,15 @@ public enum JoystickPowerLevel
 [Flags]
 public enum JoystickHatPosition
 {
-    Centered = SDL.SDL_HAT_CENTERED,
-    Up = SDL.SDL_HAT_UP,
-    Right = SDL.SDL_HAT_RIGHT,
-    Down = SDL.SDL_HAT_DOWN,
-    Left = SDL.SDL_HAT_LEFT,
-    RightUp = SDL.SDL_HAT_RIGHTUP,
-    RightDown = SDL.SDL_HAT_RIGHTDOWN,
-    LeftUp = SDL.SDL_HAT_LEFTUP,
-    LeftDown = SDL.SDL_HAT_LEFTDOWN,
+    Centered = SDL2.SDL_HAT_CENTERED,
+    Up = SDL2.SDL_HAT_UP,
+    Right = SDL2.SDL_HAT_RIGHT,
+    Down = SDL2.SDL_HAT_DOWN,
+    Left = SDL2.SDL_HAT_LEFT,
+    RightUp = SDL2.SDL_HAT_RIGHTUP,
+    RightDown = SDL2.SDL_HAT_RIGHTDOWN,
+    LeftUp = SDL2.SDL_HAT_LEFTUP,
+    LeftDown = SDL2.SDL_HAT_LEFTDOWN,
 }
 
 internal static class VirtualJoystickDescriptorCache
@@ -405,7 +405,7 @@ internal unsafe delegate bool JoystickSendEffectNative(void* userData, void* dat
 
 public sealed class VirtualJoystickDescriptor
 {
-    public const ushort Version = SDL.SDL_VIRTUAL_JOYSTICK_DESC_VERSION;
+    public const ushort Version = SDL2.SDL_VIRTUAL_JOYSTICK_DESC_VERSION;
 
     public string? Name { get; init; }
     public JoystickType Type { get; init; }

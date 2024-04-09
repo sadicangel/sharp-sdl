@@ -9,7 +9,7 @@ public static class GameControllerMappings
     {
         unsafe
         {
-            var mappings = SDL.GameControllerAddMappingsFromRW(stream._stream, freerw: 0);
+            var mappings = SDL2.GameControllerAddMappingsFromRW(stream._stream, freerw: 0);
             return mappings >= 0 ? mappings : SdlException.ThrowLastError<int>();
         }
     }
@@ -32,7 +32,7 @@ public static class GameControllerMappings
         {
             fixed (byte* ptr = mapping)
             {
-                var result = SDL.GameControllerAddMapping(ptr);
+                var result = SDL2.GameControllerAddMapping(ptr);
                 if (result < 0)
                     SdlException.ThrowLastError();
                 return result;
@@ -52,7 +52,7 @@ public static class GameControllerMappings
     {
         unsafe
         {
-            using var mapping = SdlPointer.Defer(SDL.GameControllerMappingForGUID(Unsafe.BitCast<Guid, SDL_GUID>(guid)));
+            using var mapping = SdlPointer.Defer(SDL2.GameControllerMappingForGUID(Unsafe.BitCast<Guid, SDL_GUID>(guid)));
             if (mapping.IsNull)
                 SdlException.ThrowLastError();
             return Encoding.UTF8.GetString(MemoryMarshal.CreateReadOnlySpanFromNullTerminated(mapping));
@@ -63,7 +63,7 @@ public static class GameControllerMappings
     {
         unsafe
         {
-            using var mapping = SdlPointer.Defer(SDL.GameControllerMapping(controller._controller));
+            using var mapping = SdlPointer.Defer(SDL2.GameControllerMapping(controller._controller));
             if (mapping.IsNull)
                 SdlException.ThrowLastError();
             return Encoding.UTF8.GetString(MemoryMarshal.CreateReadOnlySpanFromNullTerminated(mapping));
@@ -74,12 +74,12 @@ public static class GameControllerMappings
     {
         unsafe
         {
-            using var mapping = SdlPointer.Defer(SDL.GameControllerMappingForIndex(mappingIndex));
+            using var mapping = SdlPointer.Defer(SDL2.GameControllerMappingForIndex(mappingIndex));
             if (mapping.IsNull)
                 SdlException.ThrowLastError();
             return Encoding.UTF8.GetString(MemoryMarshal.CreateReadOnlySpanFromNullTerminated(mapping));
         }
     }
 
-    public static int GetMappingCount() => SDL.GameControllerNumMappings();
+    public static int GetMappingCount() => SDL2.GameControllerNumMappings();
 }

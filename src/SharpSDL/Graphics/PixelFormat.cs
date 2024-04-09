@@ -15,7 +15,7 @@ public sealed class PixelFormat : IDisposable
     {
         unsafe
         {
-            _format = SDL.AllocFormat((uint)format);
+            _format = SDL2.AllocFormat((uint)format);
             if (_format is null)
                 SdlException.ThrowLastError();
             _owned = true;
@@ -37,7 +37,7 @@ public sealed class PixelFormat : IDisposable
             _palette = value;
             unsafe
             {
-                if (SDL.SetPixelFormatPalette(_format, _palette._palette) != 0)
+                if (SDL2.SetPixelFormatPalette(_format, _palette._palette) != 0)
                     SdlException.ThrowLastError();
             }
         }
@@ -57,7 +57,7 @@ public sealed class PixelFormat : IDisposable
             {
                 fixed (ColorRgba* colors = value)
                 {
-                    if (SDL.SetPaletteColors(_format->palette, (SDL_Color*)colors, firstcolor: 0, value.Length) != 0)
+                    if (SDL2.SetPaletteColors(_format->palette, (SDL_Color*)colors, firstcolor: 0, value.Length) != 0)
                         SdlException.ThrowLastError();
                 }
             }
@@ -84,7 +84,7 @@ public sealed class PixelFormat : IDisposable
         {
             unsafe
             {
-                return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.GetPixelFormatName(_format->format));
+                return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL2.GetPixelFormatName(_format->format));
             }
         }
     }
@@ -95,7 +95,7 @@ public sealed class PixelFormat : IDisposable
     {
         unsafe
         {
-            return SDL.MapRGB(_format, color.R, color.G, color.B);
+            return SDL2.MapRGB(_format, color.R, color.G, color.B);
         }
     }
 
@@ -103,7 +103,7 @@ public sealed class PixelFormat : IDisposable
     {
         unsafe
         {
-            return SDL.MapRGBA(_format, color.R, color.G, color.B, color.A);
+            return SDL2.MapRGBA(_format, color.R, color.G, color.B, color.A);
         }
     }
 
@@ -112,7 +112,7 @@ public sealed class PixelFormat : IDisposable
         unsafe
         {
             Unsafe.SkipInit(out ColorRgb c);
-            SDL.GetRGB(pixel, _format, &c.R, &c.G, &c.B);
+            SDL2.GetRGB(pixel, _format, &c.R, &c.G, &c.B);
             return c;
         }
     }
@@ -122,7 +122,7 @@ public sealed class PixelFormat : IDisposable
         unsafe
         {
             Unsafe.SkipInit(out ColorRgba c);
-            SDL.GetRGBA(pixel, _format, &c.R, &c.G, &c.B, &c.A);
+            SDL2.GetRGBA(pixel, _format, &c.R, &c.G, &c.B, &c.A);
             return c;
         }
     }
@@ -132,20 +132,20 @@ public sealed class PixelFormat : IDisposable
         Unsafe.SkipInit(out RgbaMask mask);
         unsafe
         {
-            if (!SDL.PixelFormatEnumToMasks((uint)format, &mask.BitsPerPixel, &mask.RMask, &mask.GMask, &mask.BMask, &mask.AMask))
+            if (!SDL2.PixelFormatEnumToMasks((uint)format, &mask.BitsPerPixel, &mask.RMask, &mask.GMask, &mask.BMask, &mask.AMask))
                 SdlException.ThrowLastError();
         }
         return mask;
     }
 
     public static PixelFormatEnum RgbaMaskToPixelFormatEnum(RgbaMask mask)
-        => (PixelFormatEnum)SDL.MasksToPixelFormatEnum(mask.BitsPerPixel, mask.RMask, mask.GMask, mask.BMask, mask.AMask);
+        => (PixelFormatEnum)SDL2.MasksToPixelFormatEnum(mask.BitsPerPixel, mask.RMask, mask.GMask, mask.BMask, mask.AMask);
 
     public static void ConvertPixels(Size size, nint src, PixelFormatEnum srcFormat, int srcPitch, nint dst, PixelFormatEnum dstFormat, int dstPitch)
     {
         unsafe
         {
-            if (SDL.ConvertPixels(size.Width, size.Height, (uint)srcFormat, (void*)src, srcPitch, (uint)dstFormat, (void*)dst, dstPitch) != 0)
+            if (SDL2.ConvertPixels(size.Width, size.Height, (uint)srcFormat, (void*)src, srcPitch, (uint)dstFormat, (void*)dst, dstPitch) != 0)
                 SdlException.ThrowLastError();
         }
     }
@@ -154,7 +154,7 @@ public sealed class PixelFormat : IDisposable
     {
         unsafe
         {
-            if (SDL.PremultiplyAlpha(size.Width, size.Height, (uint)srcFormat, (void*)src, srcPitch, (uint)dstFormat, (void*)dst, dstPitch) != 0)
+            if (SDL2.PremultiplyAlpha(size.Width, size.Height, (uint)srcFormat, (void*)src, srcPitch, (uint)dstFormat, (void*)dst, dstPitch) != 0)
                 SdlException.ThrowLastError();
         }
     }
@@ -167,7 +167,7 @@ public sealed class PixelFormat : IDisposable
             {
                 if (_format is not null)
                 {
-                    SDL.FreeFormat(_format);
+                    SDL2.FreeFormat(_format);
                     fixed (SDL_PixelFormat** ptr = &_format)
                         *ptr = null;
                     _palette?.Dispose();
@@ -196,7 +196,7 @@ public sealed class Palette : IDisposable
     {
         unsafe
         {
-            _palette = SDL.AllocPalette(colors);
+            _palette = SDL2.AllocPalette(colors);
             if (_palette is null)
                 SdlException.ThrowLastError();
             _owned = true;
@@ -217,7 +217,7 @@ public sealed class Palette : IDisposable
             {
                 fixed (ColorRgba* colors = value)
                 {
-                    if (SDL.SetPaletteColors(_palette, (SDL_Color*)colors, firstcolor: 0, value.Length) != 0)
+                    if (SDL2.SetPaletteColors(_palette, (SDL_Color*)colors, firstcolor: 0, value.Length) != 0)
                         SdlException.ThrowLastError();
                 }
             }
@@ -229,7 +229,7 @@ public sealed class Palette : IDisposable
         unsafe
         {
             fixed (ColorRgba* ptr = colors)
-                if (SDL.SetPaletteColors(_palette, (SDL_Color*)ptr, index, count) != 0)
+                if (SDL2.SetPaletteColors(_palette, (SDL_Color*)ptr, index, count) != 0)
                     SdlException.ThrowLastError();
         }
     }
@@ -240,7 +240,7 @@ public sealed class Palette : IDisposable
         {
             unsafe
             {
-                SDL.FreePalette(_palette);
+                SDL2.FreePalette(_palette);
                 fixed (SDL_Palette** ptr = &_palette)
                     *ptr = null;
             }

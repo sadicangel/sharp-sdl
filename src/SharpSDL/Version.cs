@@ -12,7 +12,7 @@ public readonly record struct Version(byte Major, byte Minor, byte Patch)
         unsafe
         {
             Unsafe.SkipInit(out Version version);
-            SDL.GetVersion((SDL_version*)&version);
+            SDL2.GetVersion((SDL_version*)&version);
             return version;
         }
     }
@@ -20,7 +20,7 @@ public readonly record struct Version(byte Major, byte Minor, byte Patch)
     {
         unsafe
         {
-            return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.GetPlatform()).AsUtf16((p, _) => new string(p));
+            return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL2.GetPlatform()).AsUtf16((p, _) => new string(p));
         }
     }
 }

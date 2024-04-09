@@ -13,7 +13,7 @@ public abstract class Audio : IDisposable
             {
                 var desired = spec.ToNative();
                 var obtained = default(SDL_AudioSpec);
-                var audio = SDL.OpenAudioDevice(namePtr, iscapture: isPlayback ? 0 : 1, &desired, &obtained, (int)permissions);
+                var audio = SDL2.OpenAudioDevice(namePtr, iscapture: isPlayback ? 0 : 1, &desired, &obtained, (int)permissions);
                 if (audio is 0)
                     SdlException.ThrowLastError();
 
@@ -32,7 +32,7 @@ public abstract class Audio : IDisposable
             {
                 var obtained = default(SDL_AudioSpec);
                 var desired = spec.ToNative();
-                var audio = SDL.OpenAudioDevice(namePtr, iscapture: isPlayback ? 0 : 1, &desired, &obtained, (int)permissions);
+                var audio = SDL2.OpenAudioDevice(namePtr, iscapture: isPlayback ? 0 : 1, &desired, &obtained, (int)permissions);
                 if (audio is 0)
                     SdlException.ThrowLastError();
 
@@ -42,11 +42,11 @@ public abstract class Audio : IDisposable
         }
     }
 
-    public AudioStatus Status { get => (AudioStatus)SDL.GetAudioDeviceStatus(_audio); }
+    public AudioStatus Status { get => (AudioStatus)SDL2.GetAudioDeviceStatus(_audio); }
 
-    public bool IsPaused { get => Status is AudioStatus.Paused; set => SDL.PauseAudioDevice(_audio, value ? 1 : 0); }
+    public bool IsPaused { get => Status is AudioStatus.Paused; set => SDL2.PauseAudioDevice(_audio, value ? 1 : 0); }
 
-    public static int GetDriverCount() => SDL.GetNumAudioDrivers();
+    public static int GetDriverCount() => SDL2.GetNumAudioDrivers();
 
     public void Dispose()
     {
@@ -54,7 +54,7 @@ public abstract class Audio : IDisposable
         {
             unsafe
             {
-                SDL.CloseAudioDevice(_audio);
+                SDL2.CloseAudioDevice(_audio);
                 fixed (uint* ptr = &_audio)
                     *ptr = 0;
             }
@@ -87,7 +87,7 @@ public sealed class AudioPlayback : Audio
 
     public override IAudioPlaybackQueue Queue { get => _queue; }
 
-    public static int GetPlaybackDeviceCount() => SDL.GetNumAudioDevices(iscapture: 0);
+    public static int GetPlaybackDeviceCount() => SDL2.GetNumAudioDevices(iscapture: 0);
 }
 
 public sealed class AudioRecording : Audio
@@ -104,36 +104,36 @@ public sealed class AudioRecording : Audio
 
     public override IAudioRecordingQueue Queue { get => _queue; }
 
-    public static int GetRecordingDeviceCount() => SDL.GetNumAudioDevices(iscapture: 1);
+    public static int GetRecordingDeviceCount() => SDL2.GetNumAudioDevices(iscapture: 1);
 }
 
 [Flags]
 public enum AudioFormat : ushort
 {
-    U8 = SDL.AUDIO_U8,
-    S8 = SDL.AUDIO_S8,
-    U16LSB = SDL.AUDIO_U16LSB,
-    S16LSB = SDL.AUDIO_S16LSB,
-    U16MSB = SDL.AUDIO_U16MSB,
-    S16MSB = SDL.AUDIO_S16MSB,
-    U16 = SDL.AUDIO_U16,
-    S16 = SDL.AUDIO_S16,
-    S32LSB = SDL.AUDIO_S32LSB,
-    S32MSB = SDL.AUDIO_S32MSB,
-    S32 = SDL.AUDIO_S32,
-    F32LSB = SDL.AUDIO_F32LSB,
-    F32MSB = SDL.AUDIO_F32MSB,
-    F32 = SDL.AUDIO_F32,
+    U8 = SDL2.AUDIO_U8,
+    S8 = SDL2.AUDIO_S8,
+    U16LSB = SDL2.AUDIO_U16LSB,
+    S16LSB = SDL2.AUDIO_S16LSB,
+    U16MSB = SDL2.AUDIO_U16MSB,
+    S16MSB = SDL2.AUDIO_S16MSB,
+    U16 = SDL2.AUDIO_U16,
+    S16 = SDL2.AUDIO_S16,
+    S32LSB = SDL2.AUDIO_S32LSB,
+    S32MSB = SDL2.AUDIO_S32MSB,
+    S32 = SDL2.AUDIO_S32,
+    F32LSB = SDL2.AUDIO_F32LSB,
+    F32MSB = SDL2.AUDIO_F32MSB,
+    F32 = SDL2.AUDIO_F32,
 }
 
 [Flags]
 public enum AudioPermissions
 {
-    FrequencyChange = SDL.SDL_AUDIO_ALLOW_FREQUENCY_CHANGE,
-    FormatChange = SDL.SDL_AUDIO_ALLOW_FORMAT_CHANGE,
-    ChannelsChange = SDL.SDL_AUDIO_ALLOW_CHANNELS_CHANGE,
-    SamplesChange = SDL.SDL_AUDIO_ALLOW_SAMPLES_CHANGE,
-    AnyChange = SDL.SDL_AUDIO_ALLOW_ANY_CHANGE,
+    FrequencyChange = SDL2.SDL_AUDIO_ALLOW_FREQUENCY_CHANGE,
+    FormatChange = SDL2.SDL_AUDIO_ALLOW_FORMAT_CHANGE,
+    ChannelsChange = SDL2.SDL_AUDIO_ALLOW_CHANNELS_CHANGE,
+    SamplesChange = SDL2.SDL_AUDIO_ALLOW_SAMPLES_CHANGE,
+    AnyChange = SDL2.SDL_AUDIO_ALLOW_ANY_CHANGE,
 }
 
 public delegate void RequestAudio(Span<byte> buffer, object? userData);
@@ -201,9 +201,9 @@ public interface IAudioRecordingQueue : IAudioQueue
 
 public sealed class AudioQueue(uint audio) : IAudioPlaybackQueue, IAudioRecordingQueue
 {
-    public int Length { get => (int)SDL.GetQueuedAudioSize(audio); }
+    public int Length { get => (int)SDL2.GetQueuedAudioSize(audio); }
 
-    public void Clear() => SDL.ClearQueuedAudio(audio);
+    public void Clear() => SDL2.ClearQueuedAudio(audio);
 
     public void Enqueue(ReadOnlySpan<byte> buffer)
     {
@@ -211,7 +211,7 @@ public sealed class AudioQueue(uint audio) : IAudioPlaybackQueue, IAudioRecordin
         {
             fixed (byte* data = buffer)
             {
-                if (SDL.QueueAudio(audio, data, (uint)buffer.Length) != 0)
+                if (SDL2.QueueAudio(audio, data, (uint)buffer.Length) != 0)
                     SdlException.ThrowLastError();
             }
         }
@@ -221,13 +221,13 @@ public sealed class AudioQueue(uint audio) : IAudioPlaybackQueue, IAudioRecordin
     {
         unsafe
         {
-            SDL.ClearError();
+            SDL2.ClearError();
             var bytesRead = 0;
             fixed (byte* data = buffer)
             {
-                bytesRead = (int)SDL.DequeueAudio(audio, data, (uint)buffer.Length);
+                bytesRead = (int)SDL2.DequeueAudio(audio, data, (uint)buffer.Length);
             }
-            var _error = MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL.GetError());
+            var _error = MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL2.GetError());
             if (_error.Length > 0)
                 throw new SdlException(StringHelper.ToUtf16(_error));
             return bytesRead;

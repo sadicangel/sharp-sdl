@@ -6,11 +6,11 @@ public sealed class Logger
 {
     private static LoggerOutput? LoggerOutput = null;
 
-    public static void SetLevels(LogLevel level) => SDL.LogSetAllPriority((SDL_LogPriority)level);
-    public static void ResetLevels() => SDL.LogResetPriorities();
+    public static void SetLevels(LogLevel level) => SDL2.LogSetAllPriority((SDL_LogPriority)level);
+    public static void ResetLevels() => SDL2.LogResetPriorities();
 
-    public static void SetLevel(LogCategory category, LogLevel level) => SDL.LogSetPriority((int)category, (SDL_LogPriority)level);
-    public static LogLevel GetLevel(LogCategory category) => (LogLevel)SDL.LogGetPriority((int)category);
+    public static void SetLevel(LogCategory category, LogLevel level) => SDL2.LogSetPriority((int)category, (SDL_LogPriority)level);
+    public static LogLevel GetLevel(LogCategory category) => (LogLevel)SDL2.LogGetPriority((int)category);
 
     public static void Log(LogCategory category, LogLevel level, string format, params object?[] args)
     {
@@ -22,7 +22,7 @@ public sealed class Logger
             unsafe
             {
                 fixed (byte* utf8 = utf8Array.AsSpan(..bytesWritten))
-                    SDL.LogMessage((int)category, (SDL_LogPriority)level, utf8, __arglist());
+                    SDL2.LogMessage((int)category, (SDL_LogPriority)level, utf8);
             }
         }
         finally
@@ -101,7 +101,7 @@ internal sealed class LoggerOutput
     {
         delegate* unmanaged[Cdecl]<void*, int, SDL_LogPriority, byte*, void> callback = null;
         void* userData = null;
-        SDL.LogGetOutputFunction(&callback, &userData);
+        SDL2.LogGetOutputFunction(&callback, &userData);
         DefaultCallback = callback;
     }
 
@@ -128,7 +128,7 @@ internal sealed class LoggerOutput
             });
             var fPtr = (delegate* unmanaged[Cdecl]<void*, int, SDL_LogPriority, byte*, void>)Marshal.GetFunctionPointerForDelegate(_nativeCallback).ToPointer();
 
-            SDL.LogSetOutputFunction(fPtr, null);
+            SDL2.LogSetOutputFunction(fPtr, null);
         }
     }
 
@@ -139,7 +139,7 @@ internal sealed class LoggerOutput
         {
             unsafe
             {
-                SDL.LogSetOutputFunction(DefaultCallback, null);
+                SDL2.LogSetOutputFunction(DefaultCallback, null);
             }
         }
     }

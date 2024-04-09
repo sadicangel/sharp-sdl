@@ -8,7 +8,7 @@ public readonly record struct Locale(string Language, string? Country)
         var locales = new List<Locale>();
         unsafe
         {
-            for (var locale = SDL.GetPreferredLocales(); locale->language is not null; ++locale)
+            for (var locale = SDL2.GetPreferredLocales(); locale->language is not null; ++locale)
                 locales.Add(FromNative(locale));
         }
         return locales;

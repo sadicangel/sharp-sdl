@@ -19,7 +19,7 @@ public sealed class Surface : IDisposable
     {
         unsafe
         {
-            _surface = SDL.CreateRGBSurface(flags: 0, size.Width, size.Height, depth, rMask, gMask, bMask, aMask);
+            _surface = SDL2.CreateRGBSurface(flags: 0, size.Width, size.Height, depth, rMask, gMask, bMask, aMask);
             if (_surface is null)
                 SdlException.ThrowLastError();
             _owned = true;
@@ -30,7 +30,7 @@ public sealed class Surface : IDisposable
     {
         unsafe
         {
-            _surface = SDL.CreateRGBSurfaceWithFormat(flags: 0, size.Width, size.Height, depth, (uint)format);
+            _surface = SDL2.CreateRGBSurfaceWithFormat(flags: 0, size.Width, size.Height, depth, (uint)format);
             if (_surface is null)
                 SdlException.ThrowLastError();
             _owned = true;
@@ -41,7 +41,7 @@ public sealed class Surface : IDisposable
     {
         unsafe
         {
-            _surface = SDL.CreateRGBSurfaceFrom((void*)pixels, size.Width, size.Height, depth, pitch, rMask, gMask, bMask, aMask);
+            _surface = SDL2.CreateRGBSurfaceFrom((void*)pixels, size.Width, size.Height, depth, pitch, rMask, gMask, bMask, aMask);
             if (_surface is null)
                 SdlException.ThrowLastError();
             _owned = true;
@@ -52,7 +52,7 @@ public sealed class Surface : IDisposable
     {
         unsafe
         {
-            _surface = SDL.CreateRGBSurfaceWithFormatFrom((void*)pixels, size.Width, size.Height, depth, pitch, (uint)format);
+            _surface = SDL2.CreateRGBSurfaceWithFormatFrom((void*)pixels, size.Width, size.Height, depth, pitch, (uint)format);
             if (_surface is null)
                 SdlException.ThrowLastError();
             _owned = true;
@@ -80,7 +80,7 @@ public sealed class Surface : IDisposable
         {
             unsafe
             {
-                SDL.SetClipRect(_surface, !value.IsEmpty ? (SDL_Rect*)&value : null);
+                SDL2.SetClipRect(_surface, !value.IsEmpty ? (SDL_Rect*)&value : null);
             }
         }
     }
@@ -92,14 +92,14 @@ public sealed class Surface : IDisposable
         {
             unsafe
             {
-                return SDL.HasSurfaceRLE(_surface);
+                return SDL2.HasSurfaceRLE(_surface);
             }
         }
         set
         {
             unsafe
             {
-                if (SDL.SetSurfaceRLE(_surface, value ? 1 : 0) != 0)
+                if (SDL2.SetSurfaceRLE(_surface, value ? 1 : 0) != 0)
                     SdlException.ThrowLastError();
             }
         }
@@ -111,14 +111,14 @@ public sealed class Surface : IDisposable
         {
             unsafe
             {
-                return SDL.HasColorKey(_surface);
+                return SDL2.HasColorKey(_surface);
             }
         }
         set
         {
             unsafe
             {
-                if (SDL.SetColorKey(_surface, 0, 0) != 0)
+                if (SDL2.SetColorKey(_surface, 0, 0) != 0)
                     SdlException.ThrowLastError();
             }
         }
@@ -131,7 +131,7 @@ public sealed class Surface : IDisposable
             unsafe
             {
                 uint k = 0;
-                if (SDL.GetColorKey(_surface, &k) != 0)
+                if (SDL2.GetColorKey(_surface, &k) != 0)
                     SdlException.ThrowLastError();
                 return k;
             }
@@ -140,7 +140,7 @@ public sealed class Surface : IDisposable
         {
             unsafe
             {
-                if (SDL.SetColorKey(_surface, 1, value) != 0)
+                if (SDL2.SetColorKey(_surface, 1, value) != 0)
                     SdlException.ThrowLastError();
             }
         }
@@ -153,7 +153,7 @@ public sealed class Surface : IDisposable
             unsafe
             {
                 ColorRgb color = default;
-                if (SDL.GetSurfaceColorMod(_surface, &color.R, &color.G, &color.B) != 0)
+                if (SDL2.GetSurfaceColorMod(_surface, &color.R, &color.G, &color.B) != 0)
                     SdlException.ThrowLastError();
                 return color;
             }
@@ -162,7 +162,7 @@ public sealed class Surface : IDisposable
         {
             unsafe
             {
-                if (SDL.SetSurfaceColorMod(_surface, value.R, value.G, value.B) != 0)
+                if (SDL2.SetSurfaceColorMod(_surface, value.R, value.G, value.B) != 0)
                     SdlException.ThrowLastError();
             }
         }
@@ -175,7 +175,7 @@ public sealed class Surface : IDisposable
             unsafe
             {
                 byte a = default;
-                if (SDL.GetSurfaceAlphaMod(_surface, &a) != 0)
+                if (SDL2.GetSurfaceAlphaMod(_surface, &a) != 0)
                     SdlException.ThrowLastError();
                 return a;
             }
@@ -184,7 +184,7 @@ public sealed class Surface : IDisposable
         {
             unsafe
             {
-                if (SDL.SetSurfaceAlphaMod(_surface, value) != 0)
+                if (SDL2.SetSurfaceAlphaMod(_surface, value) != 0)
                     SdlException.ThrowLastError();
             }
         }
@@ -197,7 +197,7 @@ public sealed class Surface : IDisposable
             unsafe
             {
                 BlendMode blendMode = default;
-                if (SDL.GetSurfaceBlendMode(_surface, (SDL_BlendMode*)&blendMode) != 0)
+                if (SDL2.GetSurfaceBlendMode(_surface, (SDL_BlendMode*)&blendMode) != 0)
                     SdlException.ThrowLastError();
                 return blendMode;
             }
@@ -206,7 +206,7 @@ public sealed class Surface : IDisposable
         {
             unsafe
             {
-                if (SDL.SetSurfaceBlendMode(_surface, (SDL_BlendMode)value) != 0)
+                if (SDL2.SetSurfaceBlendMode(_surface, (SDL_BlendMode)value) != 0)
                     SdlException.ThrowLastError();
             }
         }
@@ -216,7 +216,7 @@ public sealed class Surface : IDisposable
     {
         unsafe
         {
-            var surface = SDL.DuplicateSurface(_surface);
+            var surface = SDL2.DuplicateSurface(_surface);
             if (surface is null)
                 SdlException.ThrowLastError();
             return new Surface(surface, owned: true);
@@ -227,7 +227,7 @@ public sealed class Surface : IDisposable
     {
         unsafe
         {
-            var surface = SDL.ConvertSurface(_surface, format._format, flags: 0);
+            var surface = SDL2.ConvertSurface(_surface, format._format, flags: 0);
             if (surface is null)
                 SdlException.ThrowLastError();
             return new Surface(surface, owned: true);
@@ -238,7 +238,7 @@ public sealed class Surface : IDisposable
     {
         unsafe
         {
-            var surface = SDL.ConvertSurfaceFormat(_surface, (uint)format, flags: 0);
+            var surface = SDL2.ConvertSurfaceFormat(_surface, (uint)format, flags: 0);
             if (surface is null)
                 SdlException.ThrowLastError();
             return new Surface(surface, owned: true);
@@ -249,7 +249,7 @@ public sealed class Surface : IDisposable
     {
         unsafe
         {
-            if (SDL.FillRect(_surface, (SDL_Rect*)&rect, color.Rgba) != 0)
+            if (SDL2.FillRect(_surface, (SDL_Rect*)&rect, color.Rgba) != 0)
                 SdlException.ThrowLastError();
         }
     }
@@ -260,7 +260,7 @@ public sealed class Surface : IDisposable
         {
             fixed (Rect* ptr = rects)
             {
-                if (SDL.FillRects(_surface, (SDL_Rect*)ptr, rects.Length, color.Rgba) != 0)
+                if (SDL2.FillRects(_surface, (SDL_Rect*)ptr, rects.Length, color.Rgba) != 0)
                     SdlException.ThrowLastError();
             }
         }
@@ -270,7 +270,7 @@ public sealed class Surface : IDisposable
     {
         unsafe
         {
-            var surface = SDL.LoadBMP_RW(stream._stream, freesrc: 0);
+            var surface = SDL2.LoadBMP_RW(stream._stream, freesrc: 0);
             if (surface is null)
                 SdlException.ThrowLastError();
             return new Surface(surface);
@@ -284,10 +284,10 @@ public sealed class Surface : IDisposable
             var fileMode = "rb\0"u8;
             SDL_RWops* stream = null;
             fixed (byte* f = fileName, m = fileMode)
-                stream = SDL.RWFromFile(f, m);
+                stream = SDL2.RWFromFile(f, m);
             if (stream is null)
                 SdlException.ThrowLastError();
-            var surface = SDL.LoadBMP_RW(stream, freesrc: 1);
+            var surface = SDL2.LoadBMP_RW(stream, freesrc: 1);
             if (surface is null)
                 SdlException.ThrowLastError();
             return new Surface(surface);
@@ -306,7 +306,7 @@ public sealed class Surface : IDisposable
     {
         unsafe
         {
-            if (SDL.SaveBMP_RW(_surface, stream._stream, freedst: 0) != 0)
+            if (SDL2.SaveBMP_RW(_surface, stream._stream, freedst: 0) != 0)
                 SdlException.ThrowLastError();
         }
     }
@@ -318,10 +318,10 @@ public sealed class Surface : IDisposable
             var fileMode = "wb\0"u8;
             SDL_RWops* stream = null;
             fixed (byte* f = fileName, m = fileMode)
-                stream = SDL.RWFromFile(f, m);
+                stream = SDL2.RWFromFile(f, m);
             if (stream is null)
                 SdlException.ThrowLastError();
-            if (SDL.SaveBMP_RW(_surface, stream, freedst: 1) != 0)
+            if (SDL2.SaveBMP_RW(_surface, stream, freedst: 1) != 0)
                 SdlException.ThrowLastError();
         }
     }
@@ -340,7 +340,7 @@ public sealed class Surface : IDisposable
         {
             var sr = srcRect.IsEmpty ? null : (SDL_Rect*)&srcRect;
             var dr = dstRect.IsEmpty ? null : (SDL_Rect*)&dstRect;
-            if (SDL.UpperBlit(src._surface, sr, dst._surface, dr) != 0)
+            if (SDL2.UpperBlit(src._surface, sr, dst._surface, dr) != 0)
                 SdlException.ThrowLastError();
         };
     }
@@ -351,17 +351,17 @@ public sealed class Surface : IDisposable
         {
             var sr = srcRect.IsEmpty ? null : (SDL_Rect*)&srcRect;
             var dr = dstRect.IsEmpty ? null : (SDL_Rect*)&dstRect;
-            if (SDL.UpperBlitScaled(src._surface, sr, dst._surface, dr) != 0)
+            if (SDL2.UpperBlitScaled(src._surface, sr, dst._surface, dr) != 0)
                 SdlException.ThrowLastError();
         };
     }
 
     public static YuvConversionMode GetYuvConversionMode() =>
-        (YuvConversionMode)SDL.GetYUVConversionMode();
+        (YuvConversionMode)SDL2.GetYUVConversionMode();
     public static YuvConversionMode GetYuvConversionMode(Size size) =>
-        (YuvConversionMode)SDL.GetYUVConversionModeForResolution(size.Width, size.Height);
+        (YuvConversionMode)SDL2.GetYUVConversionModeForResolution(size.Width, size.Height);
     public static void SetYuvConversionMode(YuvConversionMode mode) =>
-        SDL.SetYUVConversionMode((SDL_YUV_CONVERSION_MODE)mode);
+        SDL2.SetYUVConversionMode((SDL_YUV_CONVERSION_MODE)mode);
 
     public void Dispose()
     {
@@ -372,7 +372,7 @@ public sealed class Surface : IDisposable
                 if (_surface is not null)
                 {
                     _format?.Dispose();
-                    SDL.FreeSurface(_surface);
+                    SDL2.FreeSurface(_surface);
                     fixed (SDL_Surface** ptr = &_surface)
                         *ptr = null;
 
@@ -384,11 +384,11 @@ public sealed class Surface : IDisposable
 
 public enum SurfaceFlags : uint
 {
-    SwCompat = SDL.SDL_SWSURFACE,
-    PreAllocated = SDL.SDL_PREALLOC,
-    RunLengthEncoded = SDL.SDL_RLEACCEL,
-    InternalReference = SDL.SDL_DONTFREE,
-    SimdAligned = SDL.SDL_SIMD_ALIGNED,
+    SwCompat = SDL2.SDL_SWSURFACE,
+    PreAllocated = SDL2.SDL_PREALLOC,
+    RunLengthEncoded = SDL2.SDL_RLEACCEL,
+    InternalReference = SDL2.SDL_DONTFREE,
+    SimdAligned = SDL2.SDL_SIMD_ALIGNED,
 }
 
 public enum YuvConversionMode

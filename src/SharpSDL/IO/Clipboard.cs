@@ -4,7 +4,7 @@ using System.Text;
 namespace SharpSDL.IO;
 public static class Clipboard
 {
-    public static bool HasText { get => SDL.HasClipboardText(); }
+    public static bool HasText { get => SDL2.HasClipboardText(); }
 
     public static string Text
     {
@@ -12,7 +12,7 @@ public static class Clipboard
         {
             unsafe
             {
-                using var pointer = SdlPointer.Defer(SDL.GetClipboardText());
+                using var pointer = SdlPointer.Defer(SDL2.GetClipboardText());
                 var span = MemoryMarshal.CreateReadOnlySpanFromNullTerminated(pointer);
                 if (span.Length == 0)
                     SdlException.ThrowLastError();
@@ -28,7 +28,7 @@ public static class Clipboard
                 {
                     var bytesWritten = Encoding.UTF8.GetBytes(value, utf8);
                     fixed (byte* p = utf8.AsSpan(..bytesWritten))
-                        if (SDL.SetClipboardText(p) is not 0)
+                        if (SDL2.SetClipboardText(p) is not 0)
                             SdlException.ThrowLastError();
                 }
                 finally
@@ -39,7 +39,7 @@ public static class Clipboard
         }
     }
 
-    public static bool HasPrimarySelectionText { get => SDL.HasPrimarySelectionText(); }
+    public static bool HasPrimarySelectionText { get => SDL2.HasPrimarySelectionText(); }
 
     public static string PrimarySelectionText
     {
@@ -47,7 +47,7 @@ public static class Clipboard
         {
             unsafe
             {
-                using var pointer = SdlPointer.Defer(SDL.GetPrimarySelectionText());
+                using var pointer = SdlPointer.Defer(SDL2.GetPrimarySelectionText());
                 var span = MemoryMarshal.CreateReadOnlySpanFromNullTerminated(pointer);
                 if (span.Length == 0)
                     SdlException.ThrowLastError();
@@ -63,7 +63,7 @@ public static class Clipboard
                 {
                     var bytesWritten = Encoding.UTF8.GetBytes(value, utf8);
                     fixed (byte* p = utf8.AsSpan(..bytesWritten))
-                        if (SDL.SetPrimarySelectionText(p) is not 0)
+                        if (SDL2.SetPrimarySelectionText(p) is not 0)
                             SdlException.ThrowLastError();
                 }
                 finally

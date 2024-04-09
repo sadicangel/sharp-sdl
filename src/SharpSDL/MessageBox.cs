@@ -27,7 +27,7 @@ public static class MessageBox
             {
                 fixed (byte* titlePtr = titleSpan, messagePtr = messageSpan)
                 {
-                    if (SDL.ShowSimpleMessageBox((uint)flags, titlePtr, messagePtr, parent?._window ?? 0) != 0)
+                    if (SDL2.ShowSimpleMessageBox((uint)flags, titlePtr, messagePtr, parent?._window ?? 0) != 0)
                         SdlException.ThrowLastError();
                 }
             }
@@ -62,7 +62,7 @@ public static class MessageBox
                 };
                 var button = 0;
 
-                var result = SDL.ShowMessageBox(&config, &button);
+                var result = SDL2.ShowMessageBox(&config, &button);
                 for (int i = 0; i < config.numbuttons; ++i)
                     Marshal.ZeroFreeCoTaskMemUTF8((nint)config.buttons[i].text);
                 if (result != 0)

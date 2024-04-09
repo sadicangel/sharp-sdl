@@ -46,7 +46,7 @@ public record struct Rect
     {
         unsafe
         {
-            return SDL.HasIntersection((SDL_Rect*)Unsafe.AsPointer(ref this), (SDL_Rect*)Unsafe.AsPointer(ref other));
+            return SDL2.HasIntersection((SDL_Rect*)Unsafe.AsPointer(ref this), (SDL_Rect*)Unsafe.AsPointer(ref other));
         }
     }
 
@@ -56,7 +56,7 @@ public record struct Rect
         {
             Unsafe.SkipInit(out Rect rect);
             result = default;
-            var intersects = SDL.IntersectRect((SDL_Rect*)Unsafe.AsPointer(ref this), (SDL_Rect*)Unsafe.AsPointer(ref other), (SDL_Rect*)&rect);
+            var intersects = SDL2.IntersectRect((SDL_Rect*)Unsafe.AsPointer(ref this), (SDL_Rect*)Unsafe.AsPointer(ref other), (SDL_Rect*)&rect);
             if (intersects)
                 result = rect;
             return intersects;
@@ -67,7 +67,7 @@ public record struct Rect
     {
         unsafe
         {
-            return SDL.IntersectRectAndLine((SDL_Rect*)Unsafe.AsPointer(ref this), &other.P1.X, &other.P1.Y, &other.P2.X, &other.P2.Y);
+            return SDL2.IntersectRectAndLine((SDL_Rect*)Unsafe.AsPointer(ref this), &other.P1.X, &other.P1.Y, &other.P2.X, &other.P2.Y);
         }
     }
 
@@ -75,7 +75,7 @@ public record struct Rect
     {
         unsafe
         {
-            var intersects = SDL.IntersectRectAndLine((SDL_Rect*)Unsafe.AsPointer(ref this), &other.P1.X, &other.P1.Y, &other.P2.X, &other.P2.Y);
+            var intersects = SDL2.IntersectRectAndLine((SDL_Rect*)Unsafe.AsPointer(ref this), &other.P1.X, &other.P1.Y, &other.P2.X, &other.P2.Y);
             result = other;
             return intersects;
         }
@@ -86,7 +86,7 @@ public record struct Rect
         Unsafe.SkipInit(out Rect rect);
         unsafe
         {
-            SDL.UnionRect((SDL_Rect*)Unsafe.AsPointer(ref this), (SDL_Rect*)Unsafe.AsPointer(ref other), (SDL_Rect*)&rect);
+            SDL2.UnionRect((SDL_Rect*)Unsafe.AsPointer(ref this), (SDL_Rect*)Unsafe.AsPointer(ref other), (SDL_Rect*)&rect);
         }
         return rect;
     }
@@ -98,7 +98,7 @@ public record struct Rect
             Unsafe.SkipInit(out Rect rect);
             fixed (Point* ptr = points)
             {
-                SDL.EnclosePoints((SDL_Point*)ptr, points.Length, null, (SDL_Rect*)&rect);
+                SDL2.EnclosePoints((SDL_Point*)ptr, points.Length, null, (SDL_Rect*)&rect);
             }
             return rect;
         }
@@ -111,7 +111,7 @@ public record struct Rect
             Unsafe.SkipInit(out Rect rect);
             fixed (Point* ptr = points)
             {
-                pointsEnclosed = SDL.EnclosePoints((SDL_Point*)ptr, points.Length, (SDL_Rect*)&clip, (SDL_Rect*)&rect);
+                pointsEnclosed = SDL2.EnclosePoints((SDL_Point*)ptr, points.Length, (SDL_Rect*)&clip, (SDL_Rect*)&rect);
             }
             return rect;
         }
