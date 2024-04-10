@@ -2,7 +2,7 @@
 
 public sealed class Music : IDisposable
 {
-    private readonly nint _music;
+    internal readonly nint _music;
 
     public Music(ReadOnlySpan<byte> fileName)
     {
@@ -98,6 +98,17 @@ public sealed class Music : IDisposable
             unsafe
             {
                 return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(SDL2.Mix_GetMusicCopyrightTag(_music));
+            }
+        }
+    }
+
+    public int Volume
+    {
+        get
+        {
+            unsafe
+            {
+                return SDL2.Mix_GetMusicVolume(_music);
             }
         }
     }

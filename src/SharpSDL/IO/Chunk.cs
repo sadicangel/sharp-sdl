@@ -2,7 +2,7 @@
 
 public sealed class Chunk : IDisposable
 {
-    private readonly unsafe Mix_Chunk* _chunk;
+    internal readonly unsafe Mix_Chunk* _chunk;
 
     public Chunk(ReadOnlySpan<byte> fileName)
     {
@@ -34,6 +34,24 @@ public sealed class Chunk : IDisposable
             _chunk = SDL2.Mix_LoadWAV_RW(stream._stream, freesrc: 0);
             if (_chunk is null)
                 SdlException.ThrowLastError();
+        }
+    }
+
+    public int Volume
+    {
+        get
+        {
+            unsafe
+            {
+                return SDL2.Mix_VolumeChunk(_chunk, -1);
+            }
+        }
+        set
+        {
+            unsafe
+            {
+                _ = SDL2.Mix_VolumeChunk(_chunk, value);
+            }
         }
     }
 

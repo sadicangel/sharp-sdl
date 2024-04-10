@@ -23,10 +23,10 @@ using var textures = new GameTextures(renderer);
 
 using var mixer = new Mixer(MixerFlags.Ogg);
 mixer.OpenAudio(44100, AudioFormat.S16SYS, 1, 4096);
-//Music_Load();
 
+using var sounds = new GameSounds();
 
-var f1Race = new Game(renderer, textures);
+var f1Race = new Game(renderer, textures, mixer, sounds);
 
 renderer.RenderTarget = textures[TextureId.SCREEN];
 renderer.Clear();

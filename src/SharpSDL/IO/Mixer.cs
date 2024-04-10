@@ -238,7 +238,90 @@ public sealed class Mixer : IDisposable
             SdlException.ThrowLastError();
     }
 
+    public int GetChannelsVolume() => SDL2.Mix_Volume(-1, -1);
+    public void SetChannelsVolume(int volume) => _ = SDL2.Mix_Volume(-1, volume);
+
+    public int GetChannelVolume(int channel) => SDL2.Mix_Volume(channel, -1);
+    public void SetChannelVolume(int channel, int volume) => _ = SDL2.Mix_Volume(channel, volume);
+
+    public int GetMusicVolume() => SDL2.Mix_VolumeMusic(-1);
+    public void SetMusicVolume(int volume) => _ = SDL2.Mix_VolumeMusic(volume);
+
+    public int GetMasterVolume() => SDL2.Mix_MasterVolume(-1);
+    public void SetMasterVolume(int volume) => _ = SDL2.Mix_MasterVolume(volume);
+
     public int ReserveChannels(int count) => SDL2.Mix_ReserveChannels(count);
+
+    public int PlayChannel(int channel, Chunk chunk, int loops, TimeSpan duration = default, TimeSpan fadeTime = default)
+    {
+        unsafe
+        {
+            return fadeTime == default
+                ? SDL2.Mix_PlayChannelTimed(
+                    channel,
+                    chunk._chunk,
+                    loops,
+                    duration == default ? -1 : (int)duration.TotalMilliseconds)
+                : SDL2.Mix_FadeInChannelTimed(
+                    channel,
+                    chunk._chunk,
+                    loops,
+                    (int)fadeTime.TotalMilliseconds,
+                    duration == default ? -1 : (int)duration.TotalMilliseconds);
+        }
+    }
+
+    public void HaltChannel(int channel, TimeSpan fadeTime = default)
+    {
+        var result = fadeTime == default
+            ? SDL2.Mix_HaltChannel(channel)
+            : SDL2.Mix_FadeOutChannel(channel, (int)fadeTime.TotalMilliseconds);
+
+        if (result != 0)
+            SdlException.ThrowLastError();
+    }
+
+    public void HaltChannelAfter(int channel, TimeSpan duration) =>
+        _ = SDL2.Mix_ExpireChannel(channel, (int)duration.TotalMilliseconds);
+
+    public void HaltChannelsAfter(TimeSpan duration) => HaltChannel(-1, duration);
+
+    public void HaltChannels(TimeSpan fadeTime = default) => HaltChannel(-1, fadeTime);
+
+    public void PlayMusic(Music music, int loops = 0, TimeSpan fadeTime = default, TimeSpan startAt = default)
+    {
+        unsafe
+        {
+            if (SDL2.Mix_FadeInMusicPos(music._music, loops, (int)fadeTime.TotalMilliseconds, startAt.TotalSeconds) != 0)
+                SdlException.ThrowLastError();
+        }
+    }
+
+    public void HaltMusic(TimeSpan fadeTime = default)
+    {
+        _ = fadeTime == default
+            ? SDL2.Mix_HaltMusic()
+            : SDL2.Mix_FadeOutMusic((int)fadeTime.TotalMilliseconds);
+    }
+
+    public FadingStatus GetChannelFadingStatus(int channel) => (FadingStatus)SDL2.Mix_FadingChannel(channel);
+
+    public FadingStatus GetMusicFadingStatus() => (FadingStatus)SDL2.Mix_FadingMusic();
+
+    public void PauseChannel(int channel) => SDL2.Mix_Pause(channel);
+    public void PauseChannels() => PauseChannel(-1);
+
+    public void ResumeChannel(int channel) => SDL2.Mix_Resume(channel);
+    public void ResumeChannels() => ResumeChannel(-1);
+
+    public bool IsChannelPaused(int channel) => SDL2.Mix_Paused(channel) == 1;
+    public int GetChannelsPausedCount() => SDL2.Mix_Paused(-1);
+
+    public void PauseMusic() => SDL2.Mix_PauseMusic();
+    public void ResumeMusic() => SDL2.Mix_ResumeMusic();
+    public bool IsMusicPaused() => SDL2.Mix_PausedMusic() == 1;
+
+    public void RewindMusic() => SDL2.Mix_RewindMusic();
 
     public void Dispose()
     {
@@ -268,6 +351,13 @@ public enum MixerFlags
     Mid = MIX_InitFlags.MIX_INIT_MID,
     Opus = MIX_InitFlags.MIX_INIT_OPUS,
     WavPack = MIX_InitFlags.MIX_INIT_WAVPACK,
+}
+
+public enum FadingStatus
+{
+    None = Mix_Fading.MIX_NO_FADING,
+    FadingOut = Mix_Fading.MIX_FADING_OUT,
+    FadingIn = Mix_Fading.MIX_FADING_IN,
 }
 
 public delegate void ApplyAudioEffect(int channel, Span<byte> buffer);

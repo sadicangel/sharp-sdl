@@ -1,6 +1,7 @@
 ﻿
 using SharpSDL;
 using SharpSDL.Devices;
+using SharpSDL.IO;
 using SharpSDL.Objects;
 
 namespace F1Race;
@@ -32,7 +33,7 @@ public sealed record class OppositeCarType
 }
 
 
-public sealed class Game(Renderer renderer, GameTextures textures)
+public sealed class Game(Renderer renderer, GameTextures textures, Mixer mixer, GameSounds sounds)
 {
     const int F1RACE_PLAYER_CAR_IMAGE_SIZE_X = 15;
     const int F1RACE_PLAYER_CAR_IMAGE_SIZE_Y = 20;
@@ -96,7 +97,6 @@ public sealed class Game(Renderer renderer, GameTextures textures)
     const int F1RACE_STATUS_START_X = F1RACE_GRASS_1_START_X + F1RACE_GRASS_WIDTH;
     const int F1RACE_STATUS_END_X = F1RACE_STATUS_START_X + F1RACE_STATUS_WIDTH;
 
-
     private bool exit_main_loop = false;
     private bool using_new_background_ogg = false;
     private bool f1race_is_new_game = true;
@@ -121,11 +121,16 @@ public sealed class Game(Renderer renderer, GameTextures textures)
     private OppositeCar?[] f1race_opposite_car = new OppositeCar[F1RACE_OPPOSITE_CAR_COUNT];
     private OppositeCarType[] f1race_opposite_car_type = new OppositeCarType[F1RACE_OPPOSITE_CAR_TYPE_COUNT];
 
+    private int volume_old;
+
     private void Texture_Draw(int x, int y, TextureId textureId)
     {
         var texture = textures[textureId];
         renderer.Copy(texture, Rect.Empty, new Rect(new Point(x, y), texture.Size));
     }
+
+    private void PlayMusic(MusicId id, bool loop) => mixer.PlayMusic(sounds[id], loop ? -1 : 0);
+
     public void F1Race_Show_Game_Over_Screen()
     {
         renderer.DrawColor = new ColorRgba(234, 243, 255, 0); // Light Blue.
@@ -521,10 +526,10 @@ public sealed class Game(Renderer renderer, GameTextures textures)
         F1Race_Render_Background();
         F1Race_Render();
 
-        //if (using_new_background_ogg)
-        //    Music_Play(MUSIC_BACKGROUND, -1);
-        //else
-        //    Music_Play(MUSIC_BACKGROUND_LOWCOST, -1);
+        if (using_new_background_ogg)
+            PlayMusic(MusicId.BGM, loop: true);
+        else
+            PlayMusic(MusicId.BGM_LOWCOST, loop: true);
     }
 
     private bool F1RACE_RELEASE_ALL_KEY()
@@ -626,30 +631,33 @@ public sealed class Game(Renderer renderer, GameTextures textures)
             case KeyCode.N:
             case KeyCode.Tab:
             case KeyCode.N0:
-            //case KeyCode.Kp0:
-            //    if (state is ButtonState.Pressed)
-            //    {
-            //        if (!using_new_background_ogg)
-            //            Music_Play(MUSIC_BACKGROUND, -1);
-            //        else
-            //            Music_Play(MUSIC_BACKGROUND_LOWCOST, -1);
-            //        using_new_background_ogg = !using_new_background_ogg;
-            //    }
-            //    break;
+            case KeyCode.Kp0:
+                if (state is ButtonState.Pressed)
+                {
+                    if (!using_new_background_ogg)
+                        PlayMusic(MusicId.BGM, loop: true);
+                    else
+                        PlayMusic(MusicId.BGM_LOWCOST, loop: true);
+                    using_new_background_ogg = !using_new_background_ogg;
+                }
+                break;
             case KeyCode.M:
             case KeyCode.N7:
-            //case KeyCode.Kp7:
-            //    if (state is ButtonState.Pressed)
-            //    {
-            //        if (volume_old == -1)
-            //            volume_old = Mix_VolumeMusic(0);
-            //        else
-            //        {
-            //            Mix_VolumeMusic(volume_old);
-            //            volume_old = -1;
-            //        }
-            //    }
-            //    break;
+            case KeyCode.Kp7:
+                if (state is ButtonState.Pressed)
+                {
+                    if (volume_old == -1)
+                    {
+                        mixer.SetMusicVolume(0);
+                        volume_old = 0;
+                    }
+                    else
+                    {
+                        mixer.SetMusicVolume(volume_old);
+                        volume_old = -1;
+                    }
+                }
+                break;
             case KeyCode.Escape:
                 if (state is ButtonState.Pressed)
                     exit_main_loop = true;
@@ -659,7 +667,7 @@ public sealed class Game(Renderer renderer, GameTextures textures)
 
     private void F1Race_Crashing()
     {
-        //Music_Play(MUSIC_CRASH, 0);
+        PlayMusic(MusicId.CRASH, loop: false);
 
         f1race_is_crashing = true;
         f1race_crashing_count_down = 50;
@@ -984,8 +992,8 @@ public sealed class Game(Renderer renderer, GameTextures textures)
                 F1Race_Render_Player_Car_Crash();
             else
             {
-                //if (f1race_crashing_count_down == 39)
-                //    Music_Play(MUSIC_GAMEOVER, 0);
+                if (f1race_crashing_count_down == 39)
+                    PlayMusic(MusicId.GAMEOVER, loop: false);
                 F1Race_Show_Game_Over_Screen();
             }
             if (f1race_crashing_count_down <= 0)
